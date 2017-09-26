@@ -13,7 +13,7 @@
 						:on-success="handleAvatarSuccess"
 						:before-upload="beforeAvatarUpload">
 						<img v-if="imageUrl" :src="imageUrl" class="avatar">
-					  <i v-else  class="icon iconfont icon-touxiang" style="font-size: 180px;line-height: 196px; margin-left: 7px;"></i>
+					  <i v-else  class="icon iconfont icon-touxiang" style="font-size: 180px;line-height: 196px; color: #fff; margin-left: 7px;"></i>
 						<!-- <h3>点击上传营业执照</h3> -->
 					</el-upload>
 				</h1>
@@ -318,10 +318,10 @@ export default {
 	},
   methods: {
     beforeAvatarUpload (file) {
-      const isJPG = file.type === 'image/jpeg'
+      const isJPG = (file.type === 'image/jpeg')||(file.type === 'image/png')
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$message.error('上传头像图片只能是 JPG、JPEG、PNG 格式!')
       }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')

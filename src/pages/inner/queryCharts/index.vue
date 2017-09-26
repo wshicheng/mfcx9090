@@ -10,7 +10,7 @@
       </el-col>
       <el-col :span="2">
         <span class="orderMoney"></span>
-        <i>金额</i>
+        <i>实际收益</i>
       </el-col>
     </el-row>
     <div class="chartsRect">
@@ -69,7 +69,7 @@ div.queryCharts div.watchButton {
 
 div.queryCharts div.watchButton div.el-col-2 {
   float: right;
-  margin-left: -30px;
+  /* margin-left: -30px; */
     width: 100px;
 }
 
