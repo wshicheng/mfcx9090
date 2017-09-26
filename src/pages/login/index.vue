@@ -313,12 +313,6 @@ export default {
 					    	window.sessionStorage.setItem('headImg',JSON.parse(res.text).adminUser.adminUserIconUrl)
                 window.sessionStorage.setItem('userName',JSON.parse(res.text).adminUser.userName)
                 window.sessionStorage.setItem('name',JSON.parse(res.text).adminUser.name)
-                if(JSON.parse(res.text).adminUser.name.length>0){
-                  this.setName(JSON.parse(res.text).adminUser.name)
-                }else{
-                  this.setName(JSON.parse(res.text).adminUser.userName)
-                  
-                }
                 if(data.length>0){
                    var path = this.menuitems[0].children[0].path
                    if (path === '/system/office') {

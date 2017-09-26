@@ -269,7 +269,7 @@ export default {
         name: [
           { message: '请输入姓名', trigger: 'blur' },
         ],
-        phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }]
+        // phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }]
         // email: [{ validator: validateEmail, trigger: 'blur' }]
       }
     }
@@ -376,7 +376,7 @@ export default {
   mounted: function () {
     $(".sign").removeClass('is-active')
     $('.sign[name="80"]').addClass('is-active')
-    document.title = '蜜蜂平台管理——添加平台账号'
+    document.title = '添加平台账号'
     this.remoteMethod()
   }
 }

@@ -9,7 +9,7 @@
                 <div class="admin">
                     <img class="headImg" v-if="imageUrl" :src="imageUrl">
                     <i v-else class="icon iconfont icon-touxiang"></i>
-                    <span class="username">{{$store.state.users.name}}</span>
+                    <span class="username">{{userName}}</span>
                     <!-- <i class="icon iconfont icon-xinfeng"></i> -->
                     <i class="icon iconfont icon-tuichu" @click="handleLoginOut"></i>
                 </div>
@@ -24,7 +24,7 @@ export default {
     data () {
         return {
             imageUrl: '',
-            userName: '用户名'
+            userName: ''
         }
     },  
     mounted () {

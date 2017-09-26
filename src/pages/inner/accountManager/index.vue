@@ -135,18 +135,18 @@
                       <el-input v-model="editAccount.userName" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label='密码' prop='passWord' :label-width="formLabelWidth">
-                      <el-input v-model="editAccount.passWord" auto-complete="off"></el-input>
+                      <el-input type="password" v-model="editAccount.passWord" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="所属加盟商" prop="alliance">
                       <!-- <el-radio-group v-model="editAccount.alliance" v-on:change='remoteMethodPartner'>
                         <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityId.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
                       </el-radio-group> -->
-                      <el-radio-group v-model="editAccount.alliance" @change="recode">
-                        <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityId.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
+                      <el-radio-group v-model="radio2" @change="recode">
+                        <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityName.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
                       </el-radio-group>
                     </el-form-item>
                     <el-form-item label="所属角色" style="margin-left: 12px;" prop="roleName">
-                      <el-select v-model="value" placeholder="请选择">
+                      <el-select v-model="recodeRoleName" placeholder="请选择">
                         <el-option
                           v-for="item in options"
                           :key="item.value"
@@ -290,6 +290,8 @@ export default {
       name: '',
       phone: '',
       recodeCityName:'',
+      recodeCityId:'',
+      recodeRoleName:'',
       activeName: '平台',
       totalItems: 1,
       pageShow: false,
@@ -341,15 +343,16 @@ export default {
   },
   methods: {
     recode(val){
+     
         var that = this;
         this.cityList.map((item)=>{
           console.log(item)
-          if(item.cityId=== val*1){
-            that.editAccount.cityName = item.cityName
-            that.editAccount.alliance = item.cityId
+          if(item.cityName=== val){
+            this.recodeCityId = item.cityId
           }
         })
-        debugger
+        console.log(this.editAccount)
+       
         setTimeout(() => {
                     request.post(host + 'beepartner/admin/User/findRole')
                     .withCredentials()
@@ -357,7 +360,7 @@ export default {
                             'content-type': 'application/x-www-form-urlencoded'
                         })
                         .send({
-                            'cityId':  that.editAccount.alliance  
+                            'cityId':  this.recodeCityId
                         })
                         .end((error, res) => {
                             if (error) {
@@ -375,6 +378,7 @@ export default {
                                 if (roles.length > 0) {
                                     that.isDisabled = false
                                 }
+                                that.recodeRoleName = ''
                                 that.options = roles
                             }
                         })
@@ -773,6 +777,8 @@ export default {
         this.editAccount.passWord = '********'
       }else{
             this.dialogVisible = true
+            this.recodeRoleName = scope.row.roleName;
+            this.recodeCityId = scope.row.cityId
             var that = this;
             this.editAccount= {}
             this.editAccount.passWord = '********'
@@ -789,10 +795,10 @@ export default {
             this.editAccount.initUserId = scope.row.userId
             this.editAccount.roleId = scope.row.roleId
             this.recodeCityName = scope.row.cityName;
-            this.editAccount.alliance =  this.cityList.filter((item)=>{return item.cityName === this.recodeCityName})[0].cityId
+            this.radio2 = this.recodeCityName
              setTimeout(function(){
               $("input.el-radio__original").each(function(index,ele){
-                //console.log(ele.value)
+                console.log(ele.value)
                 if(ele.value==that.editAccount.alliance){
                   ele.click()
                 }
@@ -804,7 +810,7 @@ export default {
                 'content-type': 'application/x-www-form-urlencoded'
               }).
               send({
-                cityId:this.editAccount.alliance
+                cityId:  this.recodeCityId 
               })
               .end((err,res)=>{
                 var roles = JSON.parse(res.text).data.map((item) => {
@@ -814,7 +820,6 @@ export default {
                     obj.id = item.id
                     return obj
                   })
-                  console.log(roles)
                   that.options = roles
               })
               return;
@@ -835,7 +840,7 @@ export default {
       newAccountInfo.description = this.editAccount.description
       newAccountInfo.email = this.editAccount.email
       newAccountInfo.phoneNo = this.editAccount.phoneNo
-      newAccountInfo.cityId = this.editAccount.alliance
+      newAccountInfo.cityId = this.recodeCityId
       newAccountInfo.cityName = this.editAccount.cityName
       newAccountInfo.roleId = this.editAccount.roleId
       newAccountInfo.name = this.editAccount.name
