@@ -343,6 +343,7 @@ export default {
 
     },
     editConfim (row, index) {
+      console.log(row)
       this.fullscreenLoading = true
       request
         .post(host + 'beepartner/admin/withDraw/confirmWithDraw')
