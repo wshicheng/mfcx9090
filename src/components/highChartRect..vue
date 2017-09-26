@@ -96,7 +96,7 @@ export default {
             }
           }, {
             title: {
-              text: '金额'
+              text: '实际收益'
             },
             opposite: true
           }],
@@ -131,7 +131,7 @@ export default {
             pointPadding: 0.3,
             pointPlacement: -0.2
           }, {
-            name: '金额',
+            name: '实际收益',
             color: '#00cdcd',
             data: this.consumeMoney,
             tooltip: {
