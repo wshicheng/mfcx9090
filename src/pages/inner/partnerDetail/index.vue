@@ -93,15 +93,15 @@
           </el-tab-pane> -->
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
           <el-table :data="drawalData" style="width: 100%">
-            <el-table-column prop="month" label="结算月份">
+            <el-table-column prop="month" label="结算周期">
             </el-table-column>
-            <el-table-column prop="couponAmount" label="结算金额">
+            <el-table-column prop="money" label="结算金额">
             </el-table-column>
-            <el-table-column prop="applyTime" label="申请时间">
+            <el-table-column prop="applyTimeS" label="申请时间">
             </el-table-column>
-            <el-table-column prop="stateDes" label="状态">
+            <el-table-column prop="statusDes" label="状态">
             </el-table-column>
-            <el-table-column prop="des" label="财务备注">
+            <el-table-column prop="description" label="财务备注">
             </el-table-column>
           </el-table>
         </el-tab-pane>
