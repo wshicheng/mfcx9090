@@ -352,10 +352,10 @@ export default {
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
-          'applyTimeStr': row.applyTimeStr,
-          'applyMoney': Number(row.applyMoney.split('元')[0]),
+          'applyTimeStr': this.editAccount.applyTimeStr,
+          'applyMoney': Number(this.editAccount.applyMoney.split('元')[0]),
           'description': this.editAccount.description,
-          'cityPartnerId': row.cityPartnerId,
+          'cityPartnerId': this.editAccount.cityPartnerId,
           'id': this.editAccount.id
         })
         .end((error, res) => {
