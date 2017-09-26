@@ -41,7 +41,7 @@
 						<button :class="{disabled:isBinded}" :disabled="isBinded" @click='$router.push({path:"/index/memberCenter/bindTel"})'>绑定手机号</button>
 					</span>
 
-					<span>
+					<span v-show="editShow">
 						<button @click='$router.push({path:"/index/memberCenter/updateTel"})'>修改手机号</button>
 					</span>
 				</li>
@@ -63,7 +63,7 @@
 				<li>
 					<span><i class="iconfont right">&#xe616;</i></span>
 					<span>登录密码</span>
-					<span>建议使用6-20个字符，包含字母、数字、下划线</span>
+					<span style='font-size: 14px; color:#ccc;'>建议使用6-20个字符，包含字母、数字、下划线</span>
 					<button @click='$router.push({path:"/index/memberCenter/amendPassword"})'>修改密码</button>
 				</li>
 			</ul>
@@ -312,7 +312,8 @@ export default {
 			telBinded: false,
 			emailBinded: false,
 			isBinded: false,
-			imageUrl: ''
+			imageUrl: '',
+			editShow: false
 			
 		}
 	},
@@ -442,9 +443,11 @@ export default {
 						if (Number(JSON.parse(res.text).data.phoneNoBand) === 0) {
 							this.isBinded = false
 							this.telBinded = false
+							this.editShow = false
 						} else {
 							this.isBinded = true
 							this.telBinded = true
+							this.editShow = true
 						}
 
 						if (this.email === '') {

@@ -43,13 +43,13 @@
               <template scope="scope">
                
                 <a v-if="scope.row.status == 3" href="javascript:;" prop="cityPartnerId" id='openId' @click="openEdit(scope.row, scope.$index)" style="color:#ccc; margin-right:10px; cursor:not-allowed;" title="已结算">
-                  <!-- <i class="el-icon-document"></i> -->已结算
+                  <!-- <i class="el-icon-document"></i> -->结算  <!-- 已结算 -->
                 </a>
                 <a v-else-if="scope.row.status == 2" href="javascript:;" prop="cityPartnerId"  @click="openEdit(scope.row, scope.$index)" style="color:#444; margin-right:10px;" title="待结算">
-                  <!-- <i class="el-icon-document"></i> -->待结算
+                  <!-- <i class="el-icon-document"></i> -->结算<!-- 待结算 -->
                 </a>
                  <a v-else href="javascript:;" prop="cityPartnerId"  @click="openEdit(scope.row, scope.$index)" style="color:#ccc; margin-right:10px;cursor:not-allowed;" title="待确认">
-                  <!-- <i class="el-icon-document"></i> -->待确认
+                  <!-- <i class="el-icon-document"></i> -->结算<!-- 待确认 -->
                 </a>
                 <!--dialog 弹窗开始-->
                  <el-dialog id="settle_input" title="结算确认" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">

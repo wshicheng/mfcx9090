@@ -409,6 +409,8 @@ export default {
        * 根据不同的加盟城市，来展示不同的数据
        * */
       
+      var radio = this.checkList.toString()
+  
       this.loading2 = true
       request
         .post(host + 'beepartner/admin/Bike/findBike')
@@ -418,7 +420,11 @@ export default {
         })
         .send({
           'type': 0,
-          'cityCode': $('.citys span.active').attr('myId')
+          'cityCode': $('.citys span.active').attr('myId'),
+          'startOnlineTime': this.form.data1 === ''?'':moment(this.form.data1).format('YYYY-MM-DD'),
+          'endOnlineTime': this.form.data2 === ''?'':moment(this.form.data2).format('YYYY-MM-DD'),
+          'bikeState': radio,
+          'keyName': this.terminalNumber,
         })
         .end((error, res) => {
           if (error) {
