@@ -777,13 +777,11 @@ export default {
         this.editAccount.roleId = scope.row.roleId
         this.editAccount.passWord = '********'
       }else{
+            var that = this;
             this.dialogVisible = true
             this.recodeRoleName = scope.row.roleName;
             this.recodeCityId = scope.row.cityId
-            var that = this;
-            this.editAccount= {}
             this.editAccount.passWord = '********'
-            this.editAccount.roleName = scope.row.roleName
             this.editAccount.userName = scope.row.userName
             this.editAccount.email = scope.row.email
             this.editAccount.phoneNo = scope.row.phoneNo
@@ -822,6 +820,11 @@ export default {
                     return obj
                   })
                   that.options = roles
+                  that.options.map((item)=>{
+                    if(item.value===that.recodeRoleName){
+                      that.recodeRoleId = item.id
+                    }
+                  })
               })
               return;
         }
@@ -1040,17 +1043,18 @@ export default {
             } else {
               that.checkLogin(res)
               var code = JSON.parse(res.text).resultCode
+              var message = JSON.parse(res.text).message
               if (code === 1) {
                 that.$message({
                   type: 'success',
-                  message: '恭喜你，修改成功'
+                  message: message
                 })
                 that.loadData()
                 // that.platTableData.splice(scope.$index, 1, obj)
               } else {
                 that.$message({
                   type: 'error',
-                  message: '对不起，修改失败'
+                  message:message
                 })
               that.platTableData.splice(scope.$index,1,initObj) //SHIBAI 失败
               }
@@ -1079,17 +1083,18 @@ export default {
             } else {
               that.checkLogin(res)
               var code = JSON.parse(res.text).resultCode
+              var message = JSON.parse(res.text).message
               if (code === 1) {
                 that.$message({
                   type: 'success',
-                  message: '恭喜你，修改成功'
+                  message: message
                 })
                 // that.joinTableData.splice(scope.$index, 1, obj)
                 that.loadData()
               } else {
                 that.$message({
                   type: 'error',
-                  message: '对不起，修改失败'
+                  message: message
                 })
                 // that.joinTableData.splice(scope.$index, 1, scope.row)
               }
