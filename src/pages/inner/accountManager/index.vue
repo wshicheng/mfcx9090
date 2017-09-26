@@ -292,6 +292,7 @@ export default {
       recodeCityName:'',
       recodeCityId:'',
       recodeRoleName:'',
+      recodeRoleId:'',
       activeName: '平台',
       totalItems: 1,
       pageShow: false,
@@ -833,7 +834,10 @@ export default {
       this.dialogVisible = false
       var that = this
       var newAccountInfo = {}
-      newAccountInfo.id = this.editAccount.id
+     
+      var index = this.editAccount.index
+      if (this.activeName === '平台') {
+         newAccountInfo.id = this.editAccount.id
       newAccountInfo.userName = this.editAccount.userName
       newAccountInfo.roleName = this.editAccount.roleName
       newAccountInfo.passWord = this.editAccount.passWord
@@ -844,8 +848,6 @@ export default {
       newAccountInfo.cityName = this.editAccount.cityName
       newAccountInfo.roleId = this.editAccount.roleId
       newAccountInfo.name = this.editAccount.name
-      var index = this.editAccount.index
-      if (this.activeName === '平台') {
         var AccountInfo = newAccountInfo
         delete AccountInfo.role
         updateAdmin(AccountInfo, function(error, res) {
@@ -870,6 +872,17 @@ export default {
           }
         })
       } else {
+        var that = this;
+        newAccountInfo.userName = this.editAccount.userName
+        newAccountInfo.passWord = this.editAccount.passWord
+        newAccountInfo.cityId = this.recodeCityId
+        newAccountInfo.cityName = this.radio2
+        newAccountInfo.roleId = this.recodeRoleId
+        newAccountInfo.name = this.editAccount.name
+        newAccountInfo.phoneNo = this.editAccount.phoneNo
+        newAccountInfo.email = this.editAccount.email
+        newAccountInfo.description = this.editAccount.description
+        newAccountInfo.id = this.editAccount.id
         updateAccountByAdmin(newAccountInfo, function(error, res) {
           if (error) {
             console.log(error)
@@ -882,8 +895,7 @@ export default {
                 message: '恭喜您，修改成功！'
               })
               console.log(that.editAccount)
-              return;
-              that.joinTableData.splice(index, 1, that.editAccount)
+              that.joinTableData.splice(index, 1, Object.assign({},newAccountInfo,{status:that.editAccount.status}))
             } else {
               that.$message({
                 type: 'error',
@@ -1263,11 +1275,11 @@ export default {
     this.loadCity()
   },
   watch: {
-    'editAccount.roleName':{
+    'recodeRoleName':{
       handler:function(val,oldVal){
-        this.options4.map((item)=>{
+        this.options.map((item)=>{
           if(item.value===val){
-            this.editAccount.roleId = item.id
+            this.recodeRoleId = item.id
           }
         })
       },
