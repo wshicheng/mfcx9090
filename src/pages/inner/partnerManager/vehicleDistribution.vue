@@ -57,8 +57,8 @@
             </el-table-column>
           </el-table>
         </div>
-        <el-pagination v-show="pageShow" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" :total="totalItems">
-        </el-pagination>
+        <!-- <el-pagination v-show="pageShow" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" :total="totalItems">
+        </el-pagination> -->
       </div>
 
       <div id='right_hasbeen_distribution'>
@@ -202,6 +202,7 @@ div.allot {
   border: 1px solid #e7ecf1;
   border-right: none;
   background: #fff;
+  overflow-y: scroll;
   box-sizing: border-box;
   height: 100%;
 }
@@ -468,7 +469,7 @@ export default {
             this.cityCode = res.cityId
             if (this.cityCode.length > 0) {
               this.loading2 = true
-              request.post(host + 'beepartner/admin/Bike/findBike')
+              request.post(host + 'beepartner/admin/cityPartner/getNotAllotBikes')
                 .withCredentials()
                 .set({
                   'content-type': 'application/x-www-form-urlencoded'
@@ -634,7 +635,7 @@ export default {
         this.signForQuery = false
         this.loading2 = true
         request
-          .post(host + 'beepartner/admin/Bike/findBike')
+          .post(host + 'beepartner/admin/cityPartner/getNotAllotBikes')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -658,11 +659,11 @@ export default {
               var data = JSON.parse(res.text).data
               this.tableData_distribution = data
               var totalPage = Number(JSON.parse(res.text).totalPage)
-              if (totalPage > 1) {
-                this.pageShow = true
-              } else {
-                this.pageShow = false
-              }
+              // if (totalPage > 1) {
+              //   this.pageShow = true
+              // } else {
+              //   this.pageShow = false
+              // }
               this.totalItems = Number(JSON.parse(res.text).totalItems)
             }
           })
@@ -688,11 +689,11 @@ export default {
               var data = JSON.parse(res.text).data
               this.tableData_distribution = data
               var totalPage = Number(JSON.parse(res.text).totalPage)
-              if (totalPage > 1) {
-                this.pageShow = true
-              } else {
-                this.pageShow = false
-              }
+              // if (totalPage > 1) {
+              //   this.pageShow = true
+              // } else {
+              //   this.pageShow = false
+              // }
               this.totalItems = Number(JSON.parse(res.text).totalItems)
             }
           })
@@ -731,11 +732,11 @@ export default {
               // })
               this.tableData_distribution = data
               var totalPage = Number(JSON.parse(res.text).totalPage)
-              if (totalPage > 1) {
-                this.pageShow = true
-              } else {
-                this.pageShow = false
-              }
+              // if (totalPage > 1) {
+              //   this.pageShow = true
+              // } else {
+              //   this.pageShow = false
+              // }
               this.totalItems = Number(JSON.parse(res.text).totalItems)
             }
           })
