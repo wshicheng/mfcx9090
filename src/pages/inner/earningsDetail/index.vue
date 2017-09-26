@@ -422,7 +422,9 @@ export default {
         })
         .send({
           'type': this.$route.query.type,
-          'cityId': $('.citys span.active').attr('myId')
+          'cityId': $('.citys span.active').attr('myId'),
+          'startTime': this.timeLine === ''?'':moment(this.timeLine[0]).format('YYYY-MM-DD HH:mm:ss'),
+          'endTime': this.timeLine === ''?'':moment(this.timeLine[1]).format('YYYY-MM-DD HH:mm:ss')
         })
         .end((err, res) => {
           if (err) {

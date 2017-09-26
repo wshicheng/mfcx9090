@@ -121,7 +121,8 @@ export default {
         allianceArea: '',
         applyPerson: '',
         settleMoney: '',
-        settleRemark: ''
+        settleRemark: '',
+        id: ''
       },
       formLabelWidth: '120px',
       dialogVisible: false,
@@ -324,7 +325,7 @@ export default {
      
     },
     openEdit(row) {
-      // console.log(row.status)
+      console.log(row.id)
       // console.log($('.citys span.active')[1].getAttribute('myStatus'))
       if (row.status!= 2) {
         return
@@ -336,6 +337,7 @@ export default {
         this.editAccount.cityName = row.cityName
         this.editAccount.applyUserName = row.applyUserName
         this.editAccount.applyMoney = row.applyMoney
+        this.editAccount.id = row.id
         // this.editAccount.withdrawalCode = row.allianceId
       }
 
@@ -350,10 +352,10 @@ export default {
         })
         .send({
           'applyTimeStr': row.applyTimeStr,
-          'applyMoney': row.applyMoney,
+          'applyMoney': Number(row.applyMoney.split('元')[0]),
           'description': this.editAccount.description,
           'cityPartnerId': row.cityPartnerId,
-          'id': row.id
+          'id': this.editAccount.id
         })
         .end((error, res) => {
           if (error) {
