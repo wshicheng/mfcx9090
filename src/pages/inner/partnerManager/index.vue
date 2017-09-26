@@ -1090,7 +1090,6 @@ export default {
       this.$router.push('/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId)
     },
     openEdit(row,index) {
-      console.log(row)
       this.dialogVisible = true
       this.imageUrl = row.businessLicenseIconUrl
       this.userIDID = row.id
@@ -1098,9 +1097,6 @@ export default {
       //this.editAccount = Object.assign({},row,{provinceName:''},{areaName:''})
       //this.editAccount.cityName = ' '
       this.filterProvinceMethod()
-      console.log(row.cId, row.pId)
-      console.log('城市：', this.editAccount.cId)
-      console.log('地区：', this.editAccount.pId)
       var id1 = this.editAccount.cId
       var id2 = this.editAccount.pId
       // 打开弹窗获取城市与地区
@@ -1164,7 +1160,6 @@ export default {
       }, 200)
     },
     editConfim() {
-      
       var that = this
       //this.fullscreenLoading = true
       var obj  = Object.assign({},this.editAccount,{cardType:this.editAccount.cardType==='居民身份证'?0:1},{wType:this.editAccount.wType === '自然月'?0:1})
@@ -1240,12 +1235,12 @@ export default {
                        that.loadData()
                        that.currentPage3 = 1;
                     this.checkLogin(res)
-
+                    that.$message.success('修改成功')
               }else{
                   that.$message.error('修改失败')
                    that.dialogVisible = false
               }
-              console.log("code:" + code)
+           
                
             }
           })
