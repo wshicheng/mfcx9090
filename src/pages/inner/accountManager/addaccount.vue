@@ -310,12 +310,6 @@ export default {
       var that = this
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$confirm('确认添加吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '信息有误',
-            type: 'warning'
-          }
-          ).then(() => {
             var obj = {}
             this.options4.map((item) => {
               if (item.value === this.ruleForm.roleName) {
@@ -356,12 +350,6 @@ export default {
                   }
                 }
               })
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消添加'
-            })
-          })
         } else {
           return false
         }
