@@ -533,7 +533,7 @@ export default {
               } else {
                 this.$message({
                   type: 'error',
-                  message: '删除失败!'
+                  message: JSON.parse(res.text).message
                 })
               }
             }
