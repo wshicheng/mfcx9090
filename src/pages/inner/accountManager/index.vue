@@ -54,7 +54,7 @@
                       <el-input type='password'  @change="handlechange" v-model="editAccount.passWord" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="所属角色" prop="roleName">
-                      <el-select v-model="editAccount.roleName" placeholder="选择角色类型">
+                      <el-select v-model="editAccount.roleName" placeholder="选择角色类型" @change="platChangeRole">
                         <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                       </el-select>
@@ -343,17 +343,22 @@ export default {
     }
   },
   methods: {
+    platChangeRole(val){
+     this.options4.map((item)=>{
+       if(item.value==val){
+          this.recodeRoleName = item.value
+          this.recodeRoleId = item.id
+       }
+     })
+    },
     recode(val){
      
         var that = this;
         this.cityList.map((item)=>{
-          console.log(item)
           if(item.cityName=== val){
             this.recodeCityId = item.cityId
           }
         })
-        console.log(this.editAccount)
-       
         setTimeout(() => {
                     request.post(host + 'beepartner/admin/User/findRole')
                     .withCredentials()
@@ -388,7 +393,6 @@ export default {
     ...mapActions(['setName']),
     handlechange(){},
     remoteMethodPartner() {
-      console.log('2')
     },
     handleSizeChange(val) {
     },
@@ -760,7 +764,6 @@ export default {
       })
     },
     openEdit(scope) {
-      console.log(scope.row)
       if(this.activeName==='平台'){
         this.dialogVisible = true
         this.editAccount.roleName = scope.row.roleName
@@ -776,14 +779,18 @@ export default {
         this.editAccount.initUserId = scope.row.userId
         this.editAccount.roleId = scope.row.roleId
         this.editAccount.passWord = '********'
+        this.recodeRoleName = scope.row.roleName
+        this.options4.map((item)=>{
+          if(item.value==this.recodeRoleName){
+            this.recodeRoleId = item.id
+          }
+        })
       }else{
+            var that = this;
             this.dialogVisible = true
             this.recodeRoleName = scope.row.roleName;
             this.recodeCityId = scope.row.cityId
-            var that = this;
-            this.editAccount= {}
             this.editAccount.passWord = '********'
-            this.editAccount.roleName = scope.row.roleName
             this.editAccount.userName = scope.row.userName
             this.editAccount.email = scope.row.email
             this.editAccount.phoneNo = scope.row.phoneNo
@@ -799,7 +806,6 @@ export default {
             this.radio2 = this.recodeCityName
              setTimeout(function(){
               $("input.el-radio__original").each(function(index,ele){
-                console.log(ele.value)
                 if(ele.value==that.editAccount.alliance){
                   ele.click()
                 }
@@ -822,6 +828,11 @@ export default {
                     return obj
                   })
                   that.options = roles
+                  that.options.map((item)=>{
+                    if(item.value===that.recodeRoleName){
+                      that.recodeRoleId = item.id
+                    }
+                  })
               })
               return;
         }
@@ -838,16 +849,16 @@ export default {
       var index = this.editAccount.index
       if (this.activeName === '平台') {
          newAccountInfo.id = this.editAccount.id
-      newAccountInfo.userName = this.editAccount.userName
-      newAccountInfo.roleName = this.editAccount.roleName
-      newAccountInfo.passWord = this.editAccount.passWord
-      newAccountInfo.description = this.editAccount.description
-      newAccountInfo.email = this.editAccount.email
-      newAccountInfo.phoneNo = this.editAccount.phoneNo
-      newAccountInfo.cityId = this.recodeCityId
-      newAccountInfo.cityName = this.editAccount.cityName
-      newAccountInfo.roleId = this.editAccount.roleId
-      newAccountInfo.name = this.editAccount.name
+        newAccountInfo.userName = this.editAccount.userName
+        newAccountInfo.roleName = this.recodeRoleName
+        newAccountInfo.passWord = this.editAccount.passWord
+        newAccountInfo.description = this.editAccount.description
+        newAccountInfo.email = this.editAccount.email
+        newAccountInfo.phoneNo = this.editAccount.phoneNo
+        newAccountInfo.cityId = this.recodeCityId
+        newAccountInfo.cityName = this.editAccount.cityName
+        newAccountInfo.roleId = this.recodeRoleId
+        newAccountInfo.name = this.editAccount.name
         var AccountInfo = newAccountInfo
         delete AccountInfo.role
         updateAdmin(AccountInfo, function(error, res) {
@@ -883,6 +894,7 @@ export default {
         newAccountInfo.email = this.editAccount.email
         newAccountInfo.description = this.editAccount.description
         newAccountInfo.id = this.editAccount.id
+        newAccountInfo.roleName = this.recodeRoleName
         updateAccountByAdmin(newAccountInfo, function(error, res) {
           if (error) {
             console.log(error)
@@ -894,7 +906,6 @@ export default {
                 type: 'success',
                 message: '恭喜您，修改成功！'
               })
-              console.log(that.editAccount)
               that.joinTableData.splice(index, 1, Object.assign({},newAccountInfo,{status:that.editAccount.status}))
             } else {
               that.$message({
@@ -1015,7 +1026,6 @@ export default {
       }
     },
     changeState(scope) {
-      console.log(this.activeName, scope.row.status)
       if (this.activeName === '平台') {
         var that = this
         var initObj = Object.assign({}, scope.row, { status: scope.row.status })
@@ -1040,17 +1050,18 @@ export default {
             } else {
               that.checkLogin(res)
               var code = JSON.parse(res.text).resultCode
+              var message = JSON.parse(res.text).message
               if (code === 1) {
                 that.$message({
                   type: 'success',
-                  message: '恭喜你，修改成功'
+                  message: message
                 })
                 that.loadData()
                 // that.platTableData.splice(scope.$index, 1, obj)
               } else {
                 that.$message({
                   type: 'error',
-                  message: '对不起，修改失败'
+                  message:message
                 })
               that.platTableData.splice(scope.$index,1,initObj) //SHIBAI 失败
               }
@@ -1079,17 +1090,18 @@ export default {
             } else {
               that.checkLogin(res)
               var code = JSON.parse(res.text).resultCode
+              var message = JSON.parse(res.text).message
               if (code === 1) {
                 that.$message({
                   type: 'success',
-                  message: '恭喜你，修改成功'
+                  message: message
                 })
                 // that.joinTableData.splice(scope.$index, 1, obj)
                 that.loadData()
               } else {
                 that.$message({
                   type: 'error',
-                  message: '对不起，修改失败'
+                  message: message
                 })
                 // that.joinTableData.splice(scope.$index, 1, scope.row)
               }

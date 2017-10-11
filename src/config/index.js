@@ -4,7 +4,12 @@
 // export const host = 'http://192.168.3.16:8080/'
 // export const host = 'http://192.168.0.106:8080/'
 // export const host = 'http://192.168.0.128:8080/'
+<<<<<<< HEAD
+// export const host = 'http://192.168.0.120:8081/'
+//export const host = 'http://192.168.0.120:8081/'
+=======
 // export const host = 'http://192.168.0.103:8080/'
+>>>>>>> 9470cdbbaba6e37d5856c028b8eace14645a3df7
 
 /**
  * 海波测试端口
@@ -23,8 +28,13 @@
  * 公网测试端口
  */
 // export const host  = 'http://47.92.136.117:7099/'
+<<<<<<< HEAD
+export const host = 'http://47.93.48.250:8090/'
+// export const host = 'http://47.93.48.250:8090/'
+=======
 // export const host = 'http://47.93.48.250:8090/'
 export const host = 'http://47.93.48.250:8090/'
+>>>>>>> 9470cdbbaba6e37d5856c028b8eace14645a3df7
 // export const host = 'http://192.168.3.233:8080/'
 
 import axios from 'axios'
