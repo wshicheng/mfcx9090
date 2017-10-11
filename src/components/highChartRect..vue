@@ -300,7 +300,7 @@ div#container g.highcharts-legend-item {
 
 .my_noDate img {
   display: inline-block;
-  width: 500px;
+  width: 300px;
   height: 200px;
 }
 

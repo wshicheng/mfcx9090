@@ -433,7 +433,7 @@ export default {
             this.checkLogin(res)
 						this.name = JSON.parse(res.text).data.name
 						this.userName = JSON.parse(res.text).data.userName
-						this.phone = JSON.parse(res.text).data.phoneNo
+						this.phone = JSON.parse(res.text).data.phoneNo === null?'':JSON.parse(res.text).data.phoneNo
 						this.imageUrl = JSON.parse(res.text).data.adminUserIconUrl
 						window.sessionStorage.setItem('headImg',JSON.parse(res.text).data.adminUserIconUrl)
 						/**
