@@ -488,7 +488,8 @@ export default {
                     // var newData = data.map((item)=>{
                     //   return Object.assign({},item,{onlineTime:moment(item.onlineTime).format('YYYY-MM-DD')})
                     // })
-                    this.tableData_distribution = data
+                    console.log(data)
+                    this.tableData_distribution = data||[]
 
                     var totalPage = Number(JSON.parse(res.text).totalPage)
                     if (totalPage > 1) {

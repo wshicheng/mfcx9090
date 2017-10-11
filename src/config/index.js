@@ -5,14 +5,20 @@
 // export const host = 'http://192.168.0.106:8080/'
 // export const host = 'http://192.168.0.128:8080/'
 // export const host = 'http://192.168.0.120:8081/'
+<<<<<<< HEAD
 //export const host = 'http://192.168.0.120:8081/'
+=======
+// export const host = 'http://192.168.0.120:8081/'
+// export const host = 'http://192.168.0.103:8080/'
+// export const host = 'http://192.168.0.120:8080/'
+>>>>>>> 8241260c2825b044fdb8ab3f19e570738d681631
 
 /**
  * 海波测试端口
  */
 // export const host = 'http://192.168.3.78:7099/'
 // export const host = 'http://192.168.3.77:8080/'
-// e`xport const host = 'http://192.168.3.85:8080/'
+// export const host = 'http://192.168.3.85:8080/'
 // export const host = 'http://192.168.0.114:8080/'
 
 /**
@@ -24,7 +30,10 @@
  * 公网测试端口
  */
 // export const host  = 'http://47.92.136.117:7099/'
-export const host = 'http://47.93.48.250:8090/'
+//export const host = 'http://47.93.48.250:8090/'
+  export const host = 'http://47.93.48.250:8090/'
+// export const host = 'http://47.93.48.250:8090/'
+
 // export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://192.168.3.233:8080/'
 
@@ -37,6 +46,7 @@ import axios from 'axios'
 // export const host  = 'http://192.168.1.19:7099/'
 
 //  export const host = 'http://192.168.0.120:8081/'
+//export const host = 'http://10.31.147.119:8090/'
 export var instance = axios.create({
     headers: { 'content-type': 'application/x-www-form-urlencoded' }
 });
