@@ -211,7 +211,7 @@ export default {
           this.loading2 = false
         } else {
           this.loading2 = false
-          this.bikeInfo = Object.assign({}, JSON.parse(res.text).bike, { onlineTime: moment(JSON.parse(res.text).bike.onlineTime).format('YYYY-MM-DD') })
+          this.bikeInfo = Object.assign({}, JSON.parse(res.text).bike, { onlineTime: JSON.parse(res.text).bike.onlineTime === null ? '':moment(JSON.parse(res.text).bike.onlineTime).format('YYYY-MM-DD') })
 
           this.tableData = JSON.parse(res.text).data
           this.totalPage = JSON.parse(res.text).totalPage

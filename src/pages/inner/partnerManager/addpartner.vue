@@ -67,6 +67,9 @@
               </el-option>
             </el-select>
         </el-form-item>
+        <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
+          <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
+        </el-form-item>	
         <el-form-item label="加盟商分成比例" prop="percent">
           <el-input max="100" min="0" v-model="ruleForm.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
         </el-form-item>	
@@ -424,6 +427,7 @@ export default {
       checked: false,
       add: false,
       imageUrl: '',
+      areaError: false
     }
   },
   updated () {
@@ -475,6 +479,27 @@ export default {
             this.ruleForm.areaId = item.id
             // 这是坑！！！！
             this.ruleForm.cityId = item.areaId
+            request
+              .post(host + 'beepartner/admin/cityPartner/checkBeforeSelectCity')
+              .withCredentials()
+              .set({
+                'content-type': 'application/x-www-form-urlencoded'
+              })
+              .send({
+                cityId: this.ruleForm.cityId
+              })
+              .end((error,res)=>{
+                if(error){
+                  console.log(error)
+                }else{
+                  this.checkLogin(res)
+                  if (JSON.parse(res.text).success === false) {
+                    this.areaError = true
+                  } else {
+                    this.areaError = false
+                  }
+                }
+              }) 
           }
         })
       }

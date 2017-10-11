@@ -31,7 +31,7 @@ export default {
     mounted () {
         var name = sessionStorage.getItem('name')
         var userName = sessionStorage.getItem('userName')
-        if(name.length>0){
+        if(name != 'null'){
             this.userName = name
         }else{
              this.userName = userName
