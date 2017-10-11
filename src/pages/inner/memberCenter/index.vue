@@ -33,8 +33,9 @@
 						<i v-else class="iconfont err">&#xe600;</i>
 					</span>
 					<span>手机验证</span>
-					<span>{{this.telBinded === false?'未绑定':'已绑定'}}</span>
-					<span>{{this.telBinded === false?'您的手机号码' + this.phone === null?'手机号码':this.phone + '尚未绑定，请尽快绑定手机号':'手机号码' + this.phone + '已验证'}}</span>
+					<!-- <span>{{phone === null}}</span> -->
+					<span>{{telBinded === false?'未绑定':'已绑定'}}</span>
+					<span>{{telBinded === false?'您的手机号码'+ phone + '尚未绑定，请尽快绑定手机号':'你验证的手机号码:' + phone + "若已丢失或停用，请立即更换"}}</span>
 
 					<span>
 						<!-- <button disabled='isBinded' @click='$router.push({path:"/index/memberCenter/bindTel"})'>绑定手机号</button> -->
