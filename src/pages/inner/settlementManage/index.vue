@@ -30,6 +30,9 @@
                 element-loading-text="拼命加载中"
                 style="width: 100% font-size:13px; color: #6c6c6c;">
             <el-table-column prop="applyTimeStr" label="结算周期" min-width="250">
+               <template scope="scope">
+                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId}}"> {{scope.row.applyTimeStr}}</router-link>
+              </template>
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="200">
             </el-table-column>

@@ -207,7 +207,8 @@ import {mapGetters} from 'vuex'
         'content-type': 'application/x-www-form-urlencoded'
       })
       .send({
-        applyTimeStr:this.month
+        applyTimeStr:this.month,
+        cityPartnerId:this.$route.query.id
       })
       .end((err, res) => {
         if (err) {

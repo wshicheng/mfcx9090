@@ -134,7 +134,7 @@
                 </el-form-item>
                 <h1 class="form_table_h1">加盟与结算信息</h1>
                 <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width: 700px;">
-                   <el-select @change="handleEditProvince"
+                   <el-select disabled @change="handleEditProvince"
                       v-model="editAccount.provinceName"
                       loading-text
                       placeholder="请选择省"
@@ -145,7 +145,7 @@
                         :value="(item.name)">
                       </el-option>
                     </el-select>
-                    <el-select  @change="handleEditCity"
+                    <el-select disabled  @change="handleEditCity"
                       v-model="editAccount.cityName"
                       placeholder="请选择城市"
                       :loading="proloading">
@@ -156,6 +156,7 @@
                       </el-option>
                     </el-select>
                     <el-select
+                    disabled
                       @change="handleEditArea"
                       v-model="editAccount.areaName"
                       placeholder="请选择区/县"
