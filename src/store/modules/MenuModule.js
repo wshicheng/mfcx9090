@@ -42,7 +42,7 @@ function generateMenuItems(state,authList){
     }
   }
   var res = Object.assign({},state.staticRoute[0],{children:newArr})
-  state.items = [res,state.staticRoute[1],state.staticRoute[2],state.staticRoute[3]]
+  state.items = [res,state.staticRoute[1],state.staticRoute[2],state.staticRoute[3],state.staticRoute[4]]
   return
 }
 export default {

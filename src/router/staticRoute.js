@@ -55,6 +55,7 @@ import operationLog from '../pages/inner/logManager/operationLog.vue'
 
 // [ ====== settlementManager ====== ]
 import settlementManager from '../pages/inner/settlementManage/index.vue'
+import settlementRecordDetail from '../pages/inner/settlementManage/settlementRecordDetail.vue'
 
 
 export default [
@@ -249,5 +250,11 @@ export default [
     path: '/index/partnerDetail/:id',
     name: '加盟商明细',
     component: partnerDetail
+  },
+  {
+    path: '/index/settlementRecord/detail',
+    name: '结算记录明细',
+    auth: 60,
+    component: settlementRecordDetail
   }
 ]
