@@ -624,7 +624,7 @@ export default {
     },
     checkLogin(res) {
       if (JSON.parse(res.text).message === '用户登录超时') {
-        this.$router.push('/login')
+        //this.$router.push('/login')
       }
     },
     inputBlurFun() {
@@ -772,7 +772,7 @@ export default {
                   type: 'success'
                 })
               } else {
-                this.$message.error('车辆分配失败，请重试！');
+                this.$message.error(JSON.parse(res.text).message);
               }
               this.countAllotCars = []
               this.loadDate()

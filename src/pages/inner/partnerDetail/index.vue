@@ -306,7 +306,7 @@ export default {
     },
     checkLogin (res) {
       if (JSON.parse(res.text).message === '用户登录超时') {
-        this.$router.push('/login')
+        //this.$router.push('/login')
       }
     }
   },
