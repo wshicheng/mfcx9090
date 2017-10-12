@@ -1027,7 +1027,6 @@ export default {
       if (this.activeName === '平台') {
         var that = this
         var initObj = Object.assign({}, scope.row, { status: scope.row.status })
-
         var obj = Object.assign({}, scope.row, { status: !scope.row.status })
        // this.platTableData.splice(scope.$index,1,initObj) SHIBAI 失败
        this.platTableData.splice(scope.$index,1,obj) // 成功
@@ -1070,13 +1069,16 @@ export default {
         var that = this
         this.accountOrUsername = ''
         this.phoneNo = ''
-        var initObj2 = Object.assign({}, scope.row, { status: scope.row.status })
+        var init =  Object.assign({}, scope.row, { status: scope.row.status }) //成功
+        var initObj2 = Object.assign({}, scope.row, { status: !scope.row.status }) //失败
         // var obj = Object.assign({}, scope.row, { status: !scope.row.status })
         // var obj2 = Object.assign({}, scope.row, { status: scope.row.status ?  0 : 1 })
+         
+         
         modifyAccountStateByAdmin(
           {
             id: scope.row.id,
-            status: scope.row.status ? 1 : 0
+            status: scope.row.status ? 0 : 1
           }, function(error, res) {
             if (error) {
               console.log(error)
@@ -1094,7 +1096,7 @@ export default {
                   type: 'success',
                   message: message
                 })
-                // that.joinTableData.splice(scope.$index, 1, obj)
+                that.joinTableData.splice(scope.$index, 1, init) //成功
                 that.loadData()
               } else {
                 that.$message({

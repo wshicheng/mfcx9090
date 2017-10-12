@@ -45,6 +45,7 @@
       <div class="line line_status " v-show="!isSettled">
         <div v-show="state===3" class="statu rect1"><i>已结算</i></div>
         <div v-show="state===2" class="statu rect2"><i>待结算</i></div>
+         <div v-show="state===1" class="statu rect3"><i>待确认</i></div>
       </div>
     </div>
     </div>
@@ -221,7 +222,7 @@ import {mapGetters} from 'vuex'
           this.state = JSON.parse(res.text).withDrawRecord.status
           this.actProfit = JSON.parse(res.text).withDrawRecord.actProfit
           if(this.state===1){
-            this.isSettled = true
+            this.isSettled = false
           }else if(this.state===2||this.actProfit===0){
             this.isSettled = false
           }else{
@@ -383,6 +384,9 @@ import {mapGetters} from 'vuex'
         }
 
         div.rect2{
+          background:#ccc;
+        }
+         div.rect3{
           background:orange;
         }
       }
