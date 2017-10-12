@@ -13,10 +13,10 @@
         结算周期：<span>{{month}}</span>
       </div>
       <div class="line">
-        本期总收益：<span>{{totalProfit}}</span>元
+        本期总收益：<span>{{new Number(totalProfit).thousandFormat()}}</span>元
       </div>
       <div class="line">
-        本期结算金额：<span>{{actProfit}}</span>元
+        本期结算金额：<span>{{new Number(actProfit).thousandFormat()}}</span>元
       </div>
       <div class="line ">
         <button v-show="isSettled" class="open" @click="openDialog">确定结算</button>
@@ -42,10 +42,10 @@
         </el-dialog>
        
       </div>
-      <div class="line line_status " v-show="!isSettled">
+      <div class="line line_status " >
         <div v-show="state===3" class="statu rect1"><i>已结算</i></div>
         <div v-show="state===2" class="statu rect2"><i>待结算</i></div>
-         <div v-show="state===1" class="statu rect3"><i>待确认</i></div>
+        <div v-show="state===1" class="statu rect3"><i>待确认</i></div>
       </div>
     </div>
     </div>
@@ -58,7 +58,7 @@
               <div class="grid_title">经营收入</div>
               <div class="grid">
                 <span title="日期">日期</span>
-                <span title="用户消费金额">用户消费金额</span>
+                <span title="用户消费金额" >用户消费金额</span>
                 <span title="扣款金额">扣款金额</span>
               </div>
             </th>
@@ -108,38 +108,38 @@
               <!-- <div class="grid_title">经营收入</div> -->
               <div class="grid">
                 <span>{{list.statisticId}}</span>
-                <span>{{list.actualMoneyStr}}</span>
-                <span>{{list.decultMoneyStr}}</span>
+                <span>{{new Number(list.actualMoneyStr).thousandFormat()}}</span>
+                <span>{{new Number(list.decultMoneyStr).thousandFormat()}}</span>
               </div>
             </td>
             <td class="out">
               <!-- <div class="grid_title">经营支出</div> -->
               <div class="grid">
-                 <div class="item money">{{list.rebackMoneyStr}}</div>
+                 <div class="item money">{{new Number(list.rebackMoneyStr).thousandFormat()}}</div>
                  <div class="item third">
                    <!-- <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div> -->
                    <div class="list">
-                     <div class="cell">{{list.depositTimes}}</div>
-                     <div class="cell">{{list.deposit}}</div>
-                     <div class="cell">{{list.thirdPartyFeeRate}}</div>
-                     <div class="cell">{{list.thirdFeePayAmt}}</div>
+                     <div class="cell">{{new Number(list.depositTimes).thousandFormat()}}</div>
+                     <div class="cell">{{new Number(list.deposit).thousandFormat()}}</div>
+                     <div class="cell">{{new Number(list.thirdPartyFeeRate).thousandFormat()}}</div>
+                     <div class="cell">{{new Number(list.thirdFeePayAmt).thousandFormat()}}</div>
                    </div>
                  </div>
                  <div class="item sevice">
                       <!-- <div class="list subtitle">用户消费支付第三方支付平台服务</div> -->
                       <div class="list">
-                        <div class="cell">{{list.actualMoneyStr}}</div>
-                        <div class="cell">{{list.thirdPartyFeeRate}}</div>
-                        <div class="cell">{{list.payAmtStr}}</div>
+                        <div class="cell">{{new Number(list.actualMoneyStr).thousandFormat()}}</div>
+                        <div class="cell">{{new Number(list.thirdPartyFeeRate).thousandFormat()}}</div>
+                        <div class="cell">{{new Number(list.payAmtStr).thousandFormat()}}</div>
                       </div>
                  </div>
                  <div class="item auth">
 
                    <!-- <div class="list subtitle">授权费</div> -->
                     <div class="list">
-                      <div class="cell">{{list.benifitAmt}}</div>
-                      <div class="cell">{{list.licenseFeeRate}}</div>
-                      <div class="cell">{{list.linceFeePayAmt}}</div>
+                      <div class="cell">{{new Number(list.benifitAmt).thousandFormat()}}</div>
+                      <div class="cell">{{new Number(list.licenseFeeRate).thousandFormat()}}</div>
+                      <div class="cell">{{new Number(list.linceFeePayAmt).thousandFormat()}}</div>
                     </div>
                  </div>
               </div>
@@ -147,7 +147,7 @@
             <td class="count">
               <!-- <div class="grid_title">最终收益</div> -->
               <div class="grid">
-                {{list.actProfitStr}}
+                {{new Number(list.actProfitStr).thousandFormat()}}
               </div>
             </td>
           </tr>
@@ -155,7 +155,7 @@
         <tfoot>
           <tr class="count">
             <th class="totalText" colspan = "2">总计：</th>
-            <th class="totalNum">{{actProfitStr}}</th>
+            <th class="totalNum">{{new Number(actProfitStr).thousandFormat()}}</th>
           </tr>
         </tfoot>
       </table>
@@ -178,6 +178,7 @@ import request from 'superagent'
 import moment from 'moment'
 import { host } from '../../../config/index'
 import {mapGetters} from 'vuex'
+import {thousandFormat} from '../../../util/util.js'
   export default {
     computed:{
       ...mapGetters(['settelListId'])
@@ -192,6 +193,7 @@ import {mapGetters} from 'vuex'
         status:false,
         isSettled:false,
         dialogVisible:false,
+        cityPartnerId:'',
         isHide:false,
         month:'',
         items:[
@@ -201,6 +203,7 @@ import {mapGetters} from 'vuex'
      mounted(){
        document.title="结算单"
         this.month = this.$route.query.month
+        this.cityPartnerId = this.$route.query.id
        request
       .post(host + 'beepartner/franchisee/withDraw/getWithDrawRecordDetail')
       .withCredentials()
@@ -209,7 +212,7 @@ import {mapGetters} from 'vuex'
       })
       .send({
         applyTimeStr:this.month,
-        cityPartnerId:this.$route.query.id
+        cityPartnerId:this.cityPartnerId
       })
       .end((err, res) => {
         if (err) {
@@ -234,7 +237,6 @@ import {mapGetters} from 'vuex'
           if (code === 1) {
             var newArr = JSON.parse(res.text).data
             this.items = newArr
-            console.log(newArr)
             this.totalProfit =  JSON.parse(res.text).withDrawRecord.totalProfit
             this.actProfit = JSON.parse(res.text).withDrawRecord.actProfit
             this.actProfitStr = JSON.parse(res.text).withDrawRecord.totalProfit
@@ -384,10 +386,10 @@ import {mapGetters} from 'vuex'
         }
 
         div.rect2{
-          background:#ccc;
+          background:orange;
         }
          div.rect3{
-          background:orange;
+          background:red;
         }
       }
     }
@@ -412,11 +414,11 @@ import {mapGetters} from 'vuex'
                   line-height: 40px;
                   text-align: center;
                   float:left;
-                  padding:0 10px;
+                 
                   box-sizing: border-box;
                   border-right:$tableBorderColor;
                   overflow: hidden;
-                  text-overflow: ellipsis;
+                 
                   white-space: nowrap;
                   &:nth-last-child(1){
                     border-right:none;
