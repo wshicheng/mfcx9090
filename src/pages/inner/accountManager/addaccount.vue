@@ -157,6 +157,7 @@ span.tips {
       
 <script>
 import request from 'superagent'
+import $ from 'jquery'
 import { checkUserName, checkMobile, isEmail } from '../../../../utils/index.js'
 import { host } from '../../../config/index'
 export default {

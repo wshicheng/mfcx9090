@@ -21,7 +21,6 @@
         <el-form-item label="加盟日期" prop="joinTime">
             <el-date-picker
               v-model="ruleForm.joinTime"
-              type="date"
               placeholder="选择日期">
             </el-date-picker>           
         </el-form-item>
@@ -345,7 +344,7 @@ export default {
         provinceName:'',
         cityName:'',
         areaName:'',
-        joinTime: '',
+        joinTime:new Date(Date.now()),
         companyName: '',
         businessLicense: '',
         address: '',
@@ -438,7 +437,6 @@ export default {
     }
   },
   mounted:function(){
-    console.log(this.$store)
     document.title = '添加加盟商'
     this.filterProvinceMethod()
   },
@@ -602,7 +600,7 @@ export default {
            this.loading8 = true
           
           var obj = {}
-          obj = Object.assign({},this.ruleForm,{cardType:this.ruleForm.cardType==='居民身份证'?0:1},{percent:parseFloat(this.ruleForm.percent)},{licenseFeeRate:this.ruleForm.licenseFeeRate},{wType:this.ruleForm.wType ==='自然月'?0:1})
+          obj = Object.assign({},this.ruleForm,{cardType:this.ruleForm.cardType==='居民身份证'?0:1},{percent:parseFloat(this.ruleForm.percent)},{licenseFeeRate:this.ruleForm.licenseFeeRate},{wType:this.ruleForm.wType ==='自然月'?0:1},{joinTime: moment(this.ruleForm.joinTime).format('YYYY-MM-DD')})
           request
             .post(host + 'beepartner/admin/cityPartner/addCityPartner')
             .withCredentials()
