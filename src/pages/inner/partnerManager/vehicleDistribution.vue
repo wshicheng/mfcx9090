@@ -505,13 +505,22 @@ export default {
         })
     },
     removeCar(index) {
+      var code = this.countAllotCars[index]
+      var res = this.tempcar.filter((item)=>{
+        return item.code==code
+      })
+       res.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
       this.countAllotCars.splice(index, 1)
+      
     },
     handleSelectChange(selection, row) {
-      if (this.countAllotCars.indexOf(row.boxCode) === -1) {
-        this.countAllotCars.push(row.boxCode)
+      this.tempcar = selection
+      if (this.countAllotCars.indexOf(row.code) === -1) {
+        this.countAllotCars.push(row.code)
       } else {
-        this.countAllotCars.splice(this.countAllotCars.indexOf(row.boxCode), 1)
+        this.countAllotCars.splice(this.countAllotCars.indexOf(row.code), 1)
       }
       //new Set(this.countAllotCars)
     },
@@ -521,16 +530,16 @@ export default {
       if(this.countAllotCars.length>0){
          selection.map((list)=>{
           this.countAllotCars.map((item)=>{
-            if(list.boxCode===item){
+            if(list.code===item){
               return;
             }else{
-            this.countAllotCars.push(list.boxCode)
+            this.countAllotCars.push(list.code)
             }
           })
         })
       }else{
          selection.map((item)=>{
-           this.countAllotCars.push(item.boxCode)
+           this.countAllotCars.push(item.code)
          })
       }
       var es = this.countAllotCars.unique()
@@ -597,7 +606,7 @@ export default {
               var setArr = []
               this.countAllotCars.map((item) => {
                 data.map((list) => {
-                  if (item === list.boxCode) {
+                  if (item === list.code) {
                     setArr.push(list)
                   }
                 })
@@ -800,10 +809,9 @@ export default {
       handler:function(val,oldVal){
         var res = []
         var arr2 = []
-        console.log(oldVal)
         if(oldVal.length==10){
             res = oldVal.map((item)=>{
-              return item.boxCode
+              return item.code
             })
         }
       //  for(var i=0;i<res.length;i++){

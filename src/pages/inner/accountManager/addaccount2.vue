@@ -166,6 +166,7 @@
 </style>
       
 <script>
+import $ from 'jquery'
 import request from 'superagent'
 import { checkUserName, checkMobile, isEmail } from '../../../../utils/index.js'
 import { host } from '../../../config/index'
