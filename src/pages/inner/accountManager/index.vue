@@ -1078,7 +1078,7 @@ export default {
         modifyAccountStateByAdmin(
           {
             id: scope.row.id,
-            status: scope.row.status ? 0 : 1
+            status: scope.row.status ? 1 : 0
           }, function(error, res) {
             if (error) {
               console.log(error)
