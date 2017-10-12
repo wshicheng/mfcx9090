@@ -31,7 +31,7 @@
       </el-date-picker>
       </label>
 
-      <el-button class="my_btn" @click="queryInfo">查询</el-button>
+      <button class="my_btn" @click="queryInfo">查询</button>
     </div>
   
     <div id="partner_table">
@@ -550,6 +550,7 @@
       color: #fff;
       /*margin-top: 10px;*/
       outline: none;
+      font-size: 14px;
       border: none;
       border-radius: 4px; 
       cursor: pointer;
