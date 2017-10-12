@@ -26,22 +26,34 @@
           prop="orderNum"
           label="订单数"
           min-width="80">
+             <template scope="scope">
+            {{new Number(scope.row.orderNum).thousand()}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="totalBill"
           sortable
           label="订单总额"
           min-width="100">
+             <template scope="scope">
+            {{new Number(scope.row.totalBill).thousandFormat()}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="couponAmount"
           label="优惠卷支付总额">
+             <template scope="scope">
+            {{new Number(scope.row.couponAmount).thousandFormat()}}
+          </template>
         </el-table-column>
         <el-table-column
           min-width="80"
           label="实际收益（元)"
           prop='userPayAmount'
           :render-header="rendHeader">
+             <template scope="scope">
+            {{new Number(scope.row.userPayAmount).thousandFormat()}}
+          </template>
         </el-table-column>
       </el-table>
       <el-pagination

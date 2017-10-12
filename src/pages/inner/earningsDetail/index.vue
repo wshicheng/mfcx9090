@@ -42,7 +42,7 @@
 			<div id="earD_all">
 				<h1>
           <el-tooltip class="item" effect="dark" content="所有车辆骑行收益" placement="bottom-end"> 
-					  <p>合计：<span>{{sumMoney}}元</span></p>
+					  <p>合计：<span>{{new Number(sumMoney).thousandFormat()}}元</span></p>
           </el-tooltip>
 					<p @click='export_excel'>导出明细到Excel</p>
 				</h1>
@@ -74,36 +74,52 @@
           prop="placeOrderTime"
           min-width="110"
           label="下单时间">
+          
         </el-table-column>
         <el-table-column
           prop="rideTime"
           label="骑行时间（分钟）"
           min-width="90"
         >
+          <template scope="scope">
+            {{new Number(scope.row.rideTime).thousand()}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="rideMileage"
           label="骑行里程（米）"
           min-width="85"
           >
+          <template scope="scope">
+            {{new Number(scope.row.rideMileage).thousand()}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="orderMoney"
           label="订单费用"
           min-width="60"
           >
+           <template scope="scope">
+            {{new Number(scope.row.orderMoney).thousandFormat()}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="couponAmount"
           label="优惠券支付"
           min-width="60"
         >
+            <template scope="scope">
+            {{new Number(scope.row.couponAmount).thousandFormat()}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="balanceAmount"
           label="实际收益（元）"
           :render-header="rendHeader"
         >
+          <template scope="scope">
+            {{new Number(scope.row.balanceAmount).thousandFormat()}}
+          </template>
         </el-table-column>
       </el-table>
 

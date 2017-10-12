@@ -35,6 +35,9 @@
               </template>
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="200">
+                <template scope="scope">
+                  {{new Number(scope.row.applyMoney).thousandFormat()}}
+                </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="120">
             </el-table-column>
@@ -304,7 +307,7 @@ export default {
         for (var i = 0; i < arr.length; i++) {
           var obj = {}
           obj.applyTimeStr = arr[i].applyTimeStr
-          obj.applyMoney = arr[i].applyMoney + '元'
+          obj.applyMoney = arr[i].applyMoney
           obj.cityName = arr[i].cityName
           obj.applyUserName = arr[i].applyUserName
           if (this.activeName === '待结算') {
