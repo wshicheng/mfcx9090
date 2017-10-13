@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="rideTime"
-          label="骑行时间（分钟）"
+          label="骑行时间/n（分钟）"
           min-width="90"
         >
           <template scope="scope">
