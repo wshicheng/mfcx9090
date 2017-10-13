@@ -76,7 +76,7 @@
                         <el-input v-model="editAccount.applyUserName" style="border:none;"  auto-complete="off" :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="结算金额:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
-                        <el-input v-model="editAccount.applyMoney" style="border:none;"  auto-complete="off" :readonly="true"></el-input>
+                        <el-input  style="border:none;" :value="new Number(editAccount.applyMoney).thousandFormat()"  auto-complete="off" :readonly="true" ></el-input>
                       </el-form-item>
                       <el-form-item label="备注:" :label-width="formLabelWidth">
                         <el-input type="textarea" v-model="editAccount.description" style="width: 400px;  margin-top: -10px"></el-input>
