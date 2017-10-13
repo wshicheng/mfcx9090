@@ -68,21 +68,28 @@
         <el-tabs v-model="activeName">
           <el-tab-pane class="incomeRecord recodeTable" label="收益记录" name="first">
             <el-table :data="tableData" style="width:100%" v-loading="loading2" element-loading-text="拼命加载中">
-              <el-table-column prop="placeOrderTimeStr" label="下单时间" min-width='120'>
+              <el-table-column prop="placeOrderTimeStr" label="下单时间" min-width='90'>
               </el-table-column>
-              <el-table-column label="骑行时间（分钟）" prop="rideTime">
+              <el-table-column label="骑行时间（分钟）" prop="rideTime" min-width='80'>
 
               </el-table-column>
-              <el-table-column label="里程（公里）" prop="rideMileage">
+              <el-table-column label="里程（公里）" prop="rideMileage" min-width='60'>
 
               </el-table-column>
-              <el-table-column label="订单费用" prop="actualAmount">
-
+              <el-table-column label="订单费用" prop="actualAmount" min-width='60'>
+                <template scope="scope">
+                  {{ new Number(scope.row.actualAmount).thousandFormat()}}
+                </template>
               </el-table-column>
-              <el-table-column label="优惠券支付" prop="couponAmount">
-
+              <el-table-column label="优惠券支付" prop="couponAmount" min-width='80'>
+                <template scope="scope">
+                  {{ new Number(scope.row.couponAmount).thousandFormat()}}
+                </template>
               </el-table-column>
-              <el-table-column label="实际收益" prop="balanceAmount" :render-header="rendHeader">
+              <el-table-column label="实际收益合计" prop="balanceAmount" :render-header="rendHeader">
+                <template scope="scope">
+                  {{ new Number(scope.row.balanceAmount).thousandFormat()}}
+                </template>
               </el-table-column>
             </el-table>
             <!--<table>
@@ -425,7 +432,7 @@ export default {
           style: 'background:#eee;margin-left:-20px;'
         }
       }, [
-          h('span', '实际收益'),
+          h('span', '实际收益合计'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true

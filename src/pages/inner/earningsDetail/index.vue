@@ -41,9 +41,9 @@
 		<div id="earD_excel">
 			<div id="earD_all">
 				<h1>
-          <el-tooltip class="item" effect="dark" content="所有车辆骑行收益" placement="bottom-end"> 
+          <!-- <el-tooltip class="item" effect="dark" content="所有车辆骑行收益" placement="bottom-end">  -->
 					  <p>合计：<span>{{new Number(sumMoney).thousandFormat()}}元</span></p>
-          </el-tooltip>
+          <!-- </el-tooltip> -->
 					<p @click='export_excel'>导出明细到Excel</p>
 				</h1>
 			</div>
@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="rideTime"
-          label="骑行时间/n（分钟）"
+          label="骑行时间（分钟）"
           min-width="90"
         >
           <template scope="scope">
@@ -114,7 +114,7 @@
         </el-table-column>
         <el-table-column
           prop="balanceAmount"
-          label="实际收益（元）"
+          label="实际收益合计"
           :render-header="rendHeader"
         >
           <template scope="scope">
@@ -151,7 +151,7 @@
     vertical-align: top;
   }
 
-  #earD_header span {
+  #earD_header div.citys span {
     cursor: pointer;
     font-size: 14px;
     display: inline;
@@ -725,7 +725,7 @@ export default {
           style: 'background:#eee;margin-left:-20px;'
         }
       }, [
-          h('span', '实际收益'),
+          h('span', '实际收益合计'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true

@@ -415,7 +415,7 @@ export default {
           style: 'background:#eee;margin-left:-20px;'
         }
       }, [
-          h('span', '实际收益'),
+          h('span', '实际收益合计'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true
