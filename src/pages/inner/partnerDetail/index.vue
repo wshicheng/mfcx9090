@@ -336,7 +336,6 @@ export default {
           var res = JSON.parse(res.text).data
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
-          console.log(this.franchiseeDetail)
           this.imgUrl = res.businessLicenseIconUrl
         }
       })
