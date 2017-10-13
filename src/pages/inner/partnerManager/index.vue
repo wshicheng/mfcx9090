@@ -443,6 +443,8 @@
     border: none;
     color: #fff;
     margin-left: 110px;
+    margin-top:-30px;
+     margin-bottom:20px;
   }
 
   .partner_button:nth-of-type(1):hover {
@@ -452,6 +454,8 @@
   .partner_button:nth-of-type(2) {
     background: #fff;
     color: #444;
+    margin-top:-30px;
+    margin-bottom:20px;
     border: 1px solid rgba(196,196,196,1);
   }
 

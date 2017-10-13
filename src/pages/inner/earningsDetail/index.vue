@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="rideTime"
-          label="骑行时间/n（分钟）"
+          label="骑行时间（分钟）"
           min-width="90"
         >
           <template scope="scope">
@@ -538,7 +538,7 @@ export default {
           that.$loading({customClass: 'loading_class'})
           setTimeout(() => {
             const { export_json_to_excel } = require('../../../assets/lib/js/Export2Excel.js')
-            const tHeader = ['车辆编号', '加盟地区', '下单时间', '骑行时间（分钟）', '骑行里程（公里)', '订单费用', '优惠劵支付', '实际收益（元）']
+            const tHeader = ['车辆编号', '加盟地区', '下单时间', '骑行时间（分钟）', '骑行里程（米)', '订单费用', '优惠劵支付', '实际收益（元）']
             const filterVal = ['bikeCode','cityName', 'placeOrderTime', 'rideTime', 'rideMileage', 'orderMoney', 'couponAmount', 'balanceAmount']
             var startTime, endTime;
             if (that.timeLine === '') {
@@ -722,10 +722,10 @@ export default {
           cell: true
         },
         attrs: {
-          style: 'background:#eee;margin-left:-20px;'
+          style: 'background:#eee;margin-left:-20px;width:240px;'
         }
       }, [
-          h('span', '实际收益'),
+          h('span', '实际收益（元）'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true

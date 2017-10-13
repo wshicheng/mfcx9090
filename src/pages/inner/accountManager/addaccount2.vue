@@ -321,7 +321,6 @@ export default {
                 })
         },
         remoteMethod() {
-            console.log(this.ruleForm.alliance)
             var that = this
             if (this.ruleForm.alliance === '') {
                 return

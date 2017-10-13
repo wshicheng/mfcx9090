@@ -1069,7 +1069,6 @@ export default {
         var that = this
         this.accountOrUsername = ''
         this.phoneNo = ''
-        console.log(scope.row)
         var init =  Object.assign({}, scope.row, { status: scope.row.status }) //成功
         var initObj2 = Object.assign({}, scope.row, { status: !scope.row.status }) //失败
         // var obj = Object.assign({}, scope.row, { status: !scope.row.status })
