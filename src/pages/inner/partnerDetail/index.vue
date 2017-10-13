@@ -31,6 +31,10 @@
               <td>
                 <span class="prex">加盟区域：</span>{{franchiseeDetail.cityName}}</td>
             </tr>
+             <tr>
+              <td>
+                <span class="prex">拥有车辆：</span>{{franchiseeDetail.bikeNum}}</td>
+            </tr>
           </tbody>
         </table>
       </el-col>

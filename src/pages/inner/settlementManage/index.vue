@@ -29,7 +29,7 @@
                 v-loading="loading2"
                 element-loading-text="拼命加载中"
                 style="width: 100% font-size:13px; color: #6c6c6c;">
-            <el-table-column prop="applyTimeStr" label="结算周期" min-width="250">
+            <el-table-column prop="applyTimeStr" label="结算周期" min-width="200">
                <template scope="scope">
                 <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId}}"> {{scope.row.applyTimeStr}}</router-link>
               </template>
@@ -41,7 +41,7 @@
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="120">
             </el-table-column>
-            <el-table-column prop="applyUserName" label="结算单确认用户" min-width="100">
+            <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
             </el-table-column>
             <el-table-column prop="confirmTimeStr" label="结算确认日期" min-width="140">
             </el-table-column>

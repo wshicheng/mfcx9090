@@ -236,12 +236,6 @@ export default {
       var that = this
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.$confirm('确认修改吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          })
-        .then(() => {
           that.loading = true
           request.post(host + 'beepartner/admin/Own/updateAdminUser')
               .withCredentials()
@@ -281,12 +275,7 @@ export default {
                   }
                 }
               })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消绑定操作'
-          })
-        })
+       
         } else {
           // console.log('error submit!!')
           return false

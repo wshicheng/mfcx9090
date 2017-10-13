@@ -75,6 +75,9 @@
           prop="subscriptionMoney"
           label="加盟资金(元)"
           min-width="80">
+            <template scope="scope">
+              {{new Number(scope.row.subscriptionMoney).thousandFormat()}}
+            </template>
         </el-table-column>
         <el-table-column
           prop="joinTime"
@@ -578,6 +581,36 @@ export default {
         callback()
       }
     }
+    var checkSubscriptionNum = (rule,value,callback) => {
+      if(!value){
+         return callback(new Error('请填写认购车辆数'));
+      }else{
+        request
+          .post(host + 'beepartner/admin/cityPartner/checkBikeNum')
+          .withCredentials()
+          .set({
+            'content-type': 'application/x-www-form-urlencoded'
+          })
+          .send({
+            cityPartnerId:this.editAccount.cityPartnerId,
+            subscriptionNum:this.editAccount.subscriptionNum
+          })
+          .end((err,res)=>{
+            if(err){
+              console.log(err)
+            }else{
+              var code = JSON.parse(res.text).resultCode
+              var message = JSON.parse(res.text).message
+              if(code===0){
+                callback()
+              }else{
+               callback(new Error(message));
+              }
+            }
+          })
+        
+      }
+    }
     var checkId = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('证件号码不能为空'));
@@ -679,7 +712,7 @@ export default {
          { validator: checkTime,required: true, trigger: 'blur' }
         ],
         subscriptionNum: [
-          { type: 'number', required: true, message: '请选择输入认购车辆数', trigger: 'blur' }
+          { validator: checkSubscriptionNum, type: 'number', required: true,  trigger: 'blur' }
         ],
         subscriptionMoney: [
           { type: 'number', required: true, message: '输入正确的金额', trigger: 'blur' }
