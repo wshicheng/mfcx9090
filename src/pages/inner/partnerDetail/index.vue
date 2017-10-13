@@ -33,7 +33,7 @@
             </tr>
              <tr>
               <td>
-                <span class="prex">拥有车辆：</span>{{franchiseeDetail.bikeNum}} 辆</td>
+                <span class="prex">拥有车辆：</span>{{new Number(franchiseeDetail.bikeNum).thousand()}} 辆</td>
             </tr>
           </tbody>
         </table>

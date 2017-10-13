@@ -158,7 +158,7 @@
     padding: 7px 5px 7px 5px;
     border: 1px solid transparent;
   }
-  #earD_header span.active {
+  #earD_header div.citys span.active {
     border: 1px solid orange;
     border-radius: 4px;
   }

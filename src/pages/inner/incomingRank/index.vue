@@ -120,14 +120,14 @@ export default {
       e.currentTarget.setAttribute('class', 'el-button active el-button--default')
     },
     getDateByTimeLine() {
-      if (this.value4 === '') {
+      if (this.value4.length === 0) {
         this.$message({
           message: '请输入日期',
           type: 'warning'
         })
       } else {
-        var startTime = moment(this.value4[0]).format('YYYY-MM-DD HH:mm:ss')
-        var endTime = moment(this.value4[1]).format('YYYY-MM-DD HH:mm:ss')
+        var startTime = this.value4[0]===null?'': moment(this.value4[0]).format('YYYY-MM-DD HH:mm:ss')
+        var endTime =this.value4[1]===null?'': moment(this.value4[1]).format('YYYY-MM-DD HH:mm:ss')
         var newObj = {}
         newObj.time1 = startTime
         newObj.time2 = endTime

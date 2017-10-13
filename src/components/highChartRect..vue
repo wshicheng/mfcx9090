@@ -166,21 +166,22 @@ export default {
     },
     getChartByRoute(arr) {
       var res = arr.map((item) => {
-        return item.allianceArea
-      })
+          return item.allianceArea
+        })
 
-      var order = arr.map((item) => {
-        return item.orderNum
-      })
+        var order = arr.map((item) => {
+          return item.orderNum
+        })
 
-      var allMoney = arr.map((item) => {
-        return item.userPayAmount
-      })
+        var allMoney = arr.map((item) => {
+          return item.userPayAmount
+        })
 
-      this.$set(res, this.x_data)
-      this.x_data = res
-      this.orderNumber = order
-      this.consumeMoney = allMoney
+        this.$set(res, this.x_data)
+        this.x_data = res
+        this.orderNumber = order
+        this.consumeMoney = allMoney
+
 
       if (this.consumeMoney.length === 0) {
         this.noData = true
@@ -228,11 +229,16 @@ export default {
         })
     },
     time() {
-      if (this.$store.state.users.timeline.length === 0) {
+      console.log(this.$store.state.users.timeline.newObj.time1)
+      if (this.$store.state.users.timeline.newObj.time1.length === 0&&this.$store.state.users.timeline.newObj.time2.length === 0) {
+        this.$message({
+          message: '请输入日期',
+          type: 'warning'
+        })
         return
       } else {
         request
-          .post(host + 'franchisee/revenue/getRevenueSort')
+          .post(host + 'beepartner/admin/statistics/adminStatistics')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -250,7 +256,9 @@ export default {
               if (JSON.parse(res.text).data.length === 0) {
                 $('#container').html('')
                 this.noData = true
+                return;
               } else {
+                
                 this.checkLogin(res)
                 this.noData = false
                 var arr = JSON.parse(res.text).data
@@ -264,9 +272,10 @@ export default {
                   obj.userPayAmount = arr[i].actualMoney
                   newArr.push(obj)
                 }
+                this.getChartByRoute(newArr)
+                this.createChartsShap()
               }
-              this.getChartByRoute(newArr)
-              this.createChartsShap()
+             
             }
           })
 
