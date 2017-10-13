@@ -258,7 +258,6 @@
     width: 100%;
     height: 100%;
     background: rgba(68, 68, 68, 0.6);
-    background: #f60;
     position: fixed;
     z-index: 10000000000000000;
     left: 0;
