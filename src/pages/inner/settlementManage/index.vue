@@ -357,7 +357,7 @@ export default {
         })
         .send({
           'applyTimeStr': this.editAccount.applyTimeStr,
-          'applyMoney': Number(this.editAccount.applyMoney.split('元')[0]),
+          'applyMoney': Number(this.editAccount.applyMoney.toString().split('元')[0]),
           'description': this.editAccount.description,
           'cityPartnerId': this.editAccount.cityPartnerId,
           'id': this.editAccount.id

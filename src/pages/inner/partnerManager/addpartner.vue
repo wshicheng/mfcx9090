@@ -150,6 +150,7 @@
       margin-right: 20px;
       border: 1px solid #ccc;
       background: #fff;
+      z-index: 1;
       border-radius: 6px;
     }
   }
@@ -168,6 +169,7 @@
       margin-top: -27%;
       padding: 70px 150px 0px 144px;
       margin-right: 20px;
+      z-index: 1;
       border: 1px solid #ccc;
       background: #fff;
       border-radius: 6px;
