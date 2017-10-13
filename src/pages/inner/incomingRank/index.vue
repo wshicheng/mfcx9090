@@ -136,6 +136,8 @@ export default {
     }
   },
   mounted () {
+    alert('111')
+    this.$router.push('/index/incomingRank?type=daily')
     $(".sign").removeClass('is-active')
     $('.sign[name="51"]').addClass('is-active')
     document.title = '收益排行'

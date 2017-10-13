@@ -433,12 +433,12 @@ export default {
   },
   mounted () {
     document.title = '蜜蜂平台管理——收益排行列表'
+    this.getDateMount()
     if (this.$store.state.users.timeline.length === 0) {
       this.getDateMount()
     } else {
       return
     }
-    this.$route.query.type = daily
     var that = this
     setInterval( function () {
       that.getDateMount()
