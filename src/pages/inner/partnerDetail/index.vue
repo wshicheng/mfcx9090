@@ -23,11 +23,11 @@
               <td>
                 <span class="prex">加盟日期：</span>{{franchiseeDetail.joinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{franchiseeDetail.subscriptionNum}}辆</td>
+                <span class="prex">认购车辆：</span>{{new Number(franchiseeDetail.subscriptionNum).thousand()}}辆</td>
             </tr>
             <tr>
               <td>
-                <span class="prex">加盟资金：</span>￥{{franchiseeDetail.subscriptionMoney}}</td>
+                <span class="prex">加盟资金：</span>￥{{new Number(franchiseeDetail.subscriptionMoney).thousandFormat() + '元'}}</td>
               <td>
                 <span class="prex">加盟区域：</span>{{franchiseeDetail.cityName}}</td>
             </tr>
