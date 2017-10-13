@@ -96,7 +96,10 @@ import $ from 'jquery'
             bar: {
               dataLabels: {
                 enabled: true,
-                allowOverlap: true
+                allowOverlap: true,
+                formatter: function() { 
+                    return   Highcharts.numberFormat(this.y, 2, ".", ",");
+                }
               }
             }
           },
