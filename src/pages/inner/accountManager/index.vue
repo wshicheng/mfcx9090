@@ -1069,6 +1069,7 @@ export default {
         var that = this
         this.accountOrUsername = ''
         this.phoneNo = ''
+        console.log(scope.row)
         var init =  Object.assign({}, scope.row, { status: scope.row.status }) //成功
         var initObj2 = Object.assign({}, scope.row, { status: !scope.row.status }) //失败
         // var obj = Object.assign({}, scope.row, { status: !scope.row.status })
@@ -1078,7 +1079,7 @@ export default {
         modifyAccountStateByAdmin(
           {
             id: scope.row.id,
-            status: scope.row.status ? 1 : 0
+            status: !scope.row.status ? 0 : 1
           }, function(error, res) {
             if (error) {
               console.log(error)
@@ -1096,7 +1097,7 @@ export default {
                   type: 'success',
                   message: message
                 })
-                that.joinTableData.splice(scope.$index, 1, init) //成功
+                that.joinTableData.splice(scope.$index, 1, init)
                 that.loadData()
               } else {
                 that.$message({
