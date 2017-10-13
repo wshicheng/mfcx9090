@@ -122,7 +122,8 @@ export default {
             column: {
               grouping: false,
               shadow: false,
-              borderWidth: 0
+              borderWidth: 0,
+              maxPoinitWidth: 30
             }
           },
           series: [{

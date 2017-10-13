@@ -4,10 +4,10 @@
       <el-row class="countTitle">
         <!-- <span class="countDimension labelAlign" style="margin-right: 0px;">统计维度</span> -->
         <div class="timeSelectBtn" style='margin-left: -10px;'>
-          <el-button class="active" @click="handleChangeType">今日</el-button>
-          <el-button @click="handleChangeType">本周</el-button>
-          <el-button @click="handleChangeType">本月</el-button>
-          <el-button @click="handleChangeType">所有日期</el-button>
+          <el-button class="active" @click="handleChangeType" myId='daily'>今日</el-button>
+          <el-button @click="handleChangeType" myId='weekly'>本周</el-button>
+          <el-button @click="handleChangeType" myId='monthly'>本月</el-button>
+          <el-button @click="handleChangeType" myId='all'>所有日期</el-button>
           <el-button @click='handleChangeType' style="margin-right: 15px;">指定时间段</el-button>
         </div>
         <el-date-picker 
@@ -19,7 +19,7 @@
           style="vertical-align: top; margin-top: 0px;"
           align="right">
         </el-date-picker>
-        <el-button v-show="show" class="incomingRank_my_btn" @click="getDateByTimeLine">查询</el-button>
+        <button style="border-radius: 4px; font-size: 14px; cursor: pointer;" v-show="show" class="incomingRank_my_btn" @click="getDateByTimeLine">查询</button>
       </el-row>
     </div>
     <el-row class="countDetail">

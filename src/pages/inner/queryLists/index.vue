@@ -438,6 +438,7 @@ export default {
     } else {
       return
     }
+    this.$route.query.type = daily
     var that = this
     setInterval( function () {
       that.getDateMount()
