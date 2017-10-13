@@ -53,6 +53,15 @@ import $ from 'jquery'
             downloadPNG: '下载PNG文件',
             downloadSVG: '下载SVG文件'
           },
+          tooltip: {
+                valueSuffix: '单',
+                useHTML: true,
+                headerFormat: '<span style="font-size: 12px">地点: {point.key}</span><br/>',
+                pointFormatter: function () {
+                  return '<span style="color:{' + this.series.color + '}"></span>收益: ￥<b>' + Highcharts.numberFormat(this.y, 2, ".", ",") + '</b>'
+                
+               }
+              },
           exporting: {
             enabled: false
           },
@@ -108,14 +117,7 @@ import $ from 'jquery'
               name: ' ',
               color: '#74f7af',
               data:this.chartData.map((item)=>{return {color:this.randomColor(),y:item}}) ,
-              tooltip: {
-                valueSuffix: '单',
-                useHTML: true,
-                headerFormat: '<span style="font-size: 12px">地点: {point.key}</span><br/>',
-                pointFormatter: function () {
-                  return '<span style="color:{' + this.series.color + '}"></span>收益: ￥<b>' + this.y + '</b>'
-                }
-              }
+              
             }
           ]
 
