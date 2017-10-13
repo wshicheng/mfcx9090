@@ -415,7 +415,11 @@ export default {
           style: 'background:#eee;margin-left:-20px;width:240px;'
         }
       }, [
+<<<<<<< HEAD
           h('span', '实际收益(元)'),
+=======
+          h('span', '实际收益合计'),
+>>>>>>> f59c15092e8ed486469e585ad6fb094d782e73d9
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true
@@ -433,6 +437,7 @@ export default {
   },
   mounted () {
     document.title = '蜜蜂平台管理——收益排行列表'
+    this.getDateMount()
     if (this.$store.state.users.timeline.length === 0) {
       this.getDateMount()
     } else {

@@ -100,6 +100,9 @@
             <el-table-column prop="month" label="结算周期">
             </el-table-column>
             <el-table-column prop="money" label="结算金额">
+              <template scope="scope">
+                {{new Number(scope.row.money).thousandFormat()}}
+              </template>
             </el-table-column>
             <el-table-column prop="applyTimeS" label="申请时间">
             </el-table-column>
