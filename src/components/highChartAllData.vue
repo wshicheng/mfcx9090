@@ -27,8 +27,53 @@ import $ from 'jquery'
       this.routeChange()
       var that = this
       setInterval( function () {
-        that.routeChange()
-      }, 600000)
+        this.noData = false
+        request
+          .post(host + 'beepartner/admin/statistics/adminTrend')
+          .withCredentials()
+          .set({
+            'content-type': 'application/x-www-form-urlencoded'
+          })
+          .send({
+            'cityId': 0
+          })
+          .end((err, res) => {
+            if (err) {
+              this.noData = true
+              console.log('err:' + err)
+            } else {
+              this.checkLogin(res)
+              var arr = JSON.parse(res.text).data || []
+              var newChartData = []
+              arr.map( (item) => {
+                newChartData.push(item.totalBill)
+                return newChartData
+              })
+
+                 var num = 0;
+              for (var i=0; i<newChartData.length; i++) {
+                num += newChartData[i]
+              } 
+
+              
+              if (num != 0) {
+                this.chartData = newChartData
+                this.noData = false
+                this.initChart()
+              }else{
+                $('#container').html('')
+                this.noData = true
+              } 
+
+
+              if (JSON.parse(res.text).data.length === 0) {
+                $('#container').html('')
+                this.noData = true
+              }
+
+            }
+          })
+      }, 60000)
     },
     methods: {
       initChart () {
