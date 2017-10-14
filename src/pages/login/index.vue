@@ -616,7 +616,8 @@ button.forget_psd {
 
 button.forget_psd:hover {
     background: #fff;
-    color: #fff;
+    /* color: #fff; */
+    text-decoration: underline;
     border: none;
 }
 

@@ -133,6 +133,9 @@ export default {
         newObj.time2 = endTime
         this.$store.dispatch('timeline_action', { newObj })
       }
+    },
+    routeChange () {
+      this.value4 = []
     }
   },
   mounted () {
@@ -140,7 +143,9 @@ export default {
     $(".sign").removeClass('is-active')
     $('.sign[name="51"]').addClass('is-active')
     document.title = '收益排行'
-    
+  },
+  watch: {
+    '$route': 'routeChange'
   }
 }
 </script>

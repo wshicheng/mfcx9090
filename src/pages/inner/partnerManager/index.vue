@@ -17,8 +17,7 @@
         <el-date-picker
         v-model="startTime"
         type="date"
-        placeholder="选择日期"
-        :picker-options="pickerOptions1">
+        placeholder="选择日期">
       </el-date-picker>
       </label>
       <label>
@@ -26,8 +25,7 @@
         <el-date-picker
         v-model="endTime"
         type="date"
-        placeholder="选择日期"
-        :picker-options="pickerOptions1">
+        placeholder="选择日期">
       </el-date-picker>
       </label>
 
@@ -967,7 +965,7 @@ export default {
     },
     beforeAvatarUpload (file) {
       const isJPG = (file.type === 'image/jpeg')||(file.type === 'image/png')
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt2M = file.size / 2048 / 2048 < 2
       if (!isJPG) {
         this.$message.error('上传营业执照图片只能是 jpg、jpeg、png 格式!')
       }
