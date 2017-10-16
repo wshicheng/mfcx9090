@@ -48,7 +48,7 @@ router.beforeEach((route, redirect, next) => {
         if (route.name === '首页') {
             return
         } else {
-            if($('div.editcontainer')){
+            if($('div.editcontainer').length>0){
                 setTimeout(function(){
                     $("div.scrollArea").animate({scrollTop: $('div.editcontainer').position().top}, 1000);    
                 },1000)
