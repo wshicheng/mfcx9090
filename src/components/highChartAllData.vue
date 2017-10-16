@@ -246,6 +246,7 @@ import $ from 'jquery'
       },
       routeChange () {
         this.noData = false
+        var that = this;
         request
           .post(host + 'beepartner/admin/statistics/adminTrend')
           .withCredentials()
@@ -260,7 +261,7 @@ import $ from 'jquery'
               this.noData = true
               console.log('err:' + err)
             } else {
-              this.checkLogin(res)
+              that.checkLogin(res)
               var arr = JSON.parse(res.text).data || []
               var newChartData = []
               arr.map( (item) => {

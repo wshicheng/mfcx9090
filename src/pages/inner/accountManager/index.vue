@@ -763,6 +763,13 @@ export default {
     },
     openEdit(scope) {
       if(this.activeName==='平台'){
+        if(scope.row.status===false){
+          this.$message({
+            type:'error',
+            message:'账号已冻结，请解冻后再编辑'
+          })
+          return;
+        }
         this.dialogVisible = true
         this.editAccount.roleName = scope.row.roleName
         this.editAccount.userName = scope.row.userName
@@ -784,6 +791,13 @@ export default {
           }
         })
       }else{
+            if(scope.row.status===false){
+            this.$message({
+              type:'error',
+              message:'账号已冻结，请解冻后再编辑'
+            })
+            return;
+          }
             var that = this;
             this.dialogVisible = true
             this.recodeRoleName = scope.row.roleName;
