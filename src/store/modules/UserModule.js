@@ -17,6 +17,7 @@ const state = {
     isHeaderImg: false,
     isOpenAddAccount:false,
     name:'',
+    phone: ''
 }
 
 const mutations = {

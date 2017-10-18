@@ -434,6 +434,9 @@ export default {
 						this.name = JSON.parse(res.text).data.name
 						this.userName = JSON.parse(res.text).data.userName
 						this.phone = JSON.parse(res.text).data.phoneNo === null?'':JSON.parse(res.text).data.phoneNo
+						// 将手机号码存入store
+						this.$store.state.users.phone = JSON.parse(res.text).data.phoneNo === null?'':JSON.parse(res.text).data.phoneNo	
+											
 						this.imageUrl = JSON.parse(res.text).data.adminUserIconUrl
 						window.sessionStorage.setItem('headImg',JSON.parse(res.text).data.adminUserIconUrl)
 						/**

@@ -185,36 +185,12 @@ export default {
       }
     }
   },
+  mounted () {
+    this.ruleForm.tel = this.$store.state.users.phone
+  },
   methods: {
     getVerCode (val) {
-       var that = this
-       var $btn = $('button.getVerCode')
-       var text = $btn.text()
-       this.initText = text
-       var initTime = 60
-      if(checkMobile(val)){
-          this.isDisabled = true
-          this.isPlain = false
-           var timer = setInterval(function(){
-              initTime--
-              if(initTime<=0){
-                that.isDisabled = false
-                that.isPlain = true
-                $btn.text(that.initText)
-                clearInterval(timer)
-                return
-              }else {
-                $btn.text(initTime + 's')
-              }
-          },1000)
-          setTimeout(function(){
-             that.$message({
-              message: '已向您的手机发送验证码，请查收！！！',
-              type: 'success'
-            })
-          },1000)
-         
-          request.post(host + 'beepartner/admin/Own/getPhoneCode')
+          request.post(host + 'beepartner/admin/Own/checkPhoneNumber')
             .withCredentials()
             .set({
               'content-type': 'application/x-www-form-urlencoded'
@@ -222,14 +198,63 @@ export default {
             .send({
               phoneNo: this.ruleForm.tel
             })
-            .end(function(err,res){
+            .end((err,res) => {
               if(err) {
                 console.log(err)
               } else {
-                that.ruleForm.verificationCode = JSON.parse(res.text).data
+                // console.log(res)
+                if (JSON.parse(res.text).success === true) {
+                    var that = this
+                    var $btn = $('button.getVerCode')
+                    var text = $btn.text()
+                    this.initText = text
+                    var initTime = 60
+                    if(checkMobile(val)){
+                        this.isDisabled = true
+                        this.isPlain = false
+                        var timer = setInterval(function(){
+                            initTime--
+                            if(initTime<=0){
+                              that.isDisabled = false
+                              that.isPlain = true
+                              $btn.text(that.initText)
+                              clearInterval(timer)
+                              return
+                            }else {
+                              $btn.text(initTime + 's')
+                            }
+                        },1000)
+                        setTimeout(function(){
+                          that.$message({
+                            message: '已向您的手机发送验证码，请查收！！！',
+                            type: 'success'
+                          })
+                        },1000)
+                      
+                        request.post(host + 'beepartner/admin/Own/getPhoneCode')
+                          .withCredentials()
+                          .set({
+                            'content-type': 'application/x-www-form-urlencoded'
+                          })
+                          .send({
+                            phoneNo: this.ruleForm.tel
+                          })
+                          .end(function(err,res){
+                            if(err) {
+                              console.log(err)
+                            } else {
+                              that.ruleForm.verificationCode = JSON.parse(res.text).data
+                            }
+                        })
+                    }
+                } else {
+                  this.$message({
+                    message: JSON.parse(res.text).message,
+                    type: 'warning'
+                  })
+                }
               }
           })
-      }
     },
     handleBindTel () {
       var that = this
