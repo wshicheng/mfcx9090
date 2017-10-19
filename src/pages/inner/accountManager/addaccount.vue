@@ -203,7 +203,7 @@ export default {
         callback(new Error('手机号格式不正确'))
       } else {
         request
-          .post(host + 'beepartner/admin/User/AdminUserUserNameOrPhone')
+          .post(host + 'beepartner/admin/Own/checkPhoneNumber')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -270,7 +270,7 @@ export default {
         name: [
           { message: '请输入姓名', trigger: 'blur' },
         ],
-        phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }]
+        // phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }]
         // email: [{ validator: validateEmail, trigger: 'blur' }]
       }
     }

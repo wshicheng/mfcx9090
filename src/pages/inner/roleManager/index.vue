@@ -20,17 +20,17 @@
             <el-form-item label="角色名称" prop="roleName" class="rolename" :label-width="formLabelWidth">
               <el-input v-model="form.roleName" placeholder="请输入角色名称"></el-input>
             </el-form-item>
-            <el-form-item label="备注" class="rolename" :label-width="formLabelWidth">
+            <el-form-item label="备注" prop="description" class="rolename" :label-width="formLabelWidth">
               <el-input type="textarea" v-model="form.description"></el-input>
             </el-form-item>
-            <el-form-item label="权限列表" class="rolename" :label-width="formLabelWidth">
-              <el-tree :data="rolePowerList" show-checkbox ref="tree" node-key="id" :props="defaultProps">
+            <el-form-item label="权限列表" class="rolename" prop='rolePowerList' :label-width="formLabelWidth">
+              <el-tree :data="form.rolePowerList" show-checkbox ref="tree" node-key="id" :props="defaultProps">
               </el-tree>
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer addfooter">
             <el-button class="addRoleBtn" type="primary" @click="handleAddRole">立即创建</el-button>
-            <el-button class="addRoleBtn" @click="dialogFormVisible = false">取消</el-button>
+            <el-button class="addRoleBtn" @click="closeAddRole">取消</el-button>
           </div>
         </el-dialog>
       </h1>
@@ -125,83 +125,83 @@ export default {
         children: 'children',
         label: 'label'
       },
-      rolePowerList: [
-        {
-          id: 10,
-          label: '首页'
-        },
-        {
-          id: 20,
-          label: '加盟商管理'
-        },
-        {
-          id: 30,
-          label: '车辆管理'
-        },
-        {
-          id: 40,
-          label: '订单管理'
-        },
-        {
-          id: 50,
-          label: '报表管理',
-          children: [
-            {
-              id: 51,
-              label: '收益排行'
-            }
-            // {
-            //   id: 52,
-            //   label: '24小时数据走势'
-            // },
-            // {
-            //   id: 53,
-            //   label: '热力图'
-            // },
-            // {
-            //   id: 54,
-            //   label: '异常数据'
-            // }
-          ]
-        },
-        {
-          id: 60,
-          label: '结算管理'
-        },
-        {
-          id: 70,
-          label: '个人中心'
-        },
-        {
-          id: 80,
-          label: '账号管理'
-        },
-        {
-          id: 90,
-          label: '角色管理'
-        },
-        // {
-        //   id: 1800,
-        //   label: '信息中心'
-        // },
-        // {
-        //   id: 1900,
-        //   label: '日志管理',
-        //   children: [
-        //     {
-        //       id: 1901,
-        //       label: '登录日志'
-        //     },
-        //     {
-        //       id: 1902,
-        //       label: '操作日志'
-        //     },
-        //   ]
-        // }
-      ],
       form: {
         roleName: '',
-        description: ''
+        description: '',
+        rolePowerList: [
+          {
+            id: 10,
+            label: '首页'
+          },
+          {
+            id: 20,
+            label: '加盟商管理'
+          },
+          {
+            id: 30,
+            label: '车辆管理'
+          },
+          {
+            id: 40,
+            label: '订单管理'
+          },
+          {
+            id: 50,
+            label: '报表管理',
+            children: [
+              {
+                id: 51,
+                label: '收益排行'
+              }
+              // {
+              //   id: 52,
+              //   label: '24小时数据走势'
+              // },
+              // {
+              //   id: 53,
+              //   label: '热力图'
+              // },
+              // {
+              //   id: 54,
+              //   label: '异常数据'
+              // }
+            ]
+          },
+          {
+            id: 60,
+            label: '结算管理'
+          },
+          {
+            id: 70,
+            label: '个人中心'
+          },
+          {
+            id: 80,
+            label: '账号管理'
+          },
+          {
+            id: 90,
+            label: '角色管理'
+          },
+          // {
+          //   id: 1800,
+          //   label: '信息中心'
+          // },
+          // {
+          //   id: 1900,
+          //   label: '日志管理',
+          //   children: [
+          //     {
+          //       id: 1901,
+          //       label: '登录日志'
+          //     },
+          //     {
+          //       id: 1902,
+          //       label: '操作日志'
+          //     },
+          //   ]
+          // }
+        ],
       },
       formLabelWidth: '120px',
       editForm: {
@@ -382,6 +382,10 @@ export default {
             }
           })
       }
+    },
+    closeAddRole () {
+      this.$refs.ruleForm.resetFields()
+      this.dialogFormVisible = false
     },
     queryRole() {
       var that = this
@@ -576,6 +580,7 @@ export default {
                 that.checkLogin(res)
                 var code = JSON.parse(res.text).resultCode
                 if (code === 1) {
+                  that.$refs.ruleForm.resetFields()
                   that.$message({
                     type: 'success',
                     message: '恭喜您！添加角色成功'
