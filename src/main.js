@@ -23,9 +23,9 @@ Vue.directive('title', {
 
 Vue.use(Element)
 
-let authList = window.sessionStorage.getItem('authList') 
-let permission = window.sessionStorage.getItem('permission')
-// let name = window.sessionStorage.getItem('name').length>0? window.sessionStorage.getItem('name'):window.sessionStorage.getItem('userName')
+let authList = window.localStorage.getItem('authList') 
+let permission = window.localStorage.getItem('permission')
+// let name = window.localStorage.getItem('name').length>0? window.localStorage.getItem('name'):window.localStorage.getItem('userName')
 
 if (authList) {
   store.commit(types.ADD_MENU, JSON.parse(authList) )
@@ -35,11 +35,11 @@ if (authList) {
 
 router.beforeEach((route, redirect, next) => {  
   if(route.path === '/login'){
-    window.sessionStorage.removeItem('permission')
-    window.sessionStorage.removeItem('authList')
+    window.localStorage.removeItem('permission')
+    window.localStorage.removeItem('authList')
     store.commit(types.ADD_MENU, []) 
   }
-  let authList = window.sessionStorage.getItem('authList')
+  let authList = window.localStorage.getItem('authList')
   if (!authList && route.path !== '/login') {  
     next({ path: '/login' })
   } else {
@@ -100,9 +100,9 @@ new Vue({
         // routerWay ()  {
         //     router.beforeEach((to, from, next) => {
         //     if (to.path == '/login') {
-        //         sessionStorage.removeItem('user');
+        //         localStorage.removeItem('user');
         //     }
-        //     let user = JSON.parse(sessionStorage.getItem('user'));
+        //     let user = JSON.parse(localStorage.getItem('user'));
         //     if (!user && to.path != '/login') {
         //         next({ path: '/login' })
         //     } else {

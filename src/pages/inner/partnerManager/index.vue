@@ -803,7 +803,12 @@ export default {
           .set({
             'content-type': 'application/x-www-form-urlencoded'
           })
-          .send()
+          .send({
+            name:that.name,
+            phone:that.phone,
+            startTime:that.startTime,
+            endTime:that.endTime
+          })
           .end((err, res) => {
             if (err) {
               this.loading = false
@@ -1311,19 +1316,19 @@ export default {
         var startTime = new Date(val).getTime()
         var endTime = new Date(this.startTime).getTime()
         endTime = isNaN(endTime) ? 0 : endTime
-        if ((startTime > endTime) && endTime.toString().length > 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能大于结束日期'
-          })
-        } else if ((startTime > endTime) && endTime.toString().length === 1) {
-          // this.$message({
-          //   type: 'warning',
-          //   message: '请输入结束日期'
-          // })
-        } else {
-          return
-        }
+        // if ((startTime > endTime) && endTime.toString().length > 1) {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: '开始日期不能大于结束日期'
+        //   })
+        // } else if ((startTime > endTime) && endTime.toString().length === 1) {
+        //   // this.$message({
+        //   //   type: 'warning',
+        //   //   message: '请输入结束日期'
+        //   // })
+        // } else {
+        //   return
+        // }
       },
       deep: true
     },
@@ -1335,19 +1340,19 @@ export default {
         var endTime = new Date(val).getTime()
         var startTime = new Date(this.startTime).getTime()
         startTime = isNaN(startTime) ? 0 : startTime
-        if ((endTime < startTime) && startTime.toString().length > 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能大于结束日期'
-          })
-        } else if ((endTime > startTime) && startTime.toString().length === 1) {
-          this.$message({
-            type: 'warning',
-            message: '请选择开始日期'
-          })
-        } else {
-          return
-        }
+        // if ((endTime < startTime) && startTime.toString().length > 1) {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: '开始日期不能大于结束日期'
+        //   })
+        // } else if ((endTime > startTime) && startTime.toString().length === 1) {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: '请选择开始日期'
+        //   })
+        // } else {
+        //   return
+        // }
       },
       deep: true
     }

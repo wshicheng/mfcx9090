@@ -106,7 +106,7 @@
                     <el-col>
                       <el-form-item class="filtercar">
                         <span class="labelAlign">关键字</span>
-                        <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号\车辆名称">
+                        <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号">
                       </el-form-item>
                       <el-form-item class="filtercar" style="width: 400px;">
                         <span class="labelAlign">状态</span>
@@ -281,31 +281,35 @@ export default {
         type = '1'
       }
       if (this.terminalNumber === '' && this.form.data1 === '' && this.form.data2 === '' &&  this.checkList.length === 0) {
-
+           this.$message({
+            type: 'warning',
+            message: '查询条件不能为空！'
+          })
       } else {
         this.loading2 = true
         var startTime, endTime
-        if (this.form.data1 === '' || this.form.data2 === '') {
-          startTime = null
-          endTime = null
-        } else {
-          startTime = moment(this.form.data1).format('YYYY-MM-DD')
-          endTime = moment(this.form.data2).format('YYYY-MM-DD')
-        }
+        // if (this.form.data1 === '' || this.form.data2 === '') {
+        //   startTime = null
+        //   endTime = null
+        // } else {
+        //   startTime = moment(this.form.data1).format('YYYY-MM-DD')
+        //   endTime = moment(this.form.data2).format('YYYY-MM-DD')
+        // }
+         startTime = this.form.data1?moment(this.form.data1).format('YYYY-MM-DD'):''
+          endTime = this.form.data2?moment(this.form.data2).format('YYYY-MM-DD'):''
+        // if (this.form.data1 === '' && this.form.data2 != '') {
+        //   this.$message({
+        //     message: '请选择开始日期',
+        //     type: 'warning'
+        //   })
+        // } 
 
-        if (this.form.data1 === '' && this.form.data2 != '') {
-          this.$message({
-            message: '请选择开始日期',
-            type: 'warning'
-          })
-        } 
-
-        if (this.form.data2 === '' && this.form.data1 != '') {
-          this.$message({
-            message: '请选择结束日期',
-            type: 'warning'
-          })
-        } 
+        // if (this.form.data2 === '' && this.form.data1 != '') {
+        //   this.$message({
+        //     message: '请选择结束日期',
+        //     type: 'warning'
+        //   })
+        // } 
         // 根据用户选择不同状态进行数据的筛选
         var radio = this.checkList.toString()
         request
@@ -588,6 +592,16 @@ export default {
     'checkList': 'searchThroughCheckList',
     "form.data1": {
       handler: function (val, oldVal) {
+        console.log(val)
+        if(val===undefined){
+           if (this.activeName === '未分配') {
+            this.getDateByTabName('1')
+          } else {
+            this.getDateByTabName('0')
+          }
+        }
+        
+        return;
         if (val.toString().length === 0 && this.form.data2.toString().length === 0 && this.terminalNumber.length === 0 && this.checkList.length === 0) {
           if (this.activeName === '未分配') {
             this.getDateByTabName('1')
@@ -598,24 +612,33 @@ export default {
         var startTime = new Date(val).getTime()
         var endTime = new Date(this.form.data2).getTime()
         endTime = isNaN(endTime) ? 0 : endTime
-        if ((startTime > endTime) && endTime.toString().length > 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能大于结束日期'
-          })
-        } else if ((startTime > endTime) && endTime.toString().length === 1) {
-          // this.$message({
-          //   type: 'warning',
-          //   message: '请输入结束日期'
-          // })
-        } else {
-          return
-        }
+        // if ((startTime > endTime) && endTime.toString().length > 1) {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: '开始日期不能大于结束日期'
+        //   })
+        // } else if ((startTime > endTime) && endTime.toString().length === 1) {
+        //   // this.$message({
+        //   //   type: 'warning',
+        //   //   message: '请输入结束日期'
+        //   // })
+        // } else {
+        //   return
+        // }
       },
       deep: true
     },
     "form.data2": {
       handler: function (val, oldVal) {
+        if(val===undefined){
+           if (this.activeName === '未分配') {
+            this.getDateByTabName('1')
+          } else {
+            this.getDateByTabName('0')
+          }
+        }
+        
+        return;
         if (val.toString().length === 0 && this.form.data1.toString().length === 0 && this.terminalNumber.length === 0 && this.checkList.length === 0) {
           if (this.activeName === '未分配') {
             this.getDateByTabName('1')
@@ -626,19 +649,19 @@ export default {
         var endTime = new Date(val).getTime()
         var startTime = new Date(this.form.data1).getTime()
         startTime = isNaN(startTime) ? 0 : startTime
-        if ((endTime < startTime) && startTime.toString().length > 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能大于结束日期'
-          })
-        } else if ((endTime > startTime) && startTime.toString().length === 1) {
-          this.$message({
-            type: 'warning',
-            message: '请选择开始日期'
-          })
-        } else {
-          return
-        }
+        // if ((endTime < startTime) && startTime.toString().length > 1) {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: '开始日期不能大于结束日期'
+        //   })
+        // } else if ((endTime > startTime) && startTime.toString().length === 1) {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: '请选择开始日期'
+        //   })
+        // } else {
+        //   return
+        // }
       },
       deep: true
     }

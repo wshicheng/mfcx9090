@@ -151,12 +151,8 @@ export default {
   },
   methods: {
     handleCurrentChange(val) {
-      var status;
-      if (this.activeName === '待结算') {
-        status = 0
-      } else {
-        status = 1
-      }
+     
+     
       this.loading2 = true
       request
         .post(host + 'beepartner/admin/withDraw/findWithDraw')
@@ -165,7 +161,7 @@ export default {
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
-          'status': status,
+          'status': this.currentStatus,
           'cityId': this.activeName === '待结算'?$('.citys span.active').attr('myId'):$('.citys2 span.active').attr('myId'),
           'currentPage': val
         })
@@ -185,13 +181,8 @@ export default {
               this.pageShow = false
             }
             var newData = this.tableDataDel(data)
-            if (status === 0) {
-              this.tableData = newData
+            this.tableData = newData
               this.loading2 = false
-            } else {
-              this.tableData2 = newData
-              this.loading2 = false
-            }
           }
         })
     },
