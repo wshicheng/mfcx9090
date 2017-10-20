@@ -235,7 +235,6 @@ export default {
           message: '请输入日期',
           type: 'warning'
         })
-        return
       } else {
         request
           .post(host + 'beepartner/admin/statistics/adminStatistics')
