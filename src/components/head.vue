@@ -29,14 +29,14 @@ export default {
         }
     },  
     mounted () {
-        var name = localStorage.getItem('name')
-        var userName = localStorage.getItem('userName')
+        var name = sessionStorage.getItem('name')
+        var userName = sessionStorage.getItem('userName')
         if(name != 'null' && name != ''){
             this.userName = name
         }else{
              this.userName = userName
         }
-        this.imageUrl = localStorage.getItem('headImg')
+        this.imageUrl = sessionStorage.getItem('headImg')
 
        
     },
@@ -56,10 +56,10 @@ export default {
                 var code = JSON.parse(res.text).resultCode
                 var message = JSON.parse(res.text).message
                 if(code === 1){
-                    // localStorage.removeItem('userinfo');
-                    localStorage.removeItem('name')
-                    localStorage.removeItem('userName')
-                    localStorage.removeItem('headImg')
+                    // sessionStorage.removeItem('userinfo');
+                    sessionStorage.removeItem('name')
+                    sessionStorage.removeItem('userName')
+                    sessionStorage.removeItem('headImg')
                     this.$router.push('/login')
                 }else{
 
@@ -70,7 +70,7 @@ export default {
     },
     headWay () {
         if (this.$store.state.users.isHeaderImg) {
-            this.imageUrl = localStorage.getItem('headImg')
+            this.imageUrl = sessionStorage.getItem('headImg')
         } else {
             return
         }
