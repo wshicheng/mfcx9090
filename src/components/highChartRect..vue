@@ -28,7 +28,7 @@ export default {
     }
   },
   mounted() {
-    debugger
+    
     if (this.$store.state.users.consumeData.length === 0) {
       request
         .post(host + 'beepartner/admin/statistics/adminStatistics')

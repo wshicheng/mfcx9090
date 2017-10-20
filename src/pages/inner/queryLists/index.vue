@@ -342,7 +342,6 @@ export default {
         })
     },
     time () {
-      debugger
       var type = this.$route.query.type
       if (this.$store.state.users.timeline.length === 0) {
         return
