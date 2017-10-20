@@ -28,7 +28,7 @@ export default {
     }
   },
   mounted() {
-    debugger
+    // debugger
     if (this.$store.state.users.consumeData.length === 0) {
       request
         .post(host + 'beepartner/admin/statistics/adminStatistics')
@@ -63,12 +63,15 @@ export default {
             /**
              * 判断是否显示暂无数据
              */
-            if (this.consumeMoney.length === 0) {
+            console.log(arr.length)
+            console.log(arr.length === 0)
+            if (arr.length === 0) {
+              $('#container').html('')
               this.noData = true
             } else {
               this.noData = false
+              this.createChartsShap()
             }
-            this.createChartsShap()
           }
         })
     } else {
@@ -186,14 +189,11 @@ export default {
         this.orderNumber = order
         this.consumeMoney = allMoney
 
-
-      if (this.consumeMoney.length === 0) {
-        this.noData = true
-      } else {
-        this.noData = false
-      }
     },
     dataUpdate() {
+      if (this.$route.query.type === 'define') {
+      return
+    } else {
       request
         .post(host + 'beepartner/admin/statistics/adminStatistics')
         .withCredentials()
@@ -233,6 +233,7 @@ export default {
             }
           }
         })
+      }
     },
     time() {
       var type = this.$route.query.type
