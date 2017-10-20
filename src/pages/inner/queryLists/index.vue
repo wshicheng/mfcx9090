@@ -183,6 +183,7 @@ import $ from 'jquery'
 import request from 'superagent'
 import moment from 'moment'
 import { host } from '../../../config/index.js'
+import {isOwnEmpty} from '../../../util/util.js'
 export default {
   data () {
     return {
@@ -208,8 +209,8 @@ export default {
         })
         .send({
           'type': this.signForQuery === true?'define':this.$route.query.type,
-          'startTimeStr': this.$store.state.users.timeline.time1,
-          'endTimeStr': this.$store.state.users.timeline.time2,
+          'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
           'currentPage': val,
           'showType': 'table'
         })
@@ -262,7 +263,9 @@ export default {
         .send({
           'type': this.$route.query.type,
           'currentPage': 1,
-          'showType': 'table'
+          'showType': 'table',
+           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
         })
         .end((error, res) => {
           if (error) {
@@ -303,6 +306,8 @@ export default {
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
+          'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+          'endTimeStr':isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
           'type': this.$route.query.type,
           'currentPage': this.currentPage,
           'showType': 'table'
@@ -337,6 +342,8 @@ export default {
         })
     },
     time () {
+      debugger
+      var type = this.$route.query.type
       if (this.$store.state.users.timeline.length === 0) {
         return
       } else {
@@ -350,10 +357,10 @@ export default {
               'content-type': 'application/x-www-form-urlencoded'
             })
             .send({
-              'type': 'define',
+              'type': type,
               'currentPage': 1,
-              'startTimeStr': this.$store.state.users.timeline.newObj.time1,
-              'endTimeStr': this.$store.state.users.timeline.newObj.time2,
+               'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
               'showType': 'table'
             })
             .end((error, res) => {

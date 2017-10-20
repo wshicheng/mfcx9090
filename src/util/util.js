@@ -190,3 +190,15 @@ export function siblings (elem) {
    Number.prototype.thousand = function(){
     return this.toFixed(0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
  }
+ /*检查空对象*/
+export function isOwnEmpty(obj)
+{
+　　for(var name in obj)
+　　{
+　　　　if(obj.hasOwnProperty(name))
+　　　　{
+　　　　　　return false;//返回false，不为空对象
+　　　　}
+　　}
+　　return true;//返回true，为空对象
+};

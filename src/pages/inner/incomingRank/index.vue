@@ -103,6 +103,7 @@ export default {
         case '所有日期': {
           this.show = false
           this.$router.push({ query: { type: 'all' } })
+          this.$store.state.users.timeline = {}
           this.form.formatType = ''
           break
         }
@@ -134,7 +135,7 @@ export default {
       }
     },
     routeChange () {
-      this.value4 = []
+      //this.value4 = []
       var that = this
       $('.timeSelectBtn button').each(function () {
         if ($(this).attr('myId') === that.$route.query.type) {
