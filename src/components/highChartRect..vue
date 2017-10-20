@@ -15,6 +15,7 @@ var Highcharts = require('highcharts')
 require('highcharts/modules/exporting')(Highcharts)
 import request from 'superagent'
 import moment from 'moment'
+import {isOwnEmpty} from '../util/util.js'
 import { host } from '../config/index.js'
 // import Vue from 'vue'
 export default {
@@ -27,6 +28,7 @@ export default {
     }
   },
   mounted() {
+    debugger
     if (this.$store.state.users.consumeData.length === 0) {
       request
         .post(host + 'beepartner/admin/statistics/adminStatistics')
@@ -36,7 +38,9 @@ export default {
         })
         .send({
           'type': this.$route.query.type,
-          'showType': 'chart'
+          'showType': 'chart',
+           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
         })
         .end((error, res) => {
           if (error) {
@@ -198,7 +202,9 @@ export default {
         })
         .send({
           'type': this.$route.query.type,
-          'showType': 'chart'
+          'showType': 'chart',
+           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
         })
         .end((error, res) => {
           if (error) {
@@ -229,6 +235,10 @@ export default {
         })
     },
     time() {
+      var type = this.$route.query.type
+      if(isOwnEmpty(this.$store.state.users.timeline)==true){
+        return;
+      }
       console.log(this.$store.state.users.timeline.newObj.time1)
       if (this.$store.state.users.timeline.newObj.time1.length === 0&&this.$store.state.users.timeline.newObj.time2.length === 0) {
         this.$message({
@@ -243,9 +253,9 @@ export default {
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
-            'startTimeStr': this.$store.state.users.timeline.newObj.time1,
-            'endTimeStr': this.$store.state.users.timeline.newObj.time2,
-            'type': 'define',
+            'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
+            'type': type,
             'showType': 'chart'
           })
           .end((error, res) => {
