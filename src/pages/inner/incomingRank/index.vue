@@ -8,7 +8,7 @@
           <el-button @click="handleChangeType" myId='weekly'>本周</el-button>
           <el-button @click="handleChangeType" myId='monthly'>本月</el-button>
           <el-button @click="handleChangeType" myId='all'>所有日期</el-button>
-          <el-button @click='handleChangeType' style="margin-right: 15px;">指定时间段</el-button>
+          <el-button @click='handleChangeType' myId='define' style="margin-right: 15px;">指定时间段</el-button>
         </div>
         <el-date-picker 
           v-model="value4" 
@@ -82,6 +82,7 @@ export default {
         case '今日': {
           this.form.type = 'date'
           this.show = false
+          this.value4 = []
           this.$router.push({ query: { type: 'daily' } })
           this.form.formatType = 'yyyy-MM-dd'
           break
@@ -89,6 +90,7 @@ export default {
         case '本周': {
           this.form.type = 'week'
           this.show = false
+          this.value4 = []
           this.$router.push({ query: { type: 'weekly' } })
           this.form.formatType = 'yyyy 第 WW 周'
           break
@@ -96,6 +98,7 @@ export default {
         case '本月': {
           this.form.type = 'month'
           this.show = false
+          this.value4 = []
           this.$router.push({ query: { type: 'monthly'} })
           this.form.formatType = ''
           break
@@ -104,10 +107,12 @@ export default {
           this.show = false
           this.$router.push({ query: { type: 'all' } })
           this.$store.state.users.timeline = {}
+          this.value4 = []
           this.form.formatType = ''
           break
         }
         case '指定时间段': {
+          this.$router.push({ query: { type: 'define' } })
           this.show = true
           this.form.formatType = ''
           break
@@ -135,7 +140,7 @@ export default {
       }
     },
     routeChange () {
-      //this.value4 = []
+      // this.value4 = []
       var that = this
       $('.timeSelectBtn button').each(function () {
         if ($(this).attr('myId') === that.$route.query.type) {

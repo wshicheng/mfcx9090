@@ -251,51 +251,55 @@ export default {
       this.$router.push('/index/incomingRank/queryCharts?type=' + this.$route.query.type)
     },
     dataUpdate () {
-      this.currentPage = 1
-      this.signForQuery = false
-      this.loading2 = true
-      request
-        .post(host + 'beepartner/admin/statistics/adminStatistics')
-        .withCredentials()
-        .set({
-          'content-type': 'application/x-www-form-urlencoded'
-        })
-        .send({
-          'type': this.$route.query.type,
-          'currentPage': 1,
-          'showType': 'table',
-           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
-            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
-        })
-        .end((error, res) => {
-          if (error) {
-            this.loading2 = false
-            console.log('error:', error)
-          } else {
-            this.checkLogin(res)
-            this.loading2 = false
-            var arr = JSON.parse(res.text).data
-            var totalPage = Number(JSON.parse(res.text).totalPage)
-            this.totalItems = Number(JSON.parse(res.text).totalItems)
-            if (totalPage > 1) {
-              this.pageShow = true
+      if (this.$route.query.type === 'define') {
+        return
+      } else {
+        this.currentPage = 1
+        this.signForQuery = false
+        this.loading2 = true
+        request
+          .post(host + 'beepartner/admin/statistics/adminStatistics')
+          .withCredentials()
+          .set({
+            'content-type': 'application/x-www-form-urlencoded'
+          })
+          .send({
+            'type': this.$route.query.type,
+            'currentPage': 1,
+            'showType': 'table',
+            'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+              'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
+          })
+          .end((error, res) => {
+            if (error) {
+              this.loading2 = false
+              console.log('error:', error)
             } else {
-              this.pageShow = false
+              this.checkLogin(res)
+              this.loading2 = false
+              var arr = JSON.parse(res.text).data
+              var totalPage = Number(JSON.parse(res.text).totalPage)
+              this.totalItems = Number(JSON.parse(res.text).totalItems)
+              if (totalPage > 1) {
+                this.pageShow = true
+              } else {
+                this.pageShow = false
+              }
+              var newArr = [] 
+              for (var i = 0; i < arr.length; i++) {
+                var obj = {}
+                obj.allianceArea = arr[i].cityName
+                obj.orderNum = arr[i].totalBill
+                obj.totalBill = arr[i].totalMoney
+                obj.couponAmount = arr[i].totalDiscount
+                obj.userPayAmount = arr[i].actualMoney
+                newArr.push(obj)
+              }
+              this.$store.dispatch('consumeData_action', {newArr})
+              this.lists = this.$store.state.users.consumeData
             }
-            var newArr = [] 
-            for (var i = 0; i < arr.length; i++) {
-              var obj = {}
-              obj.allianceArea = arr[i].cityName
-              obj.orderNum = arr[i].totalBill
-              obj.totalBill = arr[i].totalMoney
-              obj.couponAmount = arr[i].totalDiscount
-              obj.userPayAmount = arr[i].actualMoney
-              newArr.push(obj)
-            }
-            this.$store.dispatch('consumeData_action', {newArr})
-            this.lists = this.$store.state.users.consumeData
-          }
-        })
+          })
+      }
     },
     getDateMount () {
       this.loading2 = true
@@ -342,6 +346,7 @@ export default {
         })
     },
     time () {
+      // debugger
       var type = this.$route.query.type
       if (this.$store.state.users.timeline.length === 0) {
         return
