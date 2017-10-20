@@ -663,6 +663,7 @@ export default {
               var totalPage = Number(JSON.parse(res.text).totalPage)
               var newArr = JSON.parse(res.text).data
               this.totalItems = Number(JSON.parse(res.text).totalItems)
+              this.sumMoney = JSON.parse(res.text).sumMoney
               if (totalPage > 1) {
                 this.pageShow = true
               } else {

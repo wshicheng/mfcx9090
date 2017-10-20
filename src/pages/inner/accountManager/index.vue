@@ -214,6 +214,7 @@ import { delAccountByAdmin } from '../../../api/delAccountByAdmin.api'
 import { host } from '../../../config/index.js'
 export default {
   data() {
+    var that = this
     var validatorUserName = function(rule, value, callback) {
       if (value === '') {
         callback(new Error('请输入用户名'))
@@ -221,14 +222,14 @@ export default {
         callback('用户名格式：必须英文字母开头 不可以为汉字')
       } else {
         request
-          .post(host + 'beepartner/admin/User/AdminUserUserNameOrPhone')
+          .post(host + 'beepartner/franchisee/User/checkIsExistsUserName')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
             'userName': value,
-            'sign': 1
+            'sign': that.editAccount.id
           })
           .end((err, res) => {
             if (err) {

@@ -179,7 +179,7 @@ export default {
                 callback('用户名格式：必须英文字母开头 不可以为汉字')
             } else {
                 request
-                .post(host + 'beepartner/admin/User/AdminUserUserNameOrPhone')
+                .post(host + 'beepartner/franchisee/User/checkIsExistsUserName')
                 .withCredentials()
                 .set({
                     'content-type': 'application/x-www-form-urlencoded'

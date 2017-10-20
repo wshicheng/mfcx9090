@@ -134,7 +134,13 @@ export default {
       }
     },
     routeChange () {
-      //this.value4 = []
+      this.value4 = []
+      var that = this
+      $('.timeSelectBtn button').each(function () {
+        if ($(this).attr('myId') === that.$route.query.type) {
+          $(this).addClass('active').siblings().removeClass('active')
+        }
+      })
     }
   },
   mounted () {
