@@ -8,7 +8,7 @@
 						</a>
 					</span>
 				</h1>
-			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="130px" class="demo-ruleForm">
+			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
         <el-form-item label="企业名称" prop="companyName">
           <el-input v-model="ruleForm.companyName" placeholder='长度不超过100字符'></el-input>
         </el-form-item>
@@ -31,7 +31,7 @@
           <el-input v-model.number="ruleForm.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input>
         </el-form-item>
         <h1 class="form_table_h1">加盟与结算信息</h1>
-        <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width:700px">
+        <!-- <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width:700px">
             <el-select @change="handleChangeProvince"
               v-model="ruleForm.provinceName"
               loading-text
@@ -65,6 +65,9 @@
                 :value="item.name">
               </el-option>
             </el-select>
+        </el-form-item> -->
+          <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width:700px">
+            <city-list v-bind:joinCity="_cityList" v-on:listenToChildEvetn="showMsgFormChild"></city-list>
         </el-form-item>
         <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
           <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
@@ -79,9 +82,22 @@
           <el-radio-group v-model="ruleForm.wType">
             <el-radio label="自然月" value='0'></el-radio>
             <el-radio label="自然周(周一到周日)" value='1'></el-radio>
+            <el-radio label="自定义" value='2'></el-radio>
+            <el-date-picker class="customInput" style="display:inline;width:200px;" v-show="ruleForm.wType=='自定义'"
+              v-model="ruleForm.customTime"
+              placeholder="选择自定义日期">
+            </el-date-picker>  
           </el-radio-group>
         </el-form-item>
         <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
+        <el-form-item label="第一次结算开始日期" prop="settleTime">
+            <el-date-picker
+              :readonly="isHaveSettleOrders"
+              v-model="ruleForm.settleTime"
+              placeholder="选择日期">
+            </el-date-picker>           
+        </el-form-item>
+        <h1 class="form_table_h2">生成结算单后，次日期不允许修改</h1>
         <h1 class="form_table_h1">联系人信息</h1> 
         <el-form-item label="姓名" prop="userName">
           <el-input v-model="ruleForm.userName" placeholder='请输入姓名'></el-input>
@@ -193,7 +209,7 @@
 
   .form_table_h2 {
     width: 100%;
-    padding: 0px 0 10px 130px;
+    padding: 0px 0 10px 153px;
     height: 30px;
     line-height: 0px;
     font-size: 10px;
@@ -306,6 +322,7 @@ import moment from 'moment'
 import {host} from '../../../config/index'
 import {isCardNo,isPassportNo} from '../../../../utils/index.js'
 import {mapActions} from 'vuex'
+import cityList from '../../../components/cityList.vue'
 export default {
   data () {
     var checkId = (rule, value, callback) => {
@@ -333,6 +350,8 @@ export default {
         }, 1000);
       };
     return {
+      isHaveSettleOrders:false,
+      _cityList:[],
       areaShow:true,
       loading8: false,
       proloading:false,
@@ -341,12 +360,15 @@ export default {
       areaList:[],
       ruleForm: {
         provinceId:'',
+        customTime:'',
         cityId:'',
         areaId:'',
         provinceName:'',
         cityName:'',
+        _cityName:[],
         areaName:'',
         joinTime:new Date(Date.now()),
+        settleTime:'',
         companyName: '',
         businessLicense: '',
         address: '',
@@ -376,6 +398,9 @@ export default {
         ],
         joinTime: [
           { type: 'date', required: true, message: '请选择加盟日期', tigger: 'blur'}
+        ],
+        settleTime: [
+          { type: 'date', required: true, message: '请选择结算日期', tigger: 'blur'}
         ],
         subscriptionNum: [
           { type: 'number', required: true, message: '请选择输入认购车辆数', trigger: 'blur' }
@@ -431,6 +456,9 @@ export default {
       areaError: false
     }
   },
+  components:{
+    cityList
+  },
   updated () {
     if (this.checked === true) {
       this.add = true
@@ -438,12 +466,29 @@ export default {
       this.add = false
     }
   },
+  created(){
+    // 初始化调用查询可加盟城市的接口,动态渲染数据
+    this._cityList = [
+      { cityName: "合肥", code: "1024", id: 1 },
+      { cityName: "北京", code: "1034", id: 2 },
+      { cityName: "南京", code: "1025", id: 3 }
+    ]
+    // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
+    this.isHaveSettleOrders = true // true 不可编辑
+  },
   mounted:function(){
     document.title = '添加加盟商'
+    this.ruleForm.settleTime = this.ruleForm.joinTime
     this.filterProvinceMethod()
   },
   methods: {
     ...mapActions(['setAccountOpendState']),
+    showMsgFormChild(data){
+      // 子组件像父组件传值,目的是获取被选中的cityCode
+      this.ruleForm._cityName = data;
+      this.ruleForm.cityName = data.join()
+      console.log(this.ruleForm._cityName)
+    },
     handleCheckbox(e){
       if(!this.checked){
         this.ruleForm.username = ''
@@ -602,7 +647,8 @@ export default {
            this.loading8 = true
           
           var obj = {}
-          obj = Object.assign({},this.ruleForm,{cardType:this.ruleForm.cardType==='居民身份证'?0:1},{percent:parseFloat(this.ruleForm.percent)},{licenseFeeRate:this.ruleForm.licenseFeeRate},{wType:this.ruleForm.wType ==='自然月'?0:1},{joinTime: moment(this.ruleForm.joinTime).format('YYYY-MM-DD')})
+          // obj = Object.assign({},this.ruleForm,{cardType:this.ruleForm.cardType==='居民身份证'?0:1},{percent:parseFloat(this.ruleForm.percent)},{licenseFeeRate:this.ruleForm.licenseFeeRate},{wType:this.ruleForm.wType ==='自然月'?0:1},{joinTime: moment(this.ruleForm.joinTime).format('YYYY-MM-DD')})
+          obj = Object.assign({},this.ruleForm,{cardType:this.ruleForm.cardType==='居民身份证'?0:1},{percent:parseFloat(this.ruleForm.percent)},{licenseFeeRate:this.ruleForm.licenseFeeRate},{wType:this.transformType(this.ruleForm.wType)},{joinTime: moment(this.ruleForm.joinTime).format('YYYY-MM-DD')},{customTime: moment(this.ruleForm.customTime).format('YYYY-MM-DD')},{settleTime: moment(this.ruleForm.settleTime).format('YYYY-MM-DD')},{_cityName:this.ruleForm._cityName.join()})
           request
             .post(host + 'beepartner/admin/cityPartner/addCityPartner')
             .withCredentials()
@@ -676,6 +722,23 @@ export default {
       if (JSON.parse(res.text).message === '用户登录超时') {
         this.$router.push('/login')
       }
+    },
+    transformType(type){
+      if(type=='自然月'){
+        return 0
+      }else if(type=='自然周'){
+        return 1
+      }else{
+        return 2 
+      }
+    }
+  },
+  watch:{
+    'ruleForm.wType':{
+      handler:function(n,o){
+        this.transformType(n)
+      },
+      deep:true
     }
   }
 }
