@@ -29,7 +29,16 @@
               <td>
                 <span class="prex">加盟资金：</span>￥{{new Number(franchiseeDetail.subscriptionMoney).thousandFormat() + '元'}}</td>
               <td>
-                <span class="prex">加盟区域：</span>{{franchiseeDetail.cityName}}</td>
+                <span class="prex">加盟区域：</span>
+                    <el-select v-model="cityId" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+                </td>
             </tr>
              <tr>
               <td>
@@ -142,6 +151,9 @@ import moment from 'moment'
 export default {
   data: function () {
     return {
+       cityName:'',
+      cityId:'',
+      options:[],
       loading2: false,
       currentPage3: 1,
       totalItems: 1,
@@ -157,6 +169,33 @@ export default {
     }
   },
   methods: {
+    loadDetail(){},
+    loadData(){
+       var id = this.$route.params.id.split('&')[0]
+    var cityPartnerId = this.$route.params.id.split('&')[1]
+    request
+      .post(host + 'beepartner/admin/cityPartner/getCityPartnerDetail')
+      .withCredentials()
+      .set({
+        'content-type': 'application/x-www-form-urlencoded'
+      })
+      .send({
+        'id': id,
+        'cityPartnerId': cityPartnerId
+      })
+      .end((err, res) => {
+        if (err) {
+          //this.loading = false
+          console.log('err:' + err)
+        } else {
+          this.checkLogin(res)
+          var res = JSON.parse(res.text).data
+          // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
+          this.franchiseeDetail = res
+          this.imgUrl = res.businessLicenseIconUrl
+        }
+      })
+    },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);
     },
@@ -172,6 +211,7 @@ export default {
           })
           .send({
             'id': id,
+            cityId:this.cityId,
             'cityPartnerId': cityPartnerId,
             'currentPage': val
           })
@@ -206,6 +246,7 @@ export default {
           .send({
             'id': id,
             'cityPartnerId': cityPartnerId,
+            cityId:this.cityId,
             'currentPage': val
           })
           .end((err, res) => {
@@ -250,6 +291,7 @@ export default {
           })
           .send({
             'id': id,
+             cityId:this.cityId,
             'cityPartnerId': cityPartnerId
           })
           .end((err, res) => {
@@ -287,6 +329,7 @@ export default {
         })
         .send({
           'id': id,
+           cityId:this.cityId,
           'cityPartnerId': cityPartnerId
         })
         .end((err, res) => {
@@ -315,38 +358,58 @@ export default {
       }
     }
   },
+    created() {
+      // 初始化调用查询可加盟城市的接口,动态渲染数据
+    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    .withCredentials()
+    .set({
+      "content-type": "application/x-www-form-urlencoded"
+    })
+    .end((error,res)=>{
+      if(error){
+        console.log(error)
+      }else{
+        var result = JSON.parse(res.text)
+        this.options = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+        this.cityId = this.options[0].value
+        this.options.map((item)=>{
+          if(item.value===this.cityId){
+            console.log(item.label)
+            this.cityName = item.label
+          }
+        })
+      }
+    })
+   
+  },
   mounted: function () {
     //this.loading = true
     document.title = '加盟商详情'
-    var id = this.$route.params.id.split('&')[0]
-    var cityPartnerId = this.$route.params.id.split('&')[1]
-    request
-      .post(host + 'beepartner/admin/cityPartner/getCityPartnerDetail')
-      .withCredentials()
-      .set({
-        'content-type': 'application/x-www-form-urlencoded'
-      })
-      .send({
-        'id': id,
-        'cityPartnerId': cityPartnerId
-      })
-      .end((err, res) => {
-        if (err) {
-          //this.loading = false
-          console.log('err:' + err)
-        } else {
-          this.checkLogin(res)
-          var res = JSON.parse(res.text).data
-          // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
-          this.franchiseeDetail = res
-          this.imgUrl = res.businessLicenseIconUrl
-        }
-      })
+   this.loadData()
     /**
      * 获取车辆详情
      */
     this.getBikeDetail()
+  },
+  watch:{
+    'cityId':{
+      handler:function(n,o){
+        this.options.map((item)=>{
+          if(item.value=== n){
+            this.cityName = item.label
+          }
+        })
+        this.loadData()
+      },
+      deep:true,
+    },
   }
+  
 }
 </script>
 <style scoped>

@@ -1,5 +1,6 @@
 <template>
   <div class="consumeData">
+   
     <div class="countInfo">
       <el-row class="countTitle">
         <span class="countDimension">统计维度</span>
@@ -22,10 +23,13 @@
 </template>
 <script>
 import { siblings } from '../../../../utils/index.js'
+
 export default {
   data: function () {
     return {
       form: {
+        remoteCityList:[],
+         cityCodeList: [],
         data1: '',
         data2: '',
         type: 'date',
@@ -34,7 +38,9 @@ export default {
       active: false
     }
   },
+  
   methods: {
+    
     handleChangeType (e) {
       switch (e.target.innerText) {
         case '日': {

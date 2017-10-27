@@ -17,10 +17,14 @@ const state = {
     isHeaderImg: false,
     isOpenAddAccount:false,
     name:'',
-    phone: ''
+    phone: '',
+    recodeCityId:''
 }
 
 const mutations = {
+    recodeCityId(state,cityId){
+        state.recodeCityId = cityId
+    },
     updateName(state,name){
         state.name = name
     },
@@ -82,6 +86,9 @@ const mutations = {
 }
 
 const actions = {
+    setCityId(context,id){
+        context.commit('recodeCityId',id)
+    },
     setName({ commit }, name){
         commit('updateName',name)
     },
@@ -107,9 +114,13 @@ const actions = {
     // 登录超时的sign ====>
     loginSian_action: ({ commit }) => commit('loginSign')
 }
-
+const cityId = state => state.recodeCityId
+const getters = {
+    cityId: cityId
+}
 export default {
     state,
     mutations,
-    actions
+    actions,
+    getters
 }

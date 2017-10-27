@@ -12,7 +12,7 @@
         <div>
           <el-row class="city">
             <div class="citys" style="margin-left: 100px;">
-              <address class="joinArea" style="margin-left: -66px;">加盟区域：</address>
+              <address class="joinArea" style="margin-left: -66px;">加盟区域</address>
               <span @click="handleClick" myId='0' class="active">全部地区</span>
               <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
             </div>
@@ -142,7 +142,7 @@
     display: inline;
     font-size: 14px;
     margin-left: 34px;
-    margin-right: -7px;
+    margin-right: 6px;
   }
 
   #earD_header div.citys {
@@ -155,7 +155,7 @@
     cursor: pointer;
     font-size: 14px;
     display: inline;
-    padding: 7px 5px 7px 5px;
+    padding: 5px;
     border: 1px solid transparent;
   }
   #earD_header div.citys span.active {

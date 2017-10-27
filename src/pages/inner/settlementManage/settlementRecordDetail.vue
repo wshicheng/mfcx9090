@@ -186,6 +186,7 @@ import {thousandFormat} from '../../../util/util.js'
     data(){
       return {
         list: [],
+        wType:'',
         state:'',
         actProfit:'',
         actProfitStr: '',
@@ -202,8 +203,10 @@ import {thousandFormat} from '../../../util/util.js'
     },
      mounted(){
        document.title="结算单"
+       console.log(this.$route)
         this.month = this.$route.query.month
         this.cityPartnerId = this.$route.query.id
+        this.wType = this.$route.query.wType
        request
       .post(host + 'beepartner/franchisee/withDraw/getWithDrawRecordDetail')
       .withCredentials()
@@ -211,6 +214,7 @@ import {thousandFormat} from '../../../util/util.js'
         'content-type': 'application/x-www-form-urlencoded'
       })
       .send({
+        wType:this.wType,
         applyTimeStr:this.month,
         cityPartnerId:this.cityPartnerId
       })

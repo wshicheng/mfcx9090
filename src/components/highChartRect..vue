@@ -17,6 +17,7 @@ import request from 'superagent'
 import moment from 'moment'
 import {isOwnEmpty} from '../util/util.js'
 import { host } from '../config/index.js'
+import { mapActions, mapGetters } from "vuex";
 // import Vue from 'vue'
 export default {
   data() {
@@ -27,16 +28,29 @@ export default {
       noData: false
     }
   },
+   computed:{
+    ...mapGetters(['cityId'])
+  },
   mounted() {
     // debugger
     if (this.$store.state.users.consumeData.length === 0) {
-      request
+     this.loadData()
+    } else {
+      this.getChartDate()
+      this.createChartsShap()
+      return
+    }
+  },
+  methods: {
+    loadData(){
+       request
         .post(host + 'beepartner/admin/statistics/adminStatistics')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
+          cityId:this.cityId,
           'type': this.$route.query.type,
           'showType': 'chart',
            'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
@@ -63,8 +77,7 @@ export default {
             /**
              * 判断是否显示暂无数据
              */
-            console.log(arr.length)
-            console.log(arr.length === 0)
+           
             if (arr.length === 0) {
               $('#container').html('')
               this.noData = true
@@ -74,13 +87,7 @@ export default {
             }
           }
         })
-    } else {
-      this.getChartDate()
-      this.createChartsShap()
-      return
-    }
-  },
-  methods: {
+    },
     createChartsShap() {
       if (this.consumeMoney.length === 0 && this.orderNumber === 0) {
         this.noData = true
@@ -201,6 +208,7 @@ export default {
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
+          cityId:this.cityId,
           'type': this.$route.query.type,
           'showType': 'chart',
            'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
@@ -240,7 +248,6 @@ export default {
       if(isOwnEmpty(this.$store.state.users.timeline)==true){
         return;
       }
-      console.log(this.$store.state.users.timeline.newObj.time1)
       if (this.$store.state.users.timeline.newObj.time1.length === 0&&this.$store.state.users.timeline.newObj.time2.length === 0) {
         this.$message({
           message: '请输入日期',
@@ -298,6 +305,12 @@ export default {
     }
   },
   watch: {
+    'cityId':{
+      handler:function(n,o){
+        this.loadData()
+      },
+      deep:true,
+    },
     '$route': 'dataUpdate',
     '$store.state.users.timeline': 'time'
   }

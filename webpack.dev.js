@@ -13,7 +13,7 @@ module.exports = merge(common, {
 },
   devServer: {
     disableHostCheck: true,
-    port:7777,
+    port:9090,
     contentBase: './build',
     inline: true,
     historyApiFallback: true

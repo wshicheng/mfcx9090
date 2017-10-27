@@ -1,6 +1,11 @@
 <template>
   <div class="consumeData">
+     
     <div class="countInfo">
+       <div class="cityContainer" v-show="remoteCityList.length>1" >
+          <span class="joinPlace">加盟区域</span>
+           <city-list v-bind:joinCity="remoteCityList" v-on:listenToChildEvetn="showMsgFormChild"></city-list>
+        </div>
       <el-row class="countTitle">
         <!-- <span class="countDimension labelAlign" style="margin-right: 0px;">统计维度</span> -->
         <div class="timeSelectBtn" style='margin-left: -10px;'>
@@ -31,9 +36,14 @@ import $ from 'jquery'
 import { siblings } from '../../../../utils/index.js'
 import moment from 'moment'
 import { host } from '../../../config/index.js'
+import cityList from "../../../components/cityList.vue";
+import request  from 'superagent'
+import {mapActions,mapGetters} from 'vuex'
 export default {
   data: function () {
     return {
+      remoteCityList:[],
+       cityCodeList: [],
       form: {
         data1: '',
         data2: '',
@@ -76,7 +86,36 @@ export default {
       // }
     }
   },
+   components: {
+    cityList
+  },
+   created() {
+    // 初始化调用查询可加盟城市的接口,动态渲染数据
+    var that = this;
+     request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    .withCredentials()
+      .set({
+        "content-type": "application/x-www-form-urlencoded"
+      })
+      .end((error, res) => {
+        if (error) {
+          console.log(error);
+        } else {
+          var result = JSON.parse(res.text);
+          var arr = result.map(list => {
+            return { cityName: list.name, code: list.id };
+          });
+
+          this.remoteCityList = arr;
+        }
+      });
+  },
   methods: {
+    ...mapActions(['setCityId']),
+     showMsgFormChild(data) {
+      // 子组件像父组件传值,目的是获取被选中的cityCode
+      this.cityCodeList = data;
+    },
     handleChangeType(e) {
       switch (e.target.innerText) {
         case '今日': {
@@ -156,17 +195,42 @@ export default {
     document.title = '收益排行'
   },
   watch: {
-    '$route': 'routeChange'
+    '$route': 'routeChange',
+    cityCodeList: {
+      handler: function(n, o) {
+        //console.log('搞事情')
+        this.setCityId(this.cityCodeList.join());
+      },
+      deep: true
+    },
   }
 }
 </script>
 <style>
+
+div.cityList {
+  display: inline-block;
+  margin-top: 4px;
+  
+  width: calc( 100% - 118px);
+  
+}
+span.joinPlace {
+  height: 44px;
+  line-height: 44px;
+  float: left;
+  width: 70px;
+  text-align: left;
+  margin-right: 1px;
+  font-size: 14px;
+  color: #555;
+}
 div.consumeData {
   margin-right: 20px;
 }
 
 div.countInfo {
-  padding: 20px 30px 20px 30px;
+  padding: 20px 20px 20px 20px;
   background: #fff;
   border: 1px solid #dfe6ec;
   margin-bottom: 20px;

@@ -12,13 +12,26 @@
             <td>
               <span>企业名称：</span>{{franchiseeDetail.companyName}}</td>
           </tr>
+           <tr>
+            <td>
+              <span>加盟区域：</span> 
+              <el-select v-model="cityId" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select></td>
+              
+
+          </tr>
           <tr>
             <td>
               <span>认购车辆：</span>{{franchiseeDetail.subscriptionNum}}</td>
             <td>
               <span>拥有车辆：</span>{{franchiseeDetail.bikeNum}}</td>
-            <td>
-              <span>加盟商区域：</span>{{franchiseeDetail.cityName}}</td>
+           
           </tr>
         </tbody>
       </table>
@@ -27,7 +40,7 @@
     <div id='distribution_selectBase'>
       <div id='distribution_table'>
         <div class='distribution_table_search'>
-          <h5>【{{franchiseeDetail.cityName}}】待分配的车辆</h5>
+          <h5>【{{cityName}}】待分配的车辆</h5>
           <input type="text" v-on:blur='inputBlurFun' ref="val" placeholder="车辆号\终端号" />
           <span>
             <i class='el-icon-search'></i>
@@ -394,9 +407,13 @@ import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 import moment from 'moment'
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      cityName:'',
+      cityId:'',
+      options:[],
       selectCars: [],
       franchiseeDetail: {},
       cityCode: '',
@@ -411,6 +428,35 @@ export default {
       choseBikes: '',
       signForQuery: false
     }
+  },
+   created() {
+      // 初始化调用查询可加盟城市的接口,动态渲染数据
+    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    .withCredentials()
+    .set({
+      "content-type": "application/x-www-form-urlencoded"
+    })
+    .end((error,res)=>{
+      if(error){
+        console.log(error)
+      }else{
+        var result = JSON.parse(res.text)
+        this.options = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+        this.cityId = this.options[0].value
+        this.options.map((item)=>{
+          if(item.value===this.cityId){
+            console.log(item.label)
+            this.cityName = item.label
+          }
+        })
+      }
+    })
+   
   },
   methods: {
     toggleSelection(rows) {
@@ -452,7 +498,8 @@ export default {
         })
         .send({
           'id': id,
-          'cityPartnerId': cityPartnerId
+          'cityPartnerId': cityPartnerId,
+           cityId: this.cityId
         })
         .end((err, res) => {
           if (err) {
@@ -464,9 +511,8 @@ export default {
             var res = JSON.parse(res.text).data
             // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
             this.franchiseeDetail = res
-            this.cityCode = res.cityId
-            if (this.cityCode.length > 0) {
-              this.loading2 = true
+         
+            this.loading2 = true
               request.post(host + 'beepartner/admin/cityPartner/getNotAllotBikes')
                 .withCredentials()
                 .set({
@@ -475,6 +521,7 @@ export default {
                 .send({
                   'type': 1,
                   'cityCode': this.cityCode,
+                  cityId:this.cityId,
                   'choseBikes': this.choseBikes === '' ? 0 : this.choseBikes
                 })
                 .end((error, res) => {
@@ -500,7 +547,6 @@ export default {
                     this.totalItems = Number(JSON.parse(res.text).totalItems)
                   }
                 })
-            }
           }
         })
     },
@@ -651,6 +697,7 @@ export default {
           .send({
             'type': 1,
             'cityCode': this.cityCode,
+            cityId:this.cityId,
             'keyName': this.$refs.val.value
           })
           .end((error, res) => {
@@ -685,7 +732,8 @@ export default {
           })
           .send({
             'type': 1,
-            'cityCode': this.cityCode
+            'cityCode': this.cityCode,
+            cityId:this.cityId
           })
           .end((error, res) => {
             if (error) {
@@ -725,6 +773,7 @@ export default {
           })
           .send({
             'cityCode': this.cityCode,
+            cityId:this.cityId,
             'limitNum': this.choseBikes === '' ? 0 : this.choseBikes
           })
           .end((error, res) => {
@@ -833,7 +882,18 @@ export default {
           this.loadDate()
         }
       }
-    }
+    },
+    'cityId':{
+      handler:function(n,o){
+        this.options.map((item)=>{
+          if(item.value=== n){
+            this.cityName = item.label
+          }
+        })
+         this.loadDate()
+      },
+      deep:true,
+    },
     // currentPage3:{
     //   handler:function(val,oldVal){
     //     if(this.cityCode.length>0){

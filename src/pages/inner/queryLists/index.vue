@@ -184,6 +184,7 @@ import request from 'superagent'
 import moment from 'moment'
 import { host } from '../../../config/index.js'
 import {isOwnEmpty} from '../../../util/util.js'
+import { mapActions, mapGetters } from "vuex";
 export default {
   data () {
     return {
@@ -208,6 +209,7 @@ export default {
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
+           cityId:this.cityId,
           'type': this.signForQuery === true?'define':this.$route.query.type,
           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
             'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
@@ -264,6 +266,7 @@ export default {
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
+             cityId:this.cityId,
             'type': this.$route.query.type,
             'currentPage': 1,
             'showType': 'table',
@@ -310,6 +313,7 @@ export default {
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
+          cityId:this.cityId,
           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
           'endTimeStr':isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
           'type': this.$route.query.type,
@@ -346,7 +350,6 @@ export default {
         })
     },
     time () {
-      // debugger
       var type = this.$route.query.type
       if (this.$store.state.users.timeline.length === 0) {
         return
@@ -361,6 +364,7 @@ export default {
               'content-type': 'application/x-www-form-urlencoded'
             })
             .send({
+              cityId:this.cityId,
               'type': type,
               'currentPage': 1,
                'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
@@ -443,8 +447,11 @@ export default {
     }
   },
   mounted () {
+   
     document.title = '蜜蜂平台管理——收益排行列表'
-    this.getDateMount()
+    setTimeout(()=>{
+      this.getDateMount()
+    },500)
     if (this.$store.state.users.timeline.length === 0) {
       this.getDateMount()
     } else {
@@ -461,7 +468,16 @@ export default {
   // beforeMount () {
   //   this.time()
   // },
+   computed:{
+    ...mapGetters(['cityId'])
+  },
   watch: {
+    'cityId':{
+      handler:function(n,o){
+        this.getDateMount()
+      },
+      deep:true,
+    },
     '$route': 'dataUpdate',
     '$store.state.users.timeline': 'time'
   }
