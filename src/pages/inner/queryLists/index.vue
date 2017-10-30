@@ -41,14 +41,23 @@
         </el-table-column>
         <el-table-column
           prop="couponAmount"
-          label="优惠卷支付总额">
+          label="优惠卷支付(元)">
              <template scope="scope">
             {{new Number(scope.row.couponAmount).thousandFormat()}}
           </template>
         </el-table-column>
         <el-table-column
+          prop="grantAmount"
+          label="赠送金额支付(元)"
+          min-width="60"
+        >
+            <template scope="scope">
+            {{new Number(scope.row.grantAmount).thousandFormat()}}
+          </template>
+        </el-table-column>
+        <el-table-column
           min-width="80"
-          label="实际收益（元)"
+          label="实际收益(元)"
           prop='userPayAmount'
           :render-header="rendHeader">
              <template scope="scope">
@@ -240,6 +249,7 @@ export default {
               obj.totalBill = arr[i].totalMoney
               obj.couponAmount = arr[i].totalDiscount
               obj.userPayAmount = arr[i].actualMoney
+              obj.grantAmount = arr[i].grantAmount
               newArr.push(obj)
             }
             this.$store.dispatch('consumeData_action', {newArr})
@@ -296,6 +306,7 @@ export default {
                 obj.totalBill = arr[i].totalMoney
                 obj.couponAmount = arr[i].totalDiscount
                 obj.userPayAmount = arr[i].actualMoney
+                obj.grantAmount = arr[i].grantAmount
                 newArr.push(obj)
               }
               this.$store.dispatch('consumeData_action', {newArr})
@@ -342,6 +353,7 @@ export default {
               obj.totalBill = arr[i].totalMoney
               obj.couponAmount = arr[i].totalDiscount
               obj.userPayAmount = arr[i].actualMoney
+              obj.grantAmount = arr[i].grantAmount
               newArr.push(obj)
             }
             this.$store.dispatch('consumeData_action', {newArr})
@@ -367,8 +379,8 @@ export default {
               cityId:this.cityId,
               'type': type,
               'currentPage': 1,
-               'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
-            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
+              'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+              'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
               'showType': 'table'
             })
             .end((error, res) => {
@@ -396,6 +408,7 @@ export default {
                   obj.totalBill = arr[i].totalMoney
                   obj.couponAmount = arr[i].totalDiscount
                   obj.userPayAmount = arr[i].actualMoney
+                  obj.grantAmount = arr[i].grantAmount
                   newArr.push(obj)
                 }
                 this.$store.dispatch('consumeData_action', {newArr})

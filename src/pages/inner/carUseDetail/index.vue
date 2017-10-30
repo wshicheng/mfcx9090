@@ -81,12 +81,17 @@
                   {{ new Number(scope.row.actualAmount).thousandFormat()}}
                 </template>
               </el-table-column>
-              <el-table-column label="优惠券支付" prop="couponAmount" min-width='80'>
+              <el-table-column label="优惠券支付(元)" prop="couponAmount" min-width='80'>
                 <template scope="scope">
                   {{ new Number(scope.row.couponAmount).thousandFormat()}}
                 </template>
               </el-table-column>
-              <el-table-column label="实际收益合计" prop="balanceAmount" :render-header="rendHeader">
+              <el-table-column label="赠送金额支付(元)" prop="grantAmount" min-width='80'>
+                <template scope="scope">
+                  {{ new Number(scope.row.grantAmount).thousandFormat()}}
+                </template>
+              </el-table-column>
+              <el-table-column label="实际收益(元)" prop="balanceAmount" :render-header="rendHeader">
                 <template scope="scope">
                   {{ new Number(scope.row.balanceAmount).thousandFormat()}}
                 </template>

@@ -124,7 +124,7 @@
                 <h1 class="form_table_h1">加盟与结算信息</h1>
                 <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="list of multiForm">
                      <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width: 700px;">
-                       <el-input v-model="list.cityId"></el-input> 
+                       <el-input v-model="list.cityName"></el-input> 
                    <!-- <el-select disabled @change="handleEditProvince"
                       v-model="editAccount.provinceName"
                       loading-text

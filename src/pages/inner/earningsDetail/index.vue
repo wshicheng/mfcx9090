@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column
           prop="rideTime"
-          label="骑行时间（分钟）"
+          label="骑行时间(分钟)"
           min-width="90"
         >
           <template scope="scope">
@@ -87,7 +87,7 @@
         </el-table-column>
         <el-table-column
           prop="rideMileage"
-          label="骑行里程（米）"
+          label="骑行里程(米)"
           min-width="85"
           >
           <template scope="scope">
@@ -96,7 +96,7 @@
         </el-table-column>
         <el-table-column
           prop="orderMoney"
-          label="订单费用"
+          label="订单费用(元)"
           min-width="60"
           >
            <template scope="scope">
@@ -105,11 +105,20 @@
         </el-table-column>
         <el-table-column
           prop="couponAmount"
-          label="优惠券支付"
+          label="优惠券支付(元)"
           min-width="60"
         >
             <template scope="scope">
             {{new Number(scope.row.couponAmount).thousandFormat()}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="grantAmount"
+          label="赠送金额支付(元)"
+          min-width="60"
+        >
+            <template scope="scope">
+            {{new Number(scope.row.grantAmount).thousandFormat()}}
           </template>
         </el-table-column>
         <el-table-column
@@ -607,6 +616,7 @@ export default {
         obj.orderMoney = arr[i].orderMoney
         obj.couponAmount = arr[i].couponAmount
         obj.balanceAmount = arr[i].balanceAmount
+        obj.grantAmount = arr[i].grantAmount
         arrDeled.push(obj)
       }
       return arrDeled

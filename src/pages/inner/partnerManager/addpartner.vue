@@ -31,7 +31,7 @@
                 v-for="item in ruleForm.options"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item">
               </el-option>
             </el-select>
         </el-form-item>
@@ -674,6 +674,9 @@ export default {
           delete this.ruleForm.options
           delete this.ruleForm.value
           var newMultForm = this.multiForm.map((item)=>{
+            console.log('提交ITEM', item)
+            var cityName = item.cityId.label
+            var cityId = item.cityId.value 
             var wType,joinTime,firstDealDate
             if(item.wType==='自然月'){
                wType = 0
@@ -684,7 +687,7 @@ export default {
             }
             joinTime = moment(item.joinTime).format('YYYY-MM-DD')
             firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
-            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate})
+            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
           })
           obj = Object.assign(
             {},
