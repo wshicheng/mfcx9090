@@ -432,7 +432,7 @@ export default {
    created() {
       var cityPartnerId = this.$route.params.id.split('&')[1]
       // 初始化调用查询可加盟城市的接口,动态渲染数据
-    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    request.post(host + 'beepartner/admin/city/findCity')
     .withCredentials()
     .set({
       "content-type": "application/x-www-form-urlencoded"
@@ -444,11 +444,11 @@ export default {
       if(error){
         console.log(error)
       }else{
-        var result = JSON.parse(res.text)
+        var result = JSON.parse(res.text).data
         this.options = result.map((item)=>{
           return {
-            value:item.code,
-            label:item.name
+            value:item.cityId,
+            label:item.cityName
           }
         })
         this.cityId = this.options[0].value
@@ -856,7 +856,7 @@ export default {
   // },
   mounted() {
     document.title = '分配车辆'
-    this.loadDate()
+    //this.loadDate()
   },
   watch: {
     'tempcar':{
