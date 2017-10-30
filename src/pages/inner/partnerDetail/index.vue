@@ -171,7 +171,7 @@ export default {
   methods: {
     loadDetail(){},
     loadData(){
-       var id = this.$route.params.id.split('&')[0]
+    var id = this.$route.params.id.split('&')[0]
     var cityPartnerId = this.$route.params.id.split('&')[1]
     request
       .post(host + 'beepartner/admin/cityPartner/getCityPartnerDetail')
@@ -181,6 +181,7 @@ export default {
       })
       .send({
         'id': id,
+         cityId:this.cityId,
         'cityPartnerId': cityPartnerId
       })
       .end((err, res) => {
@@ -359,11 +360,15 @@ export default {
     }
   },
     created() {
+      var cityPartnerId = this.$route.params.id.split('&')[1]
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
     .withCredentials()
     .set({
       "content-type": "application/x-www-form-urlencoded"
+    })
+    .send({
+      cityPartnerId:cityPartnerId
     })
     .end((error,res)=>{
       if(error){
@@ -376,10 +381,10 @@ export default {
             label:item.name
           }
         })
+        console.log(this.options)
         this.cityId = this.options[0].value
         this.options.map((item)=>{
           if(item.value===this.cityId){
-            console.log(item.label)
             this.cityName = item.label
           }
         })
@@ -390,11 +395,11 @@ export default {
   mounted: function () {
     //this.loading = true
     document.title = '加盟商详情'
-   this.loadData()
+  //  this.loadData()
     /**
      * 获取车辆详情
      */
-    this.getBikeDetail()
+    //this.getBikeDetail()
   },
   watch:{
     'cityId':{
@@ -405,6 +410,7 @@ export default {
           }
         })
         this.loadData()
+        this.getBikeDetail()
       },
       deep:true,
     },

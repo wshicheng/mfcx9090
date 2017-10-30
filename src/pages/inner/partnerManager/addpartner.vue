@@ -25,7 +25,7 @@
              <i v-show="multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
               
             </div>
-           <el-form-item label="加盟地区">
+           <el-form-item label="加盟地区" prop="cityName">
             <el-select v-model="list.cityId" placeholder="请选择">
               <el-option
                 v-for="item in ruleForm.options"
