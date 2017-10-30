@@ -114,7 +114,7 @@
               placeholder="选择日期">
             </el-date-picker>           
         </el-form-item>
-        <h1 class="form_table_h2">生成结算单后，次日期不允许修改</h1>
+        <h1 class="form_table_h2">生成结算单后，此日期不允许修改</h1>
         </div>
         <h1 class="form_table_h1">联系人信息</h1> 
         <el-form-item label="姓名" prop="userName">
@@ -478,10 +478,9 @@ export default {
         console.log(error)
       }else{
         var result = JSON.parse(res.text)
-        console.log(result)
         this.ruleForm.options = result.map((item)=>{
           return {
-            value:item.id,
+            value:item.code,
             label:item.name
           }
         })

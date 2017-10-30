@@ -2,10 +2,10 @@
   <div class="consumeData">
      
     <div class="countInfo">
-       <div class="cityContainer" v-show="remoteCityList.length>1" >
+       <!-- <div class="cityContainer" v-show="remoteCityList.length>1" >
           <span class="joinPlace">加盟区域</span>
            <city-list v-bind:joinCity="remoteCityList" v-on:listenToChildEvetn="showMsgFormChild"></city-list>
-        </div>
+        </div> -->
       <el-row class="countTitle">
         <!-- <span class="countDimension labelAlign" style="margin-right: 0px;">统计维度</span> -->
         <div class="timeSelectBtn" style='margin-left: -10px;'>

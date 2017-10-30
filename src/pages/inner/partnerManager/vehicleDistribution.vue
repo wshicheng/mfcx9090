@@ -430,11 +430,15 @@ export default {
     }
   },
    created() {
+      var cityPartnerId = this.$route.params.id.split('&')[1]
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
     .withCredentials()
     .set({
       "content-type": "application/x-www-form-urlencoded"
+    })
+    .send({
+      cityPartnerId:cityPartnerId
     })
     .end((error,res)=>{
       if(error){
@@ -450,7 +454,6 @@ export default {
         this.cityId = this.options[0].value
         this.options.map((item)=>{
           if(item.value===this.cityId){
-            console.log(item.label)
             this.cityName = item.label
           }
         })
@@ -535,7 +538,6 @@ export default {
                     // var newData = data.map((item)=>{
                     //   return Object.assign({},item,{onlineTime:moment(item.onlineTime).format('YYYY-MM-DD')})
                     // })
-                    console.log(data)
                     this.tableData_distribution = data||[]
 
                     var totalPage = Number(JSON.parse(res.text).totalPage)
@@ -608,7 +610,8 @@ export default {
           .send({
             'type': 1,
             'cityCode': this.cityCode,
-            'currentPage': val
+            'currentPage': val,
+            cityId:this.cityId
           })
           .end((error, res) => {
             if (error) {
@@ -639,6 +642,7 @@ export default {
           .send({
             'currentPage': val,
             'cityCode': this.cityCode,
+             cityId:this.cityId,
             'limitNum': this.choseBikes === '' ? 0 : this.choseBikes
           })
           .end((error, res) => {
@@ -813,6 +817,7 @@ export default {
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
+             cityId:this.cityId,
             'id': this.$route.params.id.split('&')[0],
             'cityPartnerId': this.$route.params.id.split('&')[1],
             'bikes': this.countAllotCars.toString()
