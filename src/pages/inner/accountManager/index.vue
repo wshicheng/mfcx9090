@@ -1227,6 +1227,7 @@ export default {
             } else {
               that.checkLogin(res)
               that.loading = false
+              console.log(res)
               that.totalPage = Number(JSON.parse(res.text).totalPage)
               var arr = JSON.parse(res.text).data
               that.totalItems = Number(JSON.parse(res.text).totalItems)

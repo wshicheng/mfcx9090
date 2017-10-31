@@ -65,20 +65,17 @@
           min-width="140">
         </el-table-column>
         <el-table-column
-          prop="areaName"
+          prop="cityList"
           label="加盟区域"
           min-width="65">
         </el-table-column>
         <el-table-column
-          prop="subscriptionMoney"
+          prop="joinMoneys"
           label="加盟资金(元)"
           min-width="80">
-            <template scope="scope">
-              {{new Number(scope.row.subscriptionMoney).thousandFormat()}}
-            </template>
         </el-table-column>
         <el-table-column
-          prop="joinTime"
+          prop="joinDays"
           label="加盟日期"
           min-width="80">
         </el-table-column>
