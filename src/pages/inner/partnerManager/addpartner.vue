@@ -382,7 +382,6 @@ export default {
       cityList: [],
       areaList: [],
       ruleForm: {
-        firstDealDate:'',
         companyName: "",
         businessLicense: "",
         address: "",
@@ -397,9 +396,6 @@ export default {
         options: [
         ],
         value: "",
-        cityName:'',
-        joinTime:'',
-        subscriptionNum:''
       },
       rules: {
         firstDealDate: [
@@ -512,7 +508,6 @@ export default {
      this.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     },
     removeMutiCity(index){
-      debugger
       console.log(index)
       this.multiForm.splice(index,1)
     },
@@ -705,7 +700,10 @@ export default {
             .set({
               "content-type": "application/x-www-form-urlencoded"
             })
-            .send(obj)
+            .send({
+              unUsed:1,
+              obj
+            })
             .end((error, res) => {
               if (error) {
                 console.log(error);
