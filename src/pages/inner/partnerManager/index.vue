@@ -861,7 +861,7 @@ export default {
               var pageNumber = Number(JSON.parse(res.text).totalPage);
               this.totalItems = Number(JSON.parse(res.text).totalItems);
               that.$store.state.users.keepParnterAccount = [];
-              result.map(item => {
+              result.reverse().map(item => {
                 that.$store.commit("keepParnterAccount", item);
               });
               this.tableData = that.$store.state.users.keepParnterAccount;

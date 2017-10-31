@@ -103,7 +103,7 @@
             <el-radio label="自定义" value='2'></el-radio>
             <el-input class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
               v-model="list.circleDays"
-              placeholder="输入结算周期，正数">
+              placeholder="输入结算周期，正整数">
             </el-input>  
           </el-radio-group>
         </el-form-item>
