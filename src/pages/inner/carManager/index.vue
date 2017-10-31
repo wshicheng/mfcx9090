@@ -348,6 +348,7 @@ export default {
       }
     },
     searchThroughCheckList () {
+      console.log(this.form)
       this.currentPage = 1
       this.loading2 = true
       var type 
@@ -357,12 +358,12 @@ export default {
         type = '1'
       }
       var startTime, endTime
-      if (this.form.data1 === '' || this.form.data2 === '') {
+      if (this.form.data1 === '' && this.form.data2 === '') {
         startTime = null
         endTime = null
       } else {
-        startTime = moment(this.form.data1).format('YYYY-MM-DD')
-        endTime = moment(this.form.data2).format('YYYY-MM-DD')
+        startTime = this.form.data1.toString().length>0?moment(this.form.data1).format('YYYY-MM-DD'):''
+        endTime = this.form.data2.toString().length>0?moment(this.form.data2).format('YYYY-MM-DD'):''
       }
       // 根据用户选择不同状态进行数据的筛选
       var radio = this.checkList.toString()

@@ -28,9 +28,9 @@
           </tr>
           <tr>
             <td>
-              <span>认购车辆：</span>{{franchiseeDetail.subscriptionNum}}</td>
+              <span>认购车辆：</span>{{relationSubscriptionNum}}</td>
             <td>
-              <span>拥有车辆：</span>{{franchiseeDetail.bikeNum}}</td>
+              <span>拥有车辆：</span>{{relationBikeNum}}</td>
            
           </tr>
         </tbody>
@@ -407,10 +407,13 @@ import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 import moment from 'moment'
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex"
+import {isOwnEmpty} from '../../../util/util.js'
 export default {
   data() {
     return {
+      relationBikeNum:'',
+      relationSubscriptionNum:'',
       cityName:'',
       cityId:'',
       options:[],
@@ -462,6 +465,33 @@ export default {
    
   },
   methods: {
+      getRelationDataByCitId(){
+       var cityPartnerId = this.$route.params.id.split('&')[1]
+      request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
+      .withCredentials()
+      .set({
+        'content-type': 'application/x-www-form-urlencoded'
+      })
+      .send({
+        cityPartnerId,
+        cityId:this.cityId
+      })
+      .end((error,res)=>{
+        if(error){
+          console.log(error)
+        }else{
+          var res = JSON.parse(res.text).data
+          if(isOwnEmpty(res)==false){
+            this.relationBikeNum = res.bikeNum
+            this.relationSubscriptionNum = res.subscriptionNum
+          }else{
+            this.relationBikeNum = ''
+            this.relationSubscriptionNum = ''
+          }
+          
+        }
+      })
+    },
     toggleSelection(rows) {
       if (rows) {
         rows.forEach(row => {
@@ -896,6 +926,7 @@ export default {
           }
         })
          this.loadDate()
+         this.getRelationDataByCitId()
       },
       deep:true,
     },
