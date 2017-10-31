@@ -25,7 +25,8 @@
              <i v-show="multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
               
             </div>
-           <el-form-item label="加盟地区" prop="cityName">
+           <el-form-item label="加盟地区"
+           >
             <el-select v-model="list.cityId" placeholder="请选择">
               <el-option
                 v-for="item in ruleForm.options"
@@ -102,7 +103,7 @@
             <el-radio label="自定义" value='2'></el-radio>
             <el-input class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
               v-model="list.circleDays"
-              placeholder="输入结算周期，正数">
+              placeholder="输入结算周期，正整数">
             </el-input>  
           </el-radio-group>
         </el-form-item>
@@ -371,7 +372,7 @@ export default {
       multiForm:[
        
         ],
-      newFormObject:{cityId:'',joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',circleDays:''}, 
+      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:''}, 
       isHaveSettleOrders: false,
       _cityList: [],
       areaShow: true,
@@ -394,19 +395,19 @@ export default {
         file: "",
         options: [
         ],
-        value: ""
+        value: "",
       },
       rules: {
+        firstDealDate: [
+          { required: true, message: "请输入第一次结算日期", trigger: "blur" }
+        ],
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
         businessLicense: [
           { required: true, message: "请输入营业执照号", trigger: "blur" }
         ],
         address: [{ message: "请输入正确的地址", trigger: "blur" }],
         joinTime: [
-          { type: "date", required: true, message: "请选择加盟日期", tigger: "blur" }
-        ],
-        settleTime: [
-          { type: "date", required: true, message: "请选择结算日期", tigger: "blur" }
+          {  required: true, message: "请选择加盟日期", tigger: "blur" }
         ],
         subscriptionNum: [
           {
@@ -424,7 +425,6 @@ export default {
             trigger: "blur"
           }
         ],
-        value: [{ required: true, message: "请选择加盟地区", tigger: "change" }],
         cardType: [{ required: true, message: "请选择证件类型", trigger: "blur" }],
         percent: [{ required: true, message: "请输入加盟比例", trigger: "blur" }],
         userName: [{ message: "请输入姓名", trigger: "blur" }],
@@ -508,7 +508,6 @@ export default {
      this.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     },
     removeMutiCity(index){
-      debugger
       console.log(index)
       this.multiForm.splice(index,1)
     },
@@ -674,7 +673,7 @@ export default {
           delete this.ruleForm.options
           delete this.ruleForm.value
           var newMultForm = this.multiForm.map((item)=>{
-            console.log('提交ITEM', item)
+
             var cityName = item.cityId.label
             var cityId = item.cityId.value 
             var wType,joinTime,firstDealDate
@@ -701,7 +700,10 @@ export default {
             .set({
               "content-type": "application/x-www-form-urlencoded"
             })
-            .send(obj)
+            .send({
+              unUsed:1,
+              obj
+            })
             .end((error, res) => {
               if (error) {
                 console.log(error);

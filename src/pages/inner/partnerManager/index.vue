@@ -70,15 +70,12 @@
           min-width="65">
         </el-table-column>
         <el-table-column
-          prop="subscriptionMoney"
+          prop="joinMoneys"
           label="加盟资金(元)"
           min-width="80">
-            <template scope="scope">
-              {{new Number(scope.row.subscriptionMoney).thousandFormat()}}
-            </template>
         </el-table-column>
         <el-table-column
-          prop="joinTime"
+          prop="joinDays"
           label="加盟日期"
           min-width="80">
         </el-table-column>
@@ -123,7 +120,7 @@
                
                 <h1 class="form_table_h1">加盟与结算信息</h1>
                 <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="list of multiForm">
-                     <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width: 700px;">
+                     <el-form-item label="加盟地区"  id='selectCity' style="width: 700px;">
                        <el-input v-model="list.cityName"></el-input> 
                    <!-- <el-select disabled @change="handleEditProvince"
                       v-model="editAccount.provinceName"
@@ -159,26 +156,26 @@
                       </el-option>
                     </el-select> -->
                 </el-form-item>
-                 <el-form-item label="加盟日期" prop="joinTime">
+                 <el-form-item label="加盟日期" >
                     <el-date-picker
                       v-model="list.joinTime"
                       type="date"
                       placeholder="选择日期">
                     </el-date-picker>           
                 </el-form-item>
-                <el-form-item label="车辆数" prop="subscriptionNum">
+                <el-form-item label="车辆数" >
                   <el-input v-model.number="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input>
                 </el-form-item>
-                <el-form-item label="加盟资金" prop="subscriptionMoney">
+                <el-form-item label="加盟资金">
                   <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="加盟分成比例" prop="percent">
                   <el-input v-model="editAccount.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
                 </el-form-item> -->
-                <el-form-item label="授权费率" prop="licenseFeeRate">
+                <el-form-item label="授权费率" >
                   <el-input v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
                 </el-form-item>
-                <el-form-item label="结算周期" prop='wType'>
+                <el-form-item label="结算周期" >
                   <el-radio-group v-model="list.wType">
                     <!-- <el-radio label="自然月" value='0'></el-radio>
                     <el-radio label="自然周(周一到周日)" value='1'></el-radio> -->
@@ -865,7 +862,7 @@ export default {
               var pageNumber = Number(JSON.parse(res.text).totalPage);
               this.totalItems = Number(JSON.parse(res.text).totalItems);
               that.$store.state.users.keepParnterAccount = [];
-              result.map(item => {
+              result.reverse().map(item => {
                 that.$store.commit("keepParnterAccount", item);
               });
               this.tableData = that.$store.state.users.keepParnterAccount;
@@ -1233,78 +1230,105 @@ export default {
       // );
       //this.editAccount = Object.assign({},row,{provinceName:''},{areaName:''})
       //this.editAccount.cityName = ' '
-      this.filterProvinceMethod();
-      var id1 = this.editAccount.cId;
-      var id2 = this.editAccount.pId;
-      // 打开弹窗获取城市与地区
-      var that = this;
-      setTimeout(function() {
-        request
-          .post(host + "beepartner/admin/cityPartner/getChildrenArea")
-          .withCredentials()
-          .set({
-            "content-type": "application/x-www-form-urlencoded"
-          })
-          .send({
-            id: id1
-          })
-          .end((error, res) => {
-            if (error) {
-              console.log(error);
-            } else {
-              that.checkLogin(res);
-              var result = JSON.parse(res.text).data;
-              if (result.length === 0) {
-                that.areaShow = false;
-              } else {
-                that.areaShow = true;
-              }
-              var areaList = result.map(item => {
-                var obj = {};
-                obj.id = item.id;
-                obj.name = item.name;
-                obj.code = item.code;
-                return obj;
-              });
-              that.areaList = areaList;
-            }
-          });
+      // this.filterProvinceMethod();
+      // var id1 = this.editAccount.cId;
+      // var id2 = this.editAccount.pId;
+      // // 打开弹窗获取城市与地区
+      // var that = this;
+      // setTimeout(function() {
+      //   request
+      //     .post(host + "beepartner/admin/cityPartner/getChildrenArea")
+      //     .withCredentials()
+      //     .set({
+      //       "content-type": "application/x-www-form-urlencoded"
+      //     })
+      //     .send({
+      //       id: id1
+      //     })
+      //     .end((error, res) => {
+      //       if (error) {
+      //         console.log(error);
+      //       } else {
+      //         that.checkLogin(res);
+      //         var result = JSON.parse(res.text).data;
+      //         if (result.length === 0) {
+      //           that.areaShow = false;
+      //         } else {
+      //           that.areaShow = true;
+      //         }
+      //         var areaList = result.map(item => {
+      //           var obj = {};
+      //           obj.id = item.id;
+      //           obj.name = item.name;
+      //           obj.code = item.code;
+      //           return obj;
+      //         });
+      //         that.areaList = areaList;
+      //       }
+      //     });
 
-        request
-          .post(host + "beepartner/admin/cityPartner/getChildrenArea")
-          .withCredentials()
-          .set({
-            "content-type": "application/x-www-form-urlencoded"
-          })
-          .send({
-            id: id2
-          })
-          .end((error, res) => {
-            if (error) {
-              console.log(error);
-            } else {
-              that.checkLogin(res);
-              var result = JSON.parse(res.text).data;
-              var cityList = result.map(item => {
-                var obj = {};
-                obj.id = item.id;
-                obj.name = item.name;
-                return obj;
-              });
-              that.cityList = cityList;
-            }
-          });
-      }, 200);
+      //   request
+      //     .post(host + "beepartner/admin/cityPartner/getChildrenArea")
+      //     .withCredentials()
+      //     .set({
+      //       "content-type": "application/x-www-form-urlencoded"
+      //     })
+      //     .send({
+      //       id: id2
+      //     })
+      //     .end((error, res) => {
+      //       if (error) {
+      //         console.log(error);
+      //       } else {
+      //         that.checkLogin(res);
+      //         var result = JSON.parse(res.text).data;
+      //         var cityList = result.map(item => {
+      //           var obj = {};
+      //           obj.id = item.id;
+      //           obj.name = item.name;
+      //           return obj;
+      //         });
+      //         that.cityList = cityList;
+      //       }
+      //     });
+      // }, 200);
     },
     editConfim() {
       var that = this;
       //this.fullscreenLoading = true
+      var newMultForm = this.multiForm.map((item)=>{
+
+            var cityName = item.cityId.label
+            var cityId = item.cityId.value 
+            var wType,joinTime,firstDealDate
+            if(item.wType==='自然月'){
+               wType = 0
+            }else if(item.wType==='自然周(周一到周日)'){
+              wType = 1
+            }else{
+              wType = 2
+            }
+            joinTime = moment(item.joinTime).format('YYYY-MM-DD')
+            firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
+            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
+          })
+         
+      delete this.editAccount.areaId
+      delete this.editAccount.areaName
+      delete this.editAccount.cityId
+      delete this.editAccount.cityName
+      delete this.editAccount.joinTime
+      delete this.editAccount.licenseFeeRate
+      delete this.editAccount.percent
+      delete this.editAccount.subscriptionMoney
+      delete this.editAccount.subscriptionNum
+      delete this.editAccount.wType
       var obj = Object.assign(
-        {},
-        this.editAccount,
-        { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 },
-        { wType: this.editAccount.wType === "自然月" ? 0 : 1 }
-      );
+            {},
+            this.editAccount,
+            {cityList:JSON.stringify(newMultForm)},
+            { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+          );
       request
         .post(host + "beepartner/admin/cityPartner/updateCityPartner")
         .withCredentials()
@@ -1337,6 +1361,43 @@ export default {
             return;
           }
           var that = this;
+      //this.fullscreenLoading = true
+      var newMultForm = this.multiForm.map((item)=>{
+
+            var cityName = item.cityId.label
+            var cityId = item.cityId.value 
+            var wType,joinTime,firstDealDate
+            if(item.wType==='自然月'){
+               wType = 0
+            }else if(item.wType==='自然周(周一到周日)'){
+              wType = 1
+            }else{
+              wType = 2
+            }
+            joinTime = moment(item.joinTime).format('YYYY-MM-DD')
+            firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
+            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
+          })
+    delete this.editAccount.provinceId
+    delete this.editAccount.provinceName      
+    delete this.editAccount.areaId
+    delete this.editAccount.areaName
+    delete this.editAccount.cityId
+    delete this.editAccount.cityName
+    delete this.editAccount.joinTime
+    delete this.editAccount.licenseFeeRate
+    delete this.editAccount.percent
+    delete this.editAccount.subscriptionMoney
+    delete this.editAccount.subscriptionNum
+    delete this.editAccount.wType
+      var obj = Object.assign(
+            {},
+            {id:this.userIDID},
+            this.editAccount,
+            {cityList:JSON.stringify(newMultForm)},
+            { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+          );
+        that.dialogVisible = false;
           //this.fullscreenLoading = true
           // var obj  = Object.assign({},this.editAccount,{cardType:this.editAccount.cardType==='居民身份证'?0:1, file:this.editAccount.file })
           request
@@ -1345,47 +1406,22 @@ export default {
             .set({
               "content-type": "application/x-www-form-urlencoded"
             })
-            .send({
-              id: this.userIDID,
-              provinceId: this.editAccount.provinceId,
-              cityId: this.editAccount.cityId,
-              areaId: this.editAccount.areaId,
-              provinceName: this.editAccount.provinceName,
-              cityName: this.editAccount.cityName,
-              areaName: this.editAccount.areaName,
-              joinTime: moment(this.editAccount.joinTime).format("YYYY-MM-DD"),
-              companyName: this.editAccount.companyName,
-              businessLicense: this.editAccount.businessLicense,
-              address: this.editAccount.address,
-              subscriptionNum: this.editAccount.subscriptionNum,
-              subscriptionMoney: this.editAccount.subscriptionMoney,
-              percent: this.editAccount.percent,
-              userName: this.editAccount.userName,
-              cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1,
-              idCard: this.editAccount.idCard,
-              phone: this.editAccount.phone,
-              email: this.editAccount.email,
-              userId: this.editAccount.userId,
-              password: this.editAccount.password,
-              file: this.editAccount.file,
-              licenseFeeRate: this.editAccount.licenseFeeRate,
-              wType: this.editAccount.wType === "自然月" ? 0 : 1
-            })
+            .send(obj)
             .end((error, res) => {
               if (error) {
                 console.log(error);
               } else {
                 var code = JSON.parse(res.text).resultCode;
                 if (code === 0) {
-                  that.tableData.splice(
-                    this.editAccount.editIndex,
-                    1,
-                    Object.assign({}, this.editAccount, {
-                      joinTime: moment(this.editAccount.joinTime).format(
-                        "YYYY-MM-DD"
-                      )
-                    })
-                  );
+                  // that.tableData.splice(
+                  //   this.editAccount.editIndex,
+                  //   1,
+                  //   Object.assign({}, this.editAccount, {
+                  //     joinTime: moment(this.editAccount.joinTime).format(
+                  //       "YYYY-MM-DD"
+                  //     )
+                  //   })
+                  // );
                   that.dialogVisible = false;
                   that.loadData();
                   that.currentPage3 = 1;
