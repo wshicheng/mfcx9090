@@ -65,7 +65,7 @@
           min-width="140">
         </el-table-column>
         <el-table-column
-          prop="areaName"
+          prop="cityList"
           label="加盟区域"
           min-width="65">
         </el-table-column>
@@ -859,6 +859,7 @@ export default {
                     item.joinTime === null
                       ? ""
                       : moment(item.joinTime).format("YYYY-MM-DD")
+                  
                 });
               });
               var pageNumber = Number(JSON.parse(res.text).totalPage);
