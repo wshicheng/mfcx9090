@@ -856,7 +856,7 @@ export default {
   // },
   mounted() {
     document.title = '分配车辆'
-    this.loadDate()
+    //this.loadDate()
   },
   watch: {
     'tempcar':{

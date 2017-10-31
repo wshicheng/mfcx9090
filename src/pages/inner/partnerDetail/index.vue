@@ -381,7 +381,6 @@ export default {
             label:item.cityName
           }
         })
-        console.log(this.options)
         this.cityId = this.options[0].value
         this.options.map((item)=>{
           if(item.value===this.cityId){
