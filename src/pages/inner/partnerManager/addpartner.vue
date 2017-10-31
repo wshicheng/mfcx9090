@@ -7,7 +7,7 @@
 							<i class="el-icon-close"></i>		
 						</a>
 					</span>
-				</h1>
+				</h1>unUsed
 			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
         <el-form-item label="企业名称" prop="companyName">
           <el-input v-model="ruleForm.companyName" placeholder='长度不超过100字符'></el-input>
@@ -690,6 +690,7 @@ export default {
           })
           obj = Object.assign(
             {},
+            { unUsed:1},
             this.ruleForm,
             {cityList:JSON.stringify(newMultForm)},
             { cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 }
@@ -700,10 +701,9 @@ export default {
             .set({
               "content-type": "application/x-www-form-urlencoded"
             })
-            .send({
-              unUsed:1,
+            .send(
               obj
-            })
+            )
             .end((error, res) => {
               if (error) {
                 console.log(error);
