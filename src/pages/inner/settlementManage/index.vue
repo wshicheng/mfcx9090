@@ -31,7 +31,7 @@
                 style="width: 100% font-size:13px; color: #6c6c6c;">
             <el-table-column prop="applyTimeStr" label="结算周期" min-width="200">
                <template scope="scope">
-                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType}}"> {{scope.row.applyTimeStr}}</router-link>
+                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId}}"> {{scope.row.applyTimeStr}}</router-link>
               </template>
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="200">
@@ -313,6 +313,7 @@ export default {
           obj.companyName = arr[i].companyName
           obj.status = arr[i].status
           obj.wType = arr[i].wType
+          obj.cityId = arr[i].cityId
           arrDeled.push(obj)
         }
          return arrDeled

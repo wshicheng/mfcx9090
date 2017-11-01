@@ -177,6 +177,42 @@ export default {
     }
   },
   methods: {
+    getWithdrawals(){
+       var id = this.$route.params.id.split('&')[0]
+      var cityPartnerId = this.$route.params.id.split('&')[1]
+      var val = this.currentPage3
+      request.post(host + 'beepartner/admin/cityPartner/getWithdrawals')
+          .withCredentials()
+          .set({
+            'content-type': 'application/x-www-form-urlencoded'
+          })
+          .send({
+            'id': id,
+            'cityPartnerId': cityPartnerId,
+            cityId:this.cityId,
+            'currentPage': val
+          })
+          .end((err, res) => {
+            if (err) {
+              console.log(err)
+            } else {
+              this.checkLogin(res)
+              this.loading2 = false
+              var result = JSON.parse(res.text).data || []
+              this.totalItems = Number(JSON.parse(res.text).totalItems)
+              var totalPage = Number(JSON.parse(res.text).totalPage)
+              // var newdrawalData = result.map((item)=>{
+              //   return Object.assign({},item,{applyTime:moment(item.applyTime).format('YYYY-MM-DD HH:MM:SS')})
+              // })
+              if (totalPage > 1) {
+                this.pageShow = true
+              } else {
+                this.pageShow = false
+              }
+              this.drawalData = result
+            }
+          })
+    },
     getRelationDataByCitId(){
        var cityPartnerId = this.$route.params.id.split('&')[1]
       request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
@@ -240,6 +276,7 @@ export default {
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.currentPage3 =  val
       var id = this.$route.params.id.split('&')[0]
       var cityPartnerId = this.$route.params.id.split('&')[1]
       if (this.activeName === '车辆明细') {
@@ -450,6 +487,7 @@ export default {
         this.loadData()
         this.getBikeDetail()
         this.getRelationDataByCitId()
+        this.getWithdrawals()
       },
       deep:true,
     },
