@@ -83,7 +83,7 @@
           label="认购车辆数"
           min-width="80">
           <template scope="scope">
-              <span>{{scope.row.subscriptionNum}}</span>
+              <span>{{scope.row.subscriptionNumStr}}</span>
              <!-- @click='handleRowHandle(scope.row.subscription_id)'  -->
             <!-- <span><a  class="alliance_table_allocation">分配车辆</a></span> -->
             <router-link style="color:rgb(118, 103, 233); text-decoration: none; cursor: pointer;" target='_blank' v-bind:to="{
@@ -121,7 +121,7 @@
                 <h1 class="form_table_h1">加盟与结算信息</h1>
                 <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="list of multiForm">
                      <el-form-item label="加盟地区"  id='selectCity' style="width: 700px;">
-                       <el-input v-model="list.cityName"></el-input> 
+                       <el-input v-model="list.cityName" readonly></el-input> 
                    <!-- <el-select disabled @change="handleEditProvince"
                       v-model="editAccount.provinceName"
                       loading-text
@@ -192,6 +192,7 @@
                 <el-form-item label="第一次结算开始日期">
                     <el-date-picker
                       v-model="list.firstDealDate"
+                      :disabled='list.isEdit'
                       placeholder="选择日期">
                     </el-date-picker>           
                 </el-form-item>
@@ -1256,6 +1257,7 @@ export default {
               } else {
                 obj.isEdit = true
               }
+
               obj.cityId = item.cityId
               arr.push(obj)
 
@@ -1282,6 +1284,8 @@ export default {
                     if (Number(item.cityId) === Number(newArr[i].cityId)) {
                       console.log('11', newArr[i].isEdit)
                       isEdit = newArr[i].isEdit
+                    } else {
+                      isEdit = false
                     }
                   }
                   return Object.assign({},item,{wType:wType},{isEdit: isEdit})

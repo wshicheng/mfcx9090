@@ -41,7 +41,6 @@
 export const host = 'http://192.168.0.102:8082/'
 /*生产*/
 // export const host = "http://10.31.147.119:8090/"
-// export const host = "http://192.168.0.102:8082/"
 import axios from 'axios'
 
 /**
