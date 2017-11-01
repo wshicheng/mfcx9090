@@ -20,11 +20,13 @@ import $ from 'jquery'
     data () {
       return {
         noData: false,
-        chartData: []
+        chartData: [],
+        cityId:'',
       }
     },
     mounted () {
-      this.routeChange()
+      this.cityId = this.$route.query.cityId
+      //this.routeChange()
       var that = this
       setInterval( function () {
         that.noData = false
@@ -35,7 +37,7 @@ import $ from 'jquery'
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
-            'cityId': 0
+            'cityId': that.cityId
           })
           .end((err, res) => {
             if (err) {
@@ -244,6 +246,7 @@ import $ from 'jquery'
         })
       },
       routeChange () {
+        this.cityId = this.$route.query.cityId
         this.noData = false
         var that = this;
         request
@@ -253,7 +256,7 @@ import $ from 'jquery'
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
-            'cityId': this.$route.query.cityId
+            'cityId': this.cityId
           })
           .end((err, res) => {
             if (err) {
