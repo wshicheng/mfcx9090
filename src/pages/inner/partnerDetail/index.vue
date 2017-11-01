@@ -20,15 +20,7 @@
                 <span class="prex">通讯地址：</span>{{franchiseeDetail.address}}</td>
             </tr>
             <tr>
-              <td>
-                <span class="prex">加盟日期：</span>{{franchiseeDetail.joinTime}}</td>
-              <td>
-                <span class="prex">认购车辆：</span>{{new Number(franchiseeDetail.subscriptionNum).thousand()}}辆</td>
-            </tr>
-            <tr>
-              <td>
-                <span class="prex">加盟资金：</span>￥{{new Number(franchiseeDetail.subscriptionMoney).thousandFormat() + '元'}}</td>
-              <td>
+               <td>
                 <span class="prex">加盟区域：</span>
                     <el-select v-model="cityId" placeholder="请选择">
                 <el-option
@@ -40,9 +32,20 @@
               </el-select>
                 </td>
             </tr>
+            <tr>
+              <td>
+                <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
+              <td>
+                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}}</td>
+             
+            </tr>
              <tr>
               <td>
-                <span class="prex">拥有车辆：</span>{{new Number(franchiseeDetail.bikeNum).thousand()}} 辆</td>
+                <span class="prex">拥有车辆：</span>{{new Number(relationBikeNum).thousand()}} 辆</td>
             </tr>
           </tbody>
         </table>
@@ -148,9 +151,14 @@ import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 import moment from 'moment'
+import {isOwnEmpty} from '../../../util/util.js'
 export default {
   data: function () {
     return {
+      relationJoinTime:'',
+      relationSubscriptionNum:'',
+      relationSubscriptionMoney:'',
+      relationBikeNum:'',
        cityName:'',
       cityId:'',
       options:[],
@@ -169,6 +177,38 @@ export default {
     }
   },
   methods: {
+    getRelationDataByCitId(){
+       var cityPartnerId = this.$route.params.id.split('&')[1]
+      request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
+      .withCredentials()
+      .set({
+        'content-type': 'application/x-www-form-urlencoded'
+      })
+      .send({
+        cityPartnerId,
+        cityId:this.cityId
+      })
+      .end((error,res)=>{
+        if(error){
+          console.log(error)
+        }else{
+          var res = JSON.parse(res.text).data
+          console.log(res)
+          if(isOwnEmpty(res)==false){
+            this.relationBikeNum = res.bikeNum
+            this.relationJoinTime  = res.joinTime
+            this.relationSubscriptionMoney = res.subscriptionMoney
+            this.relationSubscriptionNum = res.subscriptionNum
+          }else{
+            this.relationBikeNum = ''
+            this.relationJoinTime  = ''
+            this.relationSubscriptionMoney = ''
+            this.relationSubscriptionNum = ''
+          }
+          
+        }
+      })
+    },
     loadDetail(){},
     loadData(){
     var id = this.$route.params.id.split('&')[0]
@@ -410,6 +450,7 @@ export default {
         })
         this.loadData()
         this.getBikeDetail()
+        this.getRelationDataByCitId()
       },
       deep:true,
     },

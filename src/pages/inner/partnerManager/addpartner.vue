@@ -19,10 +19,10 @@
           <el-input v-model="ruleForm.address" placeholder='请输入地址'></el-input>
         </el-form-item>
         <h1 class="form_table_h1">加盟与结算信息</h1>
-        <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of multiForm">
+        <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
            <div class="menuIcon">
              <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
-             <i v-show="multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
+             <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
               
             </div>
            <el-form-item label="加盟地区"
@@ -369,9 +369,6 @@ export default {
     };
     return {
       initNum:0,
-      multiForm:[
-       
-        ],
       newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:''}, 
       isHaveSettleOrders: false,
       _cityList: [],
@@ -382,6 +379,9 @@ export default {
       cityList: [],
       areaList: [],
       ruleForm: {
+        multiForm:[
+       
+        ],
         companyName: "",
         businessLicense: "",
         address: "",
@@ -494,7 +494,7 @@ export default {
   },
   mounted: function() {
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
-    this.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+    this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     document.title = "添加加盟商";
    
     // this.filterProvinceMethod();
@@ -508,11 +508,11 @@ export default {
       console.log(this.ruleForm._cityName);
     },
     addMutiCity(){
-     this.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+     this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     },
     removeMutiCity(index){
       console.log(index)
-      this.multiForm.splice(index,1)
+      this.ruleForm.multiForm.splice(index,1)
     },
     handleCheckbox(e) {
       if (!this.checked) {
@@ -675,7 +675,7 @@ export default {
           // obj = Object.assign({},this.ruleForm,{cardType:this.ruleForm.cardType==='居民身份证'?0:1},{percent:parseFloat(this.ruleForm.percent)},{licenseFeeRate:this.ruleForm.licenseFeeRate},{wType:this.ruleForm.wType ==='自然月'?0:1},{joinTime: moment(this.ruleForm.joinTime).format('YYYY-MM-DD')})
           delete this.ruleForm.options
           delete this.ruleForm.value
-          var newMultForm = this.multiForm.map((item)=>{
+          var newMultForm = this.ruleForm.multiForm.map((item)=>{
 
             var cityName = item.cityId.label
             var cityId = item.cityId.value 
@@ -693,6 +693,7 @@ export default {
           })
           obj = Object.assign(
             {},
+            { unUsed:1},
             this.ruleForm,
             {cityList:JSON.stringify(newMultForm)},
             { cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 }

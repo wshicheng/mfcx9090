@@ -27,10 +27,13 @@
  * 公网测试端口
  */
 // export const host  = 'http://47.92.136.117:7099/'
+export const host = 'http://47.93.48.250:8090/'
+//export const host = 'http://47.93.48.250:8090/'
+//export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
 //export const host = 'http://47.93.48.250:8090/'
-export const host = 'http://47.93.48.250:8090/'
+// export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
 
 
