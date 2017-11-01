@@ -544,7 +544,7 @@ export default {
             var res = JSON.parse(res.text).data
             // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
             this.franchiseeDetail = res
-         
+            
             this.loading2 = true
               request.post(host + 'beepartner/admin/cityPartner/getNotAllotBikes')
                 .withCredentials()
@@ -562,6 +562,7 @@ export default {
                     this.loading2 = false
                     console.log(error)
                   } else {
+                    this.getRelationDataByCitId()
                     this.checkLogin(res)
                     this.loading2 = false
                     var data = JSON.parse(res.text).data

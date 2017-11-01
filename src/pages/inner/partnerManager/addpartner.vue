@@ -698,8 +698,6 @@ export default {
             {cityList:JSON.stringify(newMultForm)},
             { cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 }
           );
-          console.log('obj', obj)
-          return
           request
             .post(host + "beepartner/admin/cityPartner/addCityPartner")
             .withCredentials()
@@ -730,6 +728,7 @@ export default {
                     type: "error",
                     message: message
                   });
+                  
                 }
               }
             });
