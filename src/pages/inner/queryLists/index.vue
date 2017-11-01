@@ -32,7 +32,6 @@
         </el-table-column>
         <el-table-column
           prop="totalBill"
-          sortable
           label="订单总额"
           min-width="100">
              <template scope="scope">

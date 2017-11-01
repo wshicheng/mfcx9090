@@ -73,6 +73,8 @@
             <el-table-column prop="stateName" label="状态">
             </el-table-column>
           </el-table>
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" :total="totalItems" v-show="pageShow">
+          </el-pagination>
         </el-tab-pane>
         <!-- <el-tab-pane label="合伙人" name="second" class="recodeTable">
             <el-table
@@ -142,8 +144,6 @@
         </el-tab-pane>
       </el-tabs>
     </el-row>
-    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" :total="totalItems" v-show="pageShow">
-    </el-pagination>
   </div>
 </template>
 <script>
@@ -193,7 +193,6 @@ export default {
           console.log(error)
         }else{
           var res = JSON.parse(res.text).data
-          console.log(res)
           if(isOwnEmpty(res)==false){
             this.relationBikeNum = res.bikeNum
             this.relationJoinTime  = res.joinTime

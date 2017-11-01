@@ -138,12 +138,10 @@
                       <el-input type="password" v-model="editAccount.passWord" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="所属加盟商" prop="alliance">
-                      <!-- <el-radio-group v-model="editAccount.alliance" v-on:change='remoteMethodPartner'>
-                        <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityId.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
-                      </el-radio-group> -->
-                      <el-radio-group v-model="radio2" @change="recode">
-                        <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityName" v-for="list of cityList">{{list.cityName}}</el-radio>
-                      </el-radio-group>
+                        <el-select v-model="editAccount.alliance" placeholder="请选择加盟商" v-on:input='recode'>
+                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="所属角色" style="margin-left: 12px;" prop="roleName">
                       <el-select v-model="recodeRoleName" placeholder="请选择">
@@ -338,7 +336,9 @@ export default {
       },
       isDisabled: true,
       options: [],
-        value: ''
+      value: '',
+      allianceList: [],
+      isSearch: false
     }
   },
   methods: {
@@ -353,11 +353,13 @@ export default {
     recode(val){
      
         var that = this;
-        this.cityList.map((item)=>{
-          if(item.cityName=== val){
-            this.recodeCityId = item.cityId
-          }
-        })
+        // this.cityList.map((item)=>{
+        //   if(item.cityName=== val){
+        //     this.recodeCityId = item.cityId
+        //   }
+        // })
+        this.recodeCityId = val
+        // console.log('val', val)
         setTimeout(() => {
                     request.post(host + 'beepartner/admin/User/findRole')
                     .withCredentials()
@@ -365,7 +367,7 @@ export default {
                             'content-type': 'application/x-www-form-urlencoded'
                         })
                         .send({
-                            'cityId':  this.recodeCityId
+                            'cityPartnerId':  val
                         })
                         .end((error, res) => {
                             if (error) {
@@ -399,6 +401,9 @@ export default {
       this.currentPage = val
     },
     queryAccountInfo() {
+
+      this.isSearch = true
+
       this.isQuery = true
       var obj = {
         queryName: this.accountOrUsername,
@@ -576,6 +581,7 @@ export default {
       }
     },
     initQuery() {
+      this.isSearch = false
       var that = this
       this.isQuery = false
       this.currentPage = 1
@@ -729,6 +735,20 @@ export default {
         this.router_show = true
       }
     },
+    getAllianceList () {
+        request
+            .post(host + 'beepartner/admin/cityPartner/findCityPartner')
+            .withCredentials()
+            .set({
+                'content-type': 'application/x-www-form-urlencoded'
+            })
+            .end((error,res)=>{
+                this.checkLogin(res)
+                var data = JSON.parse(res.text).data
+
+                this.allianceList = data
+            })
+    },
     handleClick(e) {
       var elems = siblings(e.target)
       for (var i = 0; i < elems.length; i++) {
@@ -792,6 +812,7 @@ export default {
           }
         })
       }else{
+        console.log(scope.row)
             if(scope.row.status===false){
             this.$message({
               type:'error',
@@ -802,10 +823,13 @@ export default {
             var that = this;
             this.dialogVisible = true
             this.recodeRoleName = scope.row.roleName;
-            this.recodeCityId = scope.row.cityId
+            this.recodeCityId = scope.row.cityPartnerId
             this.editAccount.passWord = '********'
             this.editAccount.userName = scope.row.userName
             this.editAccount.email = scope.row.email
+            // 显示加盟商
+            this.editAccount.alliance = scope.row.companyName
+
             this.editAccount.phoneNo = scope.row.phoneNo
             this.editAccount.name = scope.row.name
             this.editAccount.status = scope.row.status
@@ -830,7 +854,7 @@ export default {
                 'content-type': 'application/x-www-form-urlencoded'
               }).
               send({
-                cityId:  this.recodeCityId 
+                cityPartnerId:  this.recodeCityId 
               })
               .end((err,res)=>{
                 var roles = JSON.parse(res.text).data.map((item) => {
@@ -899,7 +923,11 @@ export default {
         var that = this;
         newAccountInfo.userName = this.editAccount.userName
         newAccountInfo.passWord = this.editAccount.passWord
-        newAccountInfo.cityId = this.recodeCityId
+
+        // 新需求字段更改
+        // newAccountInfo.city = this.recodeCityId
+        newAccountInfo.cityPartnerId = this.recodeCityId
+
         newAccountInfo.cityName = this.radio2
         newAccountInfo.roleId = this.recodeRoleId
         newAccountInfo.name = this.editAccount.name
@@ -920,6 +948,7 @@ export default {
                 message: '恭喜您，修改成功！'
               })
               that.joinTableData.splice(index, 1, Object.assign({},newAccountInfo,{status:that.editAccount.status}))
+              that.loadData()
             } else {
               that.$message({
                 type: 'error',
@@ -1203,6 +1232,9 @@ export default {
           }
         })
       } else {
+        // 获取加盟商的列表
+        this.getAllianceList()
+
         this.loading = true
         this.currentPage = 1
         request
@@ -1332,8 +1364,8 @@ export default {
           if (this.name.trim().length === 0 && this.phone.trim().length === 0) {
             getAllAdminUser({
               'currentPage': val,
-              'queryName': this.accountOrUsername,
-              'queryNumber': this.telOrMail,
+              'queryName': this.isSearch === false?'':this.accountOrUsername,
+              'queryNumber': this.isSearch === false?'':this.telOrMail,
             }, function(err, res) {
               if (err) {
                 console.log(err)
@@ -1356,8 +1388,8 @@ export default {
           } else {
             request.post(host + 'beepartner/admin/User/findAdminUser')
               .send({
-                'queryName': this.accountOrUsername,
-                'queryNumber': this.telOrMail,
+                'queryName': this.isSearch === false?'':this.accountOrUsername,
+                'queryNumber': this.isSearch === false?'':this.telOrMail,
                 'currentPage': val
               }).end(function(error, res) {
                 if (error) {
@@ -1382,8 +1414,8 @@ export default {
             getAllAccount({
               'cityId': this.cityId,
               'currentPage': val,
-              'queryName': this.accountOrUsername,
-              'queryNumber': this.telOrMail
+              'queryName': this.isSearch === false?'':this.accountOrUsername,
+              'queryNumber': this.isSearch === false?'':this.telOrMail
             }, function(error, res) {
               if (error) {
                 console.log(error)
@@ -1405,8 +1437,8 @@ export default {
           } else {
             request.post(host + 'beepartner/admin/User/findFranchiseeUser').
               send({
-                'queryName': this.accountOrUsername,
-                'queryNumber': this.telOrMail,
+                'queryName': this.isSearch === false?'':this.accountOrUsername,
+                'queryNumber': this.isSearch === false?'':this.telOrMail,
                 'type': 1,
                 'cityId': this.cityId,
                 'currentPage': val

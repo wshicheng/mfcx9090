@@ -785,6 +785,7 @@ export default {
       date1: "",
       date2: "",
       imageUrl: "",
+      isSearch: false,
       pickerOptions0: {
         disabledDate(time) {
           return time.getTime() < Date.now() - 8.64e7;
@@ -1027,6 +1028,9 @@ export default {
       };
     },
     queryInfo() {
+
+      this.isSearch = true
+
       var name = this.name.trim();
       var phone = this.phone.trim();
       var startTime = this.startTime;
@@ -1101,8 +1105,8 @@ export default {
         })
         .send({
           currentPage: val,
-          name: this.name.trim(),
-          phone: this.phone.trim(),
+          name: this.isSearch === false?'':this.name.trim(),
+          phone: this.isSearch === false?'':this.phone.trim(),
           startTime:
             this.startTime === ""
               ? ""
@@ -1452,6 +1456,7 @@ export default {
     inputChange() {
       if (this.$refs.val1.value === "" && this.$refs.val2.value === "") {
         this.loadData();
+        this.isSearch = false
       }
     }
   },

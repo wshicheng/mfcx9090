@@ -73,7 +73,7 @@
         <el-table-column
           prop="placeOrderTime"
           min-width="110"
-          label="下单时间">
+          label="订单结束时间">
           
         </el-table-column>
         <el-table-column
@@ -547,7 +547,7 @@ export default {
           that.$loading({customClass: 'loading_class'})
           setTimeout(() => {
             const { export_json_to_excel } = require('../../../assets/lib/js/Export2Excel.js')
-            const tHeader = ['车辆编号', '加盟地区', '下单时间', '骑行时间（分钟）', '骑行里程（米)', '订单费用', '优惠劵支付', '实际收益（元）']
+            const tHeader = ['车辆编号', '加盟地区', '订单结束时间', '骑行时间（分钟）', '骑行里程（米)', '订单费用', '优惠劵支付', '实际收益（元）']
             const filterVal = ['bikeCode','cityName', 'placeOrderTime', 'rideTime', 'rideMileage', 'orderMoney', 'couponAmount', 'balanceAmount']
             var startTime, endTime;
             if (that.timeLine === '') {

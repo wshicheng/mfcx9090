@@ -68,12 +68,12 @@
         <el-tabs v-model="activeName">
           <el-tab-pane class="incomeRecord recodeTable" label="收益记录" name="first">
             <el-table :data="tableData" style="width:100%" v-loading="loading2" element-loading-text="拼命加载中">
-              <el-table-column prop="placeOrderTimeStr" label="下单时间" min-width='90'>
+              <el-table-column prop="placeOrderTimeStr" label="订单结束时间" min-width='90'>
               </el-table-column>
               <el-table-column label="骑行时间（分钟）" prop="rideTime" min-width='80'>
 
               </el-table-column>
-              <el-table-column label="里程（公里）" prop="rideMileage" min-width='60'>
+              <el-table-column label="骑行里程(米)" prop="rideMileage" min-width='60'>
 
               </el-table-column>
               <el-table-column label="订单费用" prop="actualAmount" min-width='60'>
@@ -437,7 +437,7 @@ export default {
           style: 'background:#eee;margin-left:-20px;'
         }
       }, [
-          h('span', '实际收益合计'),
+          h('span', '实际收益(元)'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true
