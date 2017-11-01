@@ -290,7 +290,8 @@ export default {
           { validator: validateRoleName, trigger: 'blur', required: true }
         ]
       },
-      flag: false
+      flag: false,
+      isSearch: false
     }
   },
   mounted() {
@@ -318,7 +319,7 @@ export default {
       })
       .send({
         'currentPage': val,
-        'roleName': this.roleName
+        'roleName': this.isSearch===false?'':this.roleName
       })
       .end((err, res) => {
         if (err) {
@@ -347,6 +348,9 @@ export default {
       })
     },
     initRole() {
+
+      this.isSearch = false
+
       this.isQuery = false
       this.currentPage3 = 1
       if (this.roleName.trim().length === 0 && this.isQuery === false) {
@@ -388,6 +392,9 @@ export default {
       this.dialogFormVisible = false
     },
     queryRole() {
+
+      this.isSearch = true
+
       var that = this
       if (this.roleName.trim().length !== 0) {
         this.isQuery = true

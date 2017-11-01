@@ -17,9 +17,17 @@
                     <el-input type="passWord" v-model="ruleForm.passWord" placeholder='6-20位字符，可包括字母数字，区分大小写'></el-input>
                 </el-form-item>
                 <el-form-item label="所属加盟商" prop="alliance">
-                    <el-radio-group v-model="ruleForm.alliance"  v-on:input='remoteMethod'>
+                    <!-- <el-radio-group v-model="ruleForm.alliance"  v-on:input='remoteMethod'>
                         <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityId.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
-                    </el-radio-group>
+                    </el-radio-group> -->
+
+                    <el-select v-model="ruleForm.alliance" placeholder="选择角色类型" v-on:input='remoteMethod'>
+                        <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()">
+                        </el-option>
+                        <!--<el-option label="管理员" value="管理员"></el-option>-->
+                        <!-- <el-option label="加盟商" value="加盟商"></el-option> -->
+                        <!--<el-option label="加盟商" value="加盟商"></el-option>-->
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="所属角色" prop="roleName">
                     <el-select v-model="ruleForm.roleName" placeholder="选择角色类型" :remote-method="remoteMethod" :disabled="isDisabled">
@@ -279,7 +287,7 @@ export default {
                     { min: 6, max: 20, message: '密码长度应该在6-20位之间', trigger: 'change' }
                 ],
                 alliance: [
-                    { required: true, message: '请选择加盟商', trigger: 'change' }
+                    { message: '请选择加盟商', trigger: 'blur' }
                 ],
                 roleName: [
                     { required: true, message: '请选择所属于的角色', trigger: 'change' }
@@ -292,10 +300,28 @@ export default {
                     { validator: validatePhoneNo, trigger: 'blur' }
                 ]
                 // email: [{ validator: validateEmail, trigger: 'blur' }]
-            }
+            },
+            allianceList: []
         }
     },
     methods: {
+        getAllianceList () {
+            request
+                .post(host + 'beepartner/admin/cityPartner/findCityPartner')
+                .withCredentials()
+                .set({
+                    'content-type': 'application/x-www-form-urlencoded'
+                })
+                .end((error,res)=>{
+                    this.checkLogin(res)
+                    console.log('allianceList', res)
+                    var data = JSON.parse(res.text).data
+                    console.log('data', data)
+
+
+                    this.allianceList = data
+                })
+        },
         loadCity () {
             request
                 .post(host + 'beepartner/admin/city/findCity')
@@ -327,12 +353,12 @@ export default {
             } else {
                 setTimeout(() => {
                     request.post(host + 'beepartner/admin/User/findRole')
-                    .withCredentials()
+                        .withCredentials()
                         .set({
                             'content-type': 'application/x-www-form-urlencoded'
                         })
                         .send({
-                            'cityId': that.ruleForm.alliance
+                            'cityPartnerId': that.ruleForm.alliance
                         })
                         .end((error, res) => {
                             if (error) {
@@ -363,7 +389,7 @@ export default {
                     var obj = {}
                     this.options4.map((item) => {
                         if (item.value === this.ruleForm.roleName) {
-                            obj = Object.assign({}, this.ruleForm, { roleId: item.id, cityId: this.ruleForm.alliance})
+                            obj = Object.assign({}, this.ruleForm, { roleId: item.id, cityPartnerId: this.ruleForm.alliance})
                         }
                     })
                     request.post(host + 'beepartner/admin/User/addFranchiseeUser')
@@ -415,6 +441,8 @@ export default {
     document.title = '添加加盟商账号'
         this.remoteMethod()
         this.loadCity()
+        this.getAllianceList()
+        
     }
 }
 </script>

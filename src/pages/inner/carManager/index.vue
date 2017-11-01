@@ -211,7 +211,8 @@ export default {
       pageShow: false,
       noDate: false,
       totalItems: 1,
-      loading2: false
+      loading2: false,
+      isSearch: false
     }
   },
   mounted: function () {
@@ -250,7 +251,7 @@ export default {
           'bikeState': radio,
           'startOnlineTime': startTime,
           'endOnlineTime': endTime,
-          'keyName': this.terminalNumber
+          'keyName': this.isSearch === false?'':this.terminalNumber
         })
         .end((error, res) => {
           if (error) {
@@ -274,6 +275,7 @@ export default {
     },
     searchByTimeline () {
       this.currentPage = 1
+      this.isSearch = true
       var type 
       if (this.activeName === '已分配') {
         type = '0'
@@ -450,6 +452,9 @@ export default {
         })
     },
     getTabName (tab, event) {
+      // 切换tab标签时恢复默认查询标记
+      this.isSearch = false
+
       this.terminalNumber = ''
       this.form.data1 = ''
       this.form.data2 = ''
@@ -464,6 +469,9 @@ export default {
     getDateByTabName (type) {
       this.currentPage = 1
       this.loading2 = true
+
+      
+      var radio = this.checkList.toString()
       request
         .post(host + 'beepartner/admin/Bike/findBike')
         .withCredentials()
@@ -472,7 +480,11 @@ export default {
         })
         .send({
           'type': type,
-          'cityCode': this.activeName === '已分配'?$('.citys span.active').attr('myId'):''
+          'cityCode': this.activeName === '已分配'?$('.citys span.active').attr('myId'):'',
+          'startOnlineTime': this.form.data1 === ''?'':moment(this.form.data1).format('YYYY-MM-DD'),
+          'endOnlineTime': this.form.data2 === ''?'':moment(this.form.data2).format('YYYY-MM-DD'),
+          'bikeState': radio,
+          'keyName': this.terminalNumber,
         })
         .end((error, res) => {
           if (error) {
@@ -532,6 +544,9 @@ export default {
     },
     inputChange () {
       if (this.form.data1 === '' && this.form.data2 === '' && this.terminalNumber === ''&&this.checkList.length===0) {
+          // 关闭查询标记
+          this.isSearch = false
+
           var startTime, endTime, type
           if (this.form.data1 === '' || this.form.data2 === '') {
             startTime = ''
@@ -596,6 +611,7 @@ export default {
         console.log(val)
         if(val===undefined){
            if (this.activeName === '未分配') {
+            this.form.data1 = ''
             this.getDateByTabName('1')
           } else {
             this.getDateByTabName('0')
@@ -631,7 +647,10 @@ export default {
     },
     "form.data2": {
       handler: function (val, oldVal) {
+        console.log('val', val)
+
         if(val===undefined){
+            this.form.data2 = ''
            if (this.activeName === '未分配') {
             this.getDateByTabName('1')
           } else {

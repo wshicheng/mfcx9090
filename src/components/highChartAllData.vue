@@ -27,7 +27,7 @@ import $ from 'jquery'
       this.routeChange()
       var that = this
       setInterval( function () {
-        this.noData = false
+        that.noData = false
         request
           .post(host + 'beepartner/admin/statistics/adminTrend')
           .withCredentials()
@@ -39,10 +39,9 @@ import $ from 'jquery'
           })
           .end((err, res) => {
             if (err) {
-              this.noData = true
+              that.noData = true
               console.log('err:' + err)
             } else {
-              this.checkLogin(res)
               var arr = JSON.parse(res.text).data || []
               var newChartData = []
               arr.map( (item) => {
@@ -57,18 +56,18 @@ import $ from 'jquery'
 
               
               if (num != 0) {
-                this.chartData = newChartData
-                this.noData = false
-                this.initChart()
+                that.chartData = newChartData
+                that.noData = false
+                that.initChart()
               }else{
                 $('#container').html('')
-                this.noData = true
+                that.noData = true
               } 
 
 
               if (JSON.parse(res.text).data.length === 0) {
                 $('#container').html('')
-                this.noData = true
+                that.noData = true
               }
 
             }
@@ -261,7 +260,7 @@ import $ from 'jquery'
               this.noData = true
               console.log('err:' + err)
             } else {
-              that.checkLogin(res)
+              this.checkLogin(res)
               var arr = JSON.parse(res.text).data || []
               var newChartData = []
               arr.map( (item) => {
