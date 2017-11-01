@@ -816,7 +816,8 @@ export default {
             }
           }
         ]
-      }
+      },
+      isSettleList: []
     };
   },
   mounted() {
@@ -1192,112 +1193,117 @@ export default {
         "/index/partnerDetail/" + scope.row.id + "&" + scope.row.cityPartnerId
       );
     },
-    openEdit(row, index) {
-      this.dialogVisible = true
-      var newMultForm = row.areaList.map((item)=>{
-            var wType,joinTime,firstDealDate
-            if(item.wType===0){
-               wType = '自然月'
-            }else if(item.wType==='1'){
-              wType = '自然周(周一到周日)'
-            }else{
-              wType = '自定义'
-            }
-            return Object.assign({},item,{wType:wType})
-          })
-      this.multiForm = newMultForm
-       this.imageUrl = row.businessLicenseIconUrl;
-      this.userIDID = row.id;
-      this.editAccount.companyName = row.companyName
-      this.editAccount.businessLicense = row.businessLicense
-      this.editAccount.address = row.address
-      this.editAccount.userName = row.userName
-      this.editAccount.cardType = row.cardType==0?'居民身份证':'护照'
-      this.editAccount.phone = row.phone
-      this.editAccount.email = row.email
-      this.editAccount.userId = row.userId
-      this.editAccount.idCard = row.idCard 
-      this.editAccount.password = row.password
-      this.editAccount.cityPartnerId = row.cityPartnerId
-      // this.dialogVisible = true;
-      // this.imageUrl = row.businessLicenseIconUrl;
-      // this.userIDID = row.id;
-      // this.editAccount = Object.assign(
-      //   {},
-      //   row,
-      //   { editIndex: index },
-      //   { percent: (row.percent * 100).toFixed(2) },
-      //   { licenseFeeRate: (row.licenseFeeRate * 100).toFixed(2) },
-      //   { cardType: row.cardType === 0 ? "居民身份证" : "护照" },
-      //   { provinceName: row.provinceName },
-      //   { cityName: row.cityName },
-      //   { areaName: row.areaName },
-      //   { wType: row.wType === 0 ? "自然月" : "自然周(周一到周日)" }
-      // );
-      //this.editAccount = Object.assign({},row,{provinceName:''},{areaName:''})
-      //this.editAccount.cityName = ' '
-      // this.filterProvinceMethod();
-      // var id1 = this.editAccount.cId;
-      // var id2 = this.editAccount.pId;
-      // // 打开弹窗获取城市与地区
-      // var that = this;
-      // setTimeout(function() {
-      //   request
-      //     .post(host + "beepartner/admin/cityPartner/getChildrenArea")
-      //     .withCredentials()
-      //     .set({
-      //       "content-type": "application/x-www-form-urlencoded"
-      //     })
-      //     .send({
-      //       id: id1
-      //     })
-      //     .end((error, res) => {
-      //       if (error) {
-      //         console.log(error);
-      //       } else {
-      //         that.checkLogin(res);
-      //         var result = JSON.parse(res.text).data;
-      //         if (result.length === 0) {
-      //           that.areaShow = false;
-      //         } else {
-      //           that.areaShow = true;
-      //         }
-      //         var areaList = result.map(item => {
-      //           var obj = {};
-      //           obj.id = item.id;
-      //           obj.name = item.name;
-      //           obj.code = item.code;
-      //           return obj;
-      //         });
-      //         that.areaList = areaList;
-      //       }
-      //     });
+    checkSettleTime (id) {
+      var newArr = []
+      request
+        .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          'cityPartnerId': id
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            this.checkLogin(res);
+            // console.log("settle", res)
+            var list = JSON.parse(res.text).data
+            var arr = []
+            list.map( item => {
+              var obj = {}
 
-      //   request
-      //     .post(host + "beepartner/admin/cityPartner/getChildrenArea")
-      //     .withCredentials()
-      //     .set({
-      //       "content-type": "application/x-www-form-urlencoded"
-      //     })
-      //     .send({
-      //       id: id2
-      //     })
-      //     .end((error, res) => {
-      //       if (error) {
-      //         console.log(error);
-      //       } else {
-      //         that.checkLogin(res);
-      //         var result = JSON.parse(res.text).data;
-      //         var cityList = result.map(item => {
-      //           var obj = {};
-      //           obj.id = item.id;
-      //           obj.name = item.name;
-      //           return obj;
-      //         });
-      //         that.cityList = cityList;
-      //       }
-      //     });
-      // }, 200);
+              if (Number(item.withDrawCount) > 0) {
+                obj.isEdit = false
+              } else {
+                obj.isEdit = true
+              }
+              obj.cityPartnerId = item.cityPartnerId
+              arr.push(obj)
+
+              return arr
+            })
+            this.isSettleList = arr
+          }
+        });
+    },
+    openEdit(row, index) {
+      request
+        .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          'cityPartnerId': row.cityPartnerId
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            this.checkLogin(res);
+            var newArr = []
+            // console.log("settle", res)
+            var list = JSON.parse(res.text).data
+            var arr = []
+            list.map( item => {
+              var obj = {}
+
+              if (Number(item.withDrawCount) > 0) {
+                obj.isEdit = false
+              } else {
+                obj.isEdit = true
+              }
+              obj.cityId = item.cityId
+              arr.push(obj)
+
+              return arr
+            })
+
+            newArr = arr
+            console.log('newArr', newArr)
+            // 判断是否可以编辑结算日期
+          //  this.checkSettleTime(row.cityPartnerId)
+
+            this.dialogVisible = true
+            var newMultForm = row.areaList.map((item)=>{
+                  var wType,joinTime,firstDealDate,isEdit
+                  if(item.wType===0){
+                    wType = '自然月'
+                  }else if(item.wType==='1'){
+                    wType = '自然周(周一到周日)'
+                  }else{
+                    wType = '自定义'
+                  }
+
+                  for (var i = 0; i < newArr.length; i++) {
+                    if (Number(item.cityId) === Number(newArr[i].cityId)) {
+                      console.log('11', newArr[i].isEdit)
+                      isEdit = newArr[i].isEdit
+                    }
+                  }
+                  return Object.assign({},item,{wType:wType},{isEdit: isEdit})
+                })
+
+            this.multiForm = newMultForm
+            console.log('newMultForm', newMultForm)
+            this.imageUrl = row.businessLicenseIconUrl
+            this.userIDID = row.id;
+            this.editAccount.companyName = row.companyName
+            this.editAccount.businessLicense = row.businessLicense
+            this.editAccount.address = row.address
+            this.editAccount.userName = row.userName
+            this.editAccount.cardType = row.cardType==0?'居民身份证':'护照'
+            this.editAccount.phone = row.phone
+            this.editAccount.email = row.email
+            this.editAccount.userId = row.userId
+            this.editAccount.idCard = row.idCard 
+            this.editAccount.password = row.password
+            this.editAccount.cityPartnerId = row.cityPartnerId
+          }
+        });
     },
     editConfim() {
       var that = this;
