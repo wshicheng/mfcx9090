@@ -27,10 +27,10 @@
  * 公网测试端口
  */
 // export const host  = 'http://47.92.136.117:7099/'
-//export const host = 'http://47.93.48.250:8090/'
-//export const host = 'http://47.93.48.250:8090/'
-//export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
+// export const host = 'http://47.93.48.250:8090/'
+//export const host = 'http://47.93.48.250:8090/'
+export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
 
 
@@ -38,7 +38,7 @@
 //export const host = 'http://192.168.0.102:8082/'
 /*生产*/
 // export const host = "http://10.31.147.119:8090/"
-export const host = "http://192.168.0.102:8082/"
+// export const host = "http://192.168.0.102:8082/"
 import axios from 'axios'
 
 /**

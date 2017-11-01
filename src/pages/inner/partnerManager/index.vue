@@ -735,7 +735,8 @@ export default {
         password: "",
         file: "",
         licenseFeeRate: "",
-        wType: ""
+        wType: "",
+        cityPartnerId: ''
       },
       editRules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -1211,8 +1212,9 @@ export default {
       this.editAccount.phone = row.phone
       this.editAccount.email = row.email
       this.editAccount.userId = row.userId
-      this.editAccount.idCard = row.idCard
+      this.editAccount.idCard = row.idCard 
       this.editAccount.password = row.password
+      this.editAccount.cityPartnerId = row.cityPartnerId
       // this.dialogVisible = true;
       // this.imageUrl = row.businessLicenseIconUrl;
       // this.userIDID = row.id;
@@ -1312,7 +1314,7 @@ export default {
             firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
             return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
           })
-         
+
       delete this.editAccount.areaId
       delete this.editAccount.areaName
       delete this.editAccount.cityId
@@ -1323,6 +1325,7 @@ export default {
       delete this.editAccount.subscriptionMoney
       delete this.editAccount.subscriptionNum
       delete this.editAccount.wType
+
       var obj = Object.assign(
             {},
             this.editAccount,
@@ -1363,9 +1366,6 @@ export default {
           var that = this;
       //this.fullscreenLoading = true
       var newMultForm = this.multiForm.map((item)=>{
-
-            var cityName = item.cityId.label
-            var cityId = item.cityId.value 
             var wType,joinTime,firstDealDate
             if(item.wType==='自然月'){
                wType = 0
@@ -1376,7 +1376,7 @@ export default {
             }
             joinTime = moment(item.joinTime).format('YYYY-MM-DD')
             firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
-            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
+            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate})
           })
     delete this.editAccount.provinceId
     delete this.editAccount.provinceName      

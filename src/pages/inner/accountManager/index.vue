@@ -142,7 +142,7 @@
                         <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityId.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
                       </el-radio-group> -->
                       <el-radio-group v-model="radio2" @change="recode">
-                        <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityName.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
+                        <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityName" v-for="list of cityList">{{list.cityName}}</el-radio>
                       </el-radio-group>
                     </el-form-item>
                     <el-form-item label="所属角色" style="margin-left: 12px;" prop="roleName">
@@ -1239,6 +1239,7 @@ export default {
                 that.pageShow = false
               }
               that.$store.state.joinTableData = that.handleData(arr)
+              // console.log('that.$store.state.joinTableData', that.$store.state.joinTableData)
               that.joinTableData = that.$store.state.joinTableData
               that.initData = that.joinTableData
             }

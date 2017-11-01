@@ -473,6 +473,9 @@ export default {
     .set({
       "content-type": "application/x-www-form-urlencoded"
     })
+    .send({
+      unUsed: 1
+    })
     .end((error,res)=>{
       if(error){
         console.log(error)
@@ -694,16 +697,15 @@ export default {
             {cityList:JSON.stringify(newMultForm)},
             { cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 }
           );
+          console.log('obj', obj)
+          return
           request
             .post(host + "beepartner/admin/cityPartner/addCityPartner")
             .withCredentials()
             .set({
               "content-type": "application/x-www-form-urlencoded"
             })
-            .send({
-              unUsed:1,
-              obj
-            })
+            .send(obj)
             .end((error, res) => {
               if (error) {
                 console.log(error);
