@@ -1226,6 +1226,7 @@ export default {
 
               return arr
             })
+            console.log(this.isSettleList)
             this.isSettleList = arr
           }
         });
@@ -1253,9 +1254,9 @@ export default {
               var obj = {}
 
               if (Number(item.withDrawCount) > 0) {
-                obj.isEdit = false
-              } else {
                 obj.isEdit = true
+              } else {
+                obj.isEdit = false
               }
 
               obj.cityId = item.cityId
@@ -1263,11 +1264,7 @@ export default {
 
               return arr
             })
-
             newArr = arr
-            // 判断是否可以编辑结算日期
-          //  this.checkSettleTime(row.cityPartnerId)
-
             this.dialogVisible = true
             var newMultForm = row.areaList.map((item)=>{
                   var wType,joinTime,firstDealDate,isEdit
@@ -1278,18 +1275,16 @@ export default {
                   }else{
                     wType = '自定义'
                   }
-
                   for (var i = 0; i < newArr.length; i++) {
                     if (Number(item.cityId) === Number(newArr[i].cityId)) {
-                      isEdit = newArr[i].isEdit
-                    } else {
-                      isEdit = false
+                       isEdit = newArr[i].isEdit
                     }
                   }
                   return Object.assign({},item,{wType:wType},{isEdit: isEdit})
                 })
 
             this.multiForm = newMultForm
+            console.log(this.multiForm)
             this.imageUrl = row.businessLicenseIconUrl
             this.userIDID = row.id;
             this.editAccount.companyName = row.companyName

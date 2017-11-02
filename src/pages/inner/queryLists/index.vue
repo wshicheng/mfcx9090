@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column
           prop="couponAmount"
-          label="优惠卷支付(元)">
+          label="优惠券支付(元)">
              <template scope="scope">
             {{new Number(scope.row.couponAmount).thousandFormat()}}
           </template>
