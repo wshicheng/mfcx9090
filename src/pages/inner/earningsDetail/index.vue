@@ -547,7 +547,7 @@ export default {
           that.$loading({customClass: 'loading_class'})
           setTimeout(() => {
             const { export_json_to_excel } = require('../../../assets/lib/js/Export2Excel.js')
-            const tHeader = ['车辆编号', '加盟地区', '订单结束时间', '骑行时间(分钟)', '骑行里程(米)', '订单费用', '优惠劵支付', '赠送金额支付(元)','实际收益(元)']
+            const tHeader = ['车辆编号', '加盟地区', '订单结束时间', '骑行时间(分钟)', '骑行里程(米)', '订单费用(元)', '优惠劵支付(元)', '赠送金额支付(元)','实际收益(元)']
             const filterVal = ['bikeCode','cityName', 'placeOrderTime', 'rideTime', 'rideMileage', 'orderMoney', 'couponAmount', 'grantAmount', 'balanceAmount']
             var startTime, endTime;
             if (that.timeLine === '') {

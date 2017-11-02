@@ -381,7 +381,7 @@ export default {
       areaList: [],
       ruleForm: {
         multiForm:[
-          {cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:''}
+         
         ],
         subscriptionNum:'',
         companyName: "",
@@ -496,7 +496,7 @@ export default {
   },
   mounted: function() {
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
-    this.ruleForm.multiForm[0] = Object.assign({},this.newFormObject,{id:this.initNum++})
+    this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     document.title = "添加加盟商";
    
     // this.filterProvinceMethod();

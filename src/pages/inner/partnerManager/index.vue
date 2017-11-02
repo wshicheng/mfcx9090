@@ -1265,16 +1265,15 @@ export default {
             })
 
             newArr = arr
-            console.log('newArr', newArr)
             // 判断是否可以编辑结算日期
           //  this.checkSettleTime(row.cityPartnerId)
 
             this.dialogVisible = true
             var newMultForm = row.areaList.map((item)=>{
                   var wType,joinTime,firstDealDate,isEdit
-                  if(item.wType===0){
+                  if(item.wType==0){
                     wType = '自然月'
-                  }else if(item.wType==='1'){
+                  }else if(item.wType==1){
                     wType = '自然周(周一到周日)'
                   }else{
                     wType = '自定义'
@@ -1282,7 +1281,6 @@ export default {
 
                   for (var i = 0; i < newArr.length; i++) {
                     if (Number(item.cityId) === Number(newArr[i].cityId)) {
-                      console.log('11', newArr[i].isEdit)
                       isEdit = newArr[i].isEdit
                     } else {
                       isEdit = false
@@ -1292,7 +1290,6 @@ export default {
                 })
 
             this.multiForm = newMultForm
-            console.log('newMultForm', newMultForm)
             this.imageUrl = row.businessLicenseIconUrl
             this.userIDID = row.id;
             this.editAccount.companyName = row.companyName
