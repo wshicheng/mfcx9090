@@ -4,7 +4,7 @@
       <i class="el-notification__icon el-icon-warning"></i>
       <div class="el-notification__group is-with-icon">
         <h2 class="el-notification__title">温馨提示</h2>
-        <div class="el-notification__content">实际收益就是用户实际支付的金额，但不等于订单费用减去优惠券支付金额；优惠券支付的金额可能大于订单费用；例如某笔订单骑行费用是3元，然后用户可能是用5元的优惠券抵扣的。</div>
+        <div class="el-notification__content">实际收益=用户实际支付金额，为本订单扣除了优惠券、赠送余额支付的金额。</div>
       </div>
     </div>
     <div id="earD_header">
@@ -742,7 +742,7 @@ export default {
               'icon iconfont icon-wenhao': true
             },
             attrs: {
-              style: 'cursor:pointer;margin-left:10px;color:orange;font-size:18px;vertical-align:middle'
+              style: 'cursor:pointer;margin-left:0px;color:orange;font-size:18px;vertical-align:middle'
             },
             on: {
               mouseenter: this.mouseEnterHandler,

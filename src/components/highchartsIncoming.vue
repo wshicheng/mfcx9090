@@ -27,9 +27,9 @@ import $ from 'jquery'
     mounted () {
       this.loadData()
       var that = this
-      setInterval( function () {
-        that.loadData()
-      }, 600000)
+      // setInterval( function () {
+      //   that.loadData()
+      // }, 600000)
     },
     methods: {
        randomColor() {
@@ -99,7 +99,8 @@ import $ from 'jquery'
                 allowOverlap: true,
                 formatter: function() { 
                     return   Highcharts.numberFormat(this.y, 2, ".", ",");
-                }
+                },
+                mixPoinitWidth: 30
               }
             }
           },
@@ -179,7 +180,7 @@ import $ from 'jquery'
   }
 </script>
 <style>
-  div#container2{width:100%;min-height:265px;}
+  div#container2{width:100%;}
   div#container2 g.highcharts-legend-item{display:none;}
   .my_noDate {
     width: 100%;

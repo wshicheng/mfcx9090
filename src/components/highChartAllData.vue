@@ -28,53 +28,53 @@ import $ from 'jquery'
       this.cityId = this.$route.query.cityId
       this.routeChange()
       var that = this
-      setInterval( function () {
-        that.noData = false
-        request
-          .post(host + 'beepartner/admin/statistics/adminTrend')
-          .withCredentials()
-          .set({
-            'content-type': 'application/x-www-form-urlencoded'
-          })
-          .send({
-            'cityId': that.cityId
-          })
-          .end((err, res) => {
-            if (err) {
-              that.noData = true
-              console.log('err:' + err)
-            } else {
-              var arr = JSON.parse(res.text).data || []
-              var newChartData = []
-              arr.map( (item) => {
-                newChartData.push(item.totalBill)
-                return newChartData
-              })
+      // setInterval( function () {
+      //   that.noData = false
+      //   request
+      //     .post(host + 'beepartner/admin/statistics/adminTrend')
+      //     .withCredentials()
+      //     .set({
+      //       'content-type': 'application/x-www-form-urlencoded'
+      //     })
+      //     .send({
+      //       'cityId': that.cityId
+      //     })
+      //     .end((err, res) => {
+      //       if (err) {
+      //         that.noData = true
+      //         console.log('err:' + err)
+      //       } else {
+      //         var arr = JSON.parse(res.text).data || []
+      //         var newChartData = []
+      //         arr.map( (item) => {
+      //           newChartData.push(item.totalBill)
+      //           return newChartData
+      //         })
 
-                 var num = 0;
-              for (var i=0; i<newChartData.length; i++) {
-                num += newChartData[i]
-              } 
+      //            var num = 0;
+      //         for (var i=0; i<newChartData.length; i++) {
+      //           num += newChartData[i]
+      //         } 
 
               
-              if (num != 0) {
-                that.chartData = newChartData
-                that.noData = false
-                that.initChart()
-              }else{
-                $('#container').html('')
-                that.noData = true
-              } 
+      //         if (num != 0) {
+      //           that.chartData = newChartData
+      //           that.noData = false
+      //           that.initChart()
+      //         }else{
+      //           $('#container').html('')
+      //           that.noData = true
+      //         } 
 
 
-              if (JSON.parse(res.text).data.length === 0) {
-                $('#container').html('')
-                that.noData = true
-              }
+      //         if (JSON.parse(res.text).data.length === 0) {
+      //           $('#container').html('')
+      //           that.noData = true
+      //         }
 
-            }
-          })
-      }, 60000)
+      //       }
+      //     })
+      // }, 60000)
     },
     methods: {
       initChart () {
