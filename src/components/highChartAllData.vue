@@ -26,7 +26,7 @@ import $ from 'jquery'
     },
     mounted () {
       this.cityId = this.$route.query.cityId
-      //this.routeChange()
+      this.routeChange()
       var that = this
       setInterval( function () {
         that.noData = false

@@ -81,10 +81,7 @@
               placeholder="选择日期">
             </el-date-picker>           
         </el-form-item>
-        <el-form-item label="认购车辆" :prop="'subscriptionNum'"
-          :rules="{
-            required: true, message: '车辆数不能为空', trigger: 'blur'
-          }"
+        <el-form-item label="认购车辆"
         >
           <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
         </el-form-item>
