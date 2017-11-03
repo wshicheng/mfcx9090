@@ -122,13 +122,17 @@
                 <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="(list,index) of multiForm">
                    <div class="menuIcon">
                       <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
-                      <i  style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
+                      <i  style="cursor:pointer;" @click="removeMutiCity(index,list)" class="iconfont icon-jian"></i>
                       </div>
                      
-                     <el-form-item label="加盟地区"  id='selectCity' style="width: 700px;">
-                      <div>{{index + 1 + ":"+ Number(multiForm.length)}}</div>
-                       <el-input v-show="(index+1)<=1" v-model="list.cityName" readonly></el-input>
-                        <el-select v-show="(index+1)>1" v-model="list.cityItem" placeholder="请选择">
+                     <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
+                      :rules="[
+                        { required: true, message: '请输入加盟地区', trigger: 'blur' },
+                      ]"
+                     >
+                       
+                       <el-input v-show="(index+1)<=recodeCityList" v-model="list.cityName" readonly></el-input>
+                        <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
                           <el-option
                             v-for="item in editAccount.options"
                             :key="item.value"
@@ -171,26 +175,46 @@
                       </el-option>
                     </el-select> -->
               
-                 <el-form-item label="加盟日期" >
+                 <el-form-item label="加盟日期" :id="'joinTime'+ index" 
+                     :rules="[
+                        { required: true, message: '请输入加盟日期', trigger: 'blur' },
+                      ]"
+                  >
                     <el-date-picker
                       v-model="list.joinTime"
                       type="date"
                       placeholder="选择日期">
                     </el-date-picker>           
                 </el-form-item>
-                <el-form-item label="车辆数" >
+                <el-form-item label="车辆数" :id="'subscriptionNum'+ index" 
+                   :rules="[
+                    { required: true, message: '请输入认购车辆', trigger: 'blur' },
+                  ]"
+                >
                   <el-input v-model.number="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input>
                 </el-form-item>
-                <el-form-item label="加盟资金">
+                <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index"
+                     :rules="[
+                        { required: true, message: '请输入加盟资金', trigger: 'blur' },
+                      ]"
+                >
                   <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="加盟分成比例" prop="percent">
                   <el-input v-model="editAccount.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
                 </el-form-item> -->
-                <el-form-item label="授权费率" >
+                <el-form-item label="授权费率" :id="'licenseFeeRate'+ index"
+                     :rules="[
+                        { required: true, message: '请输入授权费率', trigger: 'blur' },
+                      ]"
+                >
                   <el-input v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
                 </el-form-item>
-                <el-form-item label="结算周期" >
+                <el-form-item label="结算周期"  :id="'wType'+ index"
+                     :rules="[
+                        { required: true, message: '请输入结算周期', trigger: 'blur' },
+                      ]"
+                >
                   <el-radio-group v-model="list.wType">
                     <!-- <el-radio label="自然月" value='0'></el-radio>
                     <el-radio label="自然周(周一到周日)" value='1'></el-radio> -->
@@ -204,13 +228,18 @@
                   </el-radio-group>
                 </el-form-item>
                  <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-                <el-form-item label="第一次结算开始日期">
+                <el-form-item label="第一次结算开始日期" :id="'firstDealDate'+ index"
+                    :rules="[
+                      { required: true, message: '请输入第一次结算开始日期', trigger: 'blur' },
+                    ]"
+                >
                     <el-date-picker
                       v-model="list.firstDealDate"
                       :disabled='list.isEdit'
                       placeholder="选择日期">
                     </el-date-picker>           
                 </el-form-item>
+                 <h1 class="form_table_h2">生成结算单后，此日期不允许修改</h1>
                 </div> 
                
                 <h1 class="form_table_h1">联系人信息</h1> 
@@ -276,15 +305,23 @@
 </template>
 
 <style scoped>
-div.menuIcon{text-align: right;
-   
-    margin-bottom: 10px;
-   position:relative;}
-div.menuIcon i.iconfont{position:absolute;right:0;z-index:99;}
-div.menuIcon i.icon-jian{right:-36px;}   
+div.menuIcon {
+  text-align: right;
+
+  margin-bottom: 10px;
+  position: relative;
+}
+div.menuIcon i.iconfont {
+  position: absolute;
+  right: 0;
+  z-index: 99;
+}
+div.menuIcon i.icon-jian {
+  right: -36px;
+}
 .form_table_h2 {
   width: 100%;
-  padding: 0px 0 10px 153px;
+  padding: 0px 0 10px 140px;
   height: 30px;
   line-height: 0px;
   font-size: 10px;
@@ -690,21 +727,34 @@ export default {
       }, 1000);
     };
     return {
-      initNum:0,
-      isClickAddBtn:false,
-      adddialogFormVisible:false,
-      addForm:{
-        cityId:'',
-        cityName:'',
-        licenseFeeRate:'',
-        firstDealDate:'',
-        wType:'',
-        subscriptionNum:'',
-        subscriptionMoney:'',
-        circleDays:'',
+
+      recodeCityList:'',
+      initNum: 0,
+      isClickAddBtn: false,
+      adddialogFormVisible: false,
+      addForm: {
+        cityId: "",
+        cityName: "",
+        licenseFeeRate: "",
+        firstDealDate: "",
+        wType: "",
+        subscriptionNum: "",
+        subscriptionMoney: "",
+        circleDays: ""
       },
-      multiForm:[],
-      newFormObject:{cityItem:'',cityName:'',cityId:'',joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',circleDays:''}, 
+      multiForm: [],
+      newFormObject: {
+        cityItem: "",
+        cityName: "",
+        cityId: "",
+        joinTime: "",
+        subscriptionNum: "",
+        subscriptionMoney: "",
+        licenseFeeRate: "",
+        wType: "",
+        firstDealDate: "",
+        circleDays: ""
+      },
       areaShow: true,
       proloading: false,
       provinceList: [],
@@ -748,7 +798,7 @@ export default {
       dialogVisible: false,
       formLabelWidth: "70px",
       editAccount: {
-        options:[],
+        options: [],
         companyName: "",
         businessLicense: "",
         address: "",
@@ -761,7 +811,7 @@ export default {
         userId: "",
         password: "",
         file: "",
-        cityPartnerId: ''
+        cityPartnerId: ""
       },
       editRules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -851,36 +901,38 @@ export default {
     document.title = "加盟商管理";
     this.loadData();
   },
-   created() {
-      // 初始化调用查询可加盟城市的接口,动态渲染数据
-    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
-    .withCredentials()
-    .set({
-      "content-type": "application/x-www-form-urlencoded"
-    })
-    .send({
-      unUsed: 1
-    })
-    .end((error,res)=>{
-      if(error){
-        console.log(error)
-      }else{
-        var result = JSON.parse(res.text)
-        this.editAccount.options = result.map((item)=>{
-          return {
-            value:item.code,
-            label:item.name
-          }
-        })
-      }
-    })
+  created() {
+    // 初始化调用查询可加盟城市的接口,动态渲染数据
+    request
+      .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+      .withCredentials()
+      .set({
+        "content-type": "application/x-www-form-urlencoded"
+      })
+      .send({
+        unUsed: 1
+      })
+      .end((error, res) => {
+        if (error) {
+          console.log(error);
+        } else {
+          var result = JSON.parse(res.text);
+          this.editAccount.options = result.map(item => {
+            return {
+              value: item.code,
+              label: item.name
+            };
+          });
+        }
+      });
     // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
     this.isHaveSettleOrders = false; // true 不可编辑
   },
   methods: {
-     addMutiCity(){
-         // 初始化调用查询可加盟城市的接口,动态渲染数据
-        request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    addMutiCity() {
+      // 初始化调用查询可加盟城市的接口,动态渲染数据
+      request
+        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
         .withCredentials()
         .set({
           "content-type": "application/x-www-form-urlencoded"
@@ -888,51 +940,200 @@ export default {
         .send({
           unUsed: 1
         })
-        .end((error,res)=>{
-          if(error){
-            console.log(error)
-          }else{
-            var result = JSON.parse(res.text)
-            this.editAccount.options = result.map((item)=>{
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            var result = JSON.parse(res.text);
+            if(result.length==0){
+              this.$message({
+                type:'error',
+                message:'对不起，暂时无可加盟地区'
+              })
+              return;
+            }
+            this.editAccount.options = result.map(item => {
               return {
-                value:item.code,
-                label:item.name
-              }
-            })
+                value: item.code,
+                label: item.name
+              };
+            });
           }
+        });
+      this.isClickAddBtn = true;
+      this.multiForm.push(
+        Object.assign({}, this.newFormObject, { id: this.initNum++ })
+      );
+    },
+    removeMutiCity(index, list) {
+      if(this.multiForm.length==1){
+        this.$message({
+          type:'error',
+          message:'对不起，请至少保留一个地区'
         })
-        this.isClickAddBtn = true
-        this.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
-    },
-    removeMutiCity(index){
-      this.multiForm.splice(index,1)
-    },
-    checkAuth(){
-       // 初始化调用查询可加盟城市的接口,动态渲染数据
-    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
-    .withCredentials()
-    .set({
-      "content-type": "application/x-www-form-urlencoded"
-    })
-    .send({
-      unUsed: 1
-    })
-    .end((error,res)=>{
-      if(error){
-        console.log(error)
-      }else{
-        var result = JSON.parse(res.text)
-        console.log(result)
-        if(result.length==0){
-          this.$message({
-            type:'error',
-            message:'对不起，暂时无可加盟地区'
-          })
-        }else{
-          this.$router.push({path:'/index/partnerManager/addpartner'})
-        }
+        return
       }
-    })
+      var cityId = '';
+      if(!list.cityId){
+        this.multiForm.splice(index, 1);
+        return;
+      }else{
+        cityId = list.cityId;
+      }
+      request
+        .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          cityId: cityId
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            var result = JSON.parse(res.text).data;
+            if (result[0].withDrawCount > 0) {
+              this.$message({
+                type: "error",
+                message: "该地区有结算单，不可删除"
+              });
+            } else {
+              //this.submitForm("editAccount");
+               this.multiForm.splice(index, 1);
+              this.$refs["editAccount"].validate(valid => {
+                if (valid) {
+                  if (this.editAccount.file === "" && this.imageUrl === null) {
+                    this.$message({
+                      message: "请上传营业执照",
+                      type: "warning"
+                    });
+                    return;
+                  }
+                  var that = this;
+                  //this.fullscreenLoading = true
+                  var newMultForm = this.multiForm.map(item => {
+                    var wType, joinTime, firstDealDate;
+                    if (item.wType === "自然月") {
+                      wType = 0;
+                    } else if (item.wType === "自然周(周一到周日)") {
+                      wType = 1;
+                    } else {
+                      wType = 2;
+                    }
+                    joinTime = moment(item.joinTime).format("YYYY-MM-DD");
+                    firstDealDate = moment(item.firstDealDate).format(
+                      "YYYY-MM-DD"
+                    );
+                    delete item.cityItem;
+                    return Object.assign(
+                      {},
+                      item,
+                      { wType: wType },
+                      { joinTime: joinTime },
+                      { firstDealDate: firstDealDate }
+                    );
+                  });
+                  delete this.editAccount.options;
+                  delete this.editAccount.provinceId;
+                  delete this.editAccount.provinceName;
+                  delete this.editAccount.areaId;
+                  delete this.editAccount.areaName;
+                  delete this.editAccount.cityId;
+                  delete this.editAccount.cityName;
+                  delete this.editAccount.joinTime;
+                  delete this.editAccount.licenseFeeRate;
+                  delete this.editAccount.percent;
+                  delete this.editAccount.subscriptionMoney;
+                  delete this.editAccount.subscriptionNum;
+                  delete this.editAccount.wType;
+                  var obj = Object.assign(
+                    {},
+                    { id: this.userIDID },
+                    this.editAccount,
+                    { cityList: JSON.stringify(newMultForm) },
+                    { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+                  );
+                  request
+                    .post(
+                      host + "beepartner/admin/cityPartner/updateCityPartner"
+                    )
+                    .withCredentials()
+                    .set({
+                      "content-type": "application/x-www-form-urlencoded"
+                    })
+                    .send(obj)
+                    .end((error, res) => {
+                      if (error) {
+                        console.log(error);
+                      } else {
+                        var code = JSON.parse(res.text).resultCode;
+                        if (code === 0) {
+                          // that.tableData.splice(
+                          //   this.editAccount.editIndex,
+                          //   1,
+                          //   Object.assign({}, this.editAccount, {
+                          //     joinTime: moment(this.editAccount.joinTime).format(
+                          //       "YYYY-MM-DD"
+                          //     )
+                          //   })
+                          // );
+                          that.dialogVisible = false;
+                          that.loadData();
+                          that.currentPage3 = 1;
+                          that.checkLogin(res);
+                          that.$message({
+                            type: "success",
+                            message: "恭喜您，删除成功"
+                          });
+                         
+                        } else {
+                          that.$message({
+                            type: "error",
+                            message: "对不起，删除失败"
+                          });
+                        }
+                      }
+                    });
+                } else {
+                  // console.log('error submit!!')
+                  return false;
+                }
+              });
+            }
+          }
+        });
+
+      //this.multiForm.splice(index,1)
+    },
+    checkAuth() {
+      // 初始化调用查询可加盟城市的接口,动态渲染数据
+      request
+        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          unUsed: 1
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            var result = JSON.parse(res.text);
+            console.log(result);
+            if (result.length == 0) {
+              this.$message({
+                type: "error",
+                message: "对不起，暂时无可加盟地区"
+              });
+            } else {
+              this.$router.push({ path: "/index/partnerManager/addpartner" });
+            }
+          }
+        });
       //this.$router.push({path:'/index/partnerManager/addpartner'})
     },
     loadData() {
@@ -967,7 +1168,6 @@ export default {
                     item.joinTime === null
                       ? ""
                       : moment(item.joinTime).format("YYYY-MM-DD")
-                  
                 });
               });
               var pageNumber = Number(JSON.parse(res.text).totalPage);
@@ -1137,8 +1337,7 @@ export default {
       };
     },
     queryInfo() {
-
-      this.isSearch = true
+      this.isSearch = true;
 
       var name = this.name.trim();
       var phone = this.phone.trim();
@@ -1214,8 +1413,8 @@ export default {
         })
         .send({
           currentPage: val,
-          name: this.isSearch === false?'':this.name.trim(),
-          phone: this.isSearch === false?'':this.phone.trim(),
+          name: this.isSearch === false ? "" : this.name.trim(),
+          phone: this.isSearch === false ? "" : this.phone.trim(),
           startTime:
             this.startTime === ""
               ? ""
@@ -1301,8 +1500,8 @@ export default {
         "/index/partnerDetail/" + scope.row.id + "&" + scope.row.cityPartnerId
       );
     },
-    checkSettleTime (id) {
-      var newArr = []
+    checkSettleTime(id) {
+      var newArr = [];
       request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
         .withCredentials()
@@ -1310,7 +1509,7 @@ export default {
           "content-type": "application/x-www-form-urlencoded"
         })
         .send({
-          'cityPartnerId': id
+          cityPartnerId: id
         })
         .end((error, res) => {
           if (error) {
@@ -1318,23 +1517,23 @@ export default {
           } else {
             this.checkLogin(res);
             // console.log("settle", res)
-            var list = JSON.parse(res.text).data
-            var arr = []
-            list.map( item => {
-              var obj = {}
+            var list = JSON.parse(res.text).data;
+            var arr = [];
+            list.map(item => {
+              var obj = {};
 
               if (Number(item.withDrawCount) > 0) {
-                obj.isEdit = false
+                obj.isEdit = false;
               } else {
-                obj.isEdit = true
+                obj.isEdit = true;
               }
-              obj.cityPartnerId = item.cityPartnerId
-              arr.push(obj)
+              obj.cityPartnerId = item.cityPartnerId;
+              arr.push(obj);
 
-              return arr
-            })
-            console.log(this.isSettleList)
-            this.isSettleList = arr
+              return arr;
+            });
+            console.log(this.isSettleList);
+            this.isSettleList = arr;
           }
         });
     },
@@ -1346,104 +1545,117 @@ export default {
           "content-type": "application/x-www-form-urlencoded"
         })
         .send({
-          'cityPartnerId': row.cityPartnerId
+          cityPartnerId: row.cityPartnerId
         })
         .end((error, res) => {
           if (error) {
             console.log(error);
           } else {
             this.checkLogin(res);
-            var newArr = []
+            var newArr = [];
             // console.log("settle", res)
-            var list = JSON.parse(res.text).data
-            var arr = []
-            list.map( item => {
-              var obj = {}
+            var list = JSON.parse(res.text).data;
+            var arr = [];
+            list.map(item => {
+              var obj = {};
 
               if (Number(item.withDrawCount) > 0) {
-                obj.isEdit = true
+                obj.isEdit = true;
               } else {
-                obj.isEdit = false
+                obj.isEdit = false;
               }
 
-              obj.cityId = item.cityId
-              arr.push(obj)
+              obj.cityId = item.cityId;
+              arr.push(obj);
 
-              return arr
-            })
-            newArr = arr
-            this.dialogVisible = true
-            var newMultForm = row.areaList.map((item)=>{
-                  var wType,joinTime,firstDealDate,isEdit
-                  if(item.wType==0){
-                    wType = '自然月'
-                  }else if(item.wType==1){
-                    wType = '自然周(周一到周日)'
-                  }else{
-                    wType = '自定义'
-                  }
-                  for (var i = 0; i < newArr.length; i++) {
-                    if (Number(item.cityId) === Number(newArr[i].cityId)) {
-                       isEdit = newArr[i].isEdit
-                    }
-                  }
-                  return Object.assign({},item,{wType:wType},{isEdit: isEdit})
-                })
+              return arr;
+            });
+            newArr = arr;
+            this.dialogVisible = true;
+            var newMultForm = row.areaList.map(item => {
+              var wType, joinTime, firstDealDate, isEdit;
+              if (item.wType == 0) {
+                wType = "自然月";
+              } else if (item.wType == 1) {
+                wType = "自然周(周一到周日)";
+              } else {
+                wType = "自定义";
+              }
+              for (var i = 0; i < newArr.length; i++) {
+                if (Number(item.cityId) === Number(newArr[i].cityId)) {
+                  isEdit = newArr[i].isEdit;
+                }
+              }
+              return Object.assign(
+                {},
+                item,
+                { wType: wType },
+                { isEdit: isEdit }
+              );
+            });
 
-            this.multiForm = newMultForm
-            this.imageUrl = row.businessLicenseIconUrl
+            this.multiForm = newMultForm;
+            this.recodeCityList =  this.multiForm.length
+            this.imageUrl = row.businessLicenseIconUrl;
             this.userIDID = row.id;
-            this.editAccount.companyName = row.companyName
-            this.editAccount.businessLicense = row.businessLicense
-            this.editAccount.address = row.address
-            this.editAccount.userName = row.userName
-            this.editAccount.cardType = row.cardType==0?'居民身份证':'护照'
-            this.editAccount.phone = row.phone
-            this.editAccount.email = row.email
-            this.editAccount.userId = row.userId
-            this.editAccount.idCard = row.idCard 
-            this.editAccount.password = row.password
-            this.editAccount.cityPartnerId = row.cityPartnerId
+            this.editAccount.companyName = row.companyName;
+            this.editAccount.businessLicense = row.businessLicense;
+            this.editAccount.address = row.address;
+            this.editAccount.userName = row.userName;
+            this.editAccount.cardType = row.cardType == 0 ? "居民身份证" : "护照";
+            this.editAccount.phone = row.phone;
+            this.editAccount.email = row.email;
+            this.editAccount.userId = row.userId;
+            this.editAccount.idCard = row.idCard;
+            this.editAccount.password = row.password;
+            this.editAccount.cityPartnerId = row.cityPartnerId;
           }
         });
     },
     editConfim() {
       var that = this;
       //this.fullscreenLoading = true
-      var newMultForm = this.multiForm.map((item)=>{
+      var newMultForm = this.multiForm.map(item => {
+        var cityName = item.cityId.label;
+        var cityId = item.cityId.value;
+        var wType, joinTime, firstDealDate;
+        if (item.wType === "自然月") {
+          wType = 0;
+        } else if (item.wType === "自然周(周一到周日)") {
+          wType = 1;
+        } else {
+          wType = 2;
+        }
+        joinTime = moment(item.joinTime).format("YYYY-MM-DD");
+        firstDealDate = moment(item.firstDealDate).format("YYYY-MM-DD");
+        return Object.assign(
+          {},
+          item,
+          { wType: wType },
+          { joinTime: joinTime },
+          { firstDealDate: firstDealDate },
+          { cityName: cityName },
+          { cityId: cityId }
+        );
+      });
 
-            var cityName = item.cityId.label
-            var cityId = item.cityId.value 
-            var wType,joinTime,firstDealDate
-            if(item.wType==='自然月'){
-               wType = 0
-            }else if(item.wType==='自然周(周一到周日)'){
-              wType = 1
-            }else{
-              wType = 2
-            }
-            joinTime = moment(item.joinTime).format('YYYY-MM-DD')
-            firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
-            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
-          })
-
-      delete this.editAccount.areaId
-      delete this.editAccount.areaName
-      delete this.editAccount.cityId
-      delete this.editAccount.cityName
-      delete this.editAccount.joinTime
-      delete this.editAccount.licenseFeeRate
-      delete this.editAccount.percent
-      delete this.editAccount.subscriptionMoney
-      delete this.editAccount.subscriptionNum
-      delete this.editAccount.wType
+      delete this.editAccount.areaId;
+      delete this.editAccount.areaName;
+      delete this.editAccount.cityId;
+      delete this.editAccount.cityName;
+      delete this.editAccount.joinTime;
+      delete this.editAccount.licenseFeeRate;
+      delete this.editAccount.percent;
+      delete this.editAccount.subscriptionMoney;
+      delete this.editAccount.subscriptionNum;
+      delete this.editAccount.wType;
 
       var obj = Object.assign(
-            {},
-            this.editAccount,
-            {cityList:JSON.stringify(newMultForm)},
-            { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
-          );
+        {},
+        this.editAccount,
+        { cityList: JSON.stringify(newMultForm) },
+        { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+      );
       request
         .post(host + "beepartner/admin/cityPartner/updateCityPartner")
         .withCredentials()
@@ -1476,45 +1688,48 @@ export default {
             return;
           }
           var that = this;
-      //this.fullscreenLoading = true
-      var newMultForm = this.multiForm.map((item)=>{
-            var wType,joinTime,firstDealDate
-            if(item.wType==='自然月'){
-               wType = 0
-            }else if(item.wType==='自然周(周一到周日)'){
-              wType = 1
-            }else{
-              wType = 2
+          //this.fullscreenLoading = true
+          var newMultForm = this.multiForm.map(item => {
+            var wType, joinTime, firstDealDate;
+            if (item.wType === "自然月") {
+              wType = 0;
+            } else if (item.wType === "自然周(周一到周日)") {
+              wType = 1;
+            } else {
+              wType = 2;
             }
-            if(item.cityItem){
-              console.log('2222')
-            }
-            joinTime = moment(item.joinTime).format('YYYY-MM-DD')
-            firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
-            delete item.cityItem
-            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate})
-          })
-    delete this.editAccount.options      
-    delete this.editAccount.provinceId
-    delete this.editAccount.provinceName      
-    delete this.editAccount.areaId
-    delete this.editAccount.areaName
-    delete this.editAccount.cityId
-    delete this.editAccount.cityName
-    delete this.editAccount.joinTime
-    delete this.editAccount.licenseFeeRate
-    delete this.editAccount.percent
-    delete this.editAccount.subscriptionMoney
-    delete this.editAccount.subscriptionNum
-    delete this.editAccount.wType
-      var obj = Object.assign(
+            joinTime = moment(item.joinTime).format("YYYY-MM-DD");
+            firstDealDate = moment(item.firstDealDate).format("YYYY-MM-DD");
+            delete item.cityItem;
+            return Object.assign(
+              {},
+              item,
+              { wType: wType },
+              { joinTime: joinTime },
+              { firstDealDate: firstDealDate }
+            );
+          });
+          delete this.editAccount.options;
+          delete this.editAccount.provinceId;
+          delete this.editAccount.provinceName;
+          delete this.editAccount.areaId;
+          delete this.editAccount.areaName;
+          delete this.editAccount.cityId;
+          delete this.editAccount.cityName;
+          delete this.editAccount.joinTime;
+          delete this.editAccount.licenseFeeRate;
+          delete this.editAccount.percent;
+          delete this.editAccount.subscriptionMoney;
+          delete this.editAccount.subscriptionNum;
+          delete this.editAccount.wType;
+          var obj = Object.assign(
             {},
-            {id:this.userIDID},
+            { id: this.userIDID },
             this.editAccount,
-            {cityList:JSON.stringify(newMultForm)},
+            { cityList: JSON.stringify(newMultForm) },
             { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
           );
-        that.dialogVisible = false;
+          that.dialogVisible = false;
           //this.fullscreenLoading = true
           // var obj  = Object.assign({},this.editAccount,{cardType:this.editAccount.cardType==='居民身份证'?0:1, file:this.editAccount.file })
           request
@@ -1569,22 +1784,29 @@ export default {
     inputChange() {
       if (this.$refs.val1.value === "" && this.$refs.val2.value === "") {
         this.loadData();
-        this.isSearch = false
+        this.isSearch = false;
       }
     }
   },
   watch: {
     "$store.state.users.isOpenAddAccount": "loadData",
-    'multiForm':{
-      handler:function(n,o){
-        n.map((item)=>{
-          if(item.cityItem){
-            item.cityName = item.cityItem.label
-            item.cityId = item.cityItem.value
+    multiForm: {
+      handler: function(n, o) {
+       
+        n.map((item,index) => {
+          if (item.cityItem) {
+            item.cityName = item.cityItem.label;
+            item.cityId = item.cityItem.value;
           }
-        })
+          if(item.joinTime==''){
+             setTimeout(()=>{
+               var _class = $('#joinTime'+index).attr('class')
+              $('#joinTime'+index).addClass('hover')
+             },200)
+          }
+        });
       },
-      deep:true
+      deep: true
     },
     startTime: {
       handler: function(val, oldVal) {
