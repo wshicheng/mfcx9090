@@ -100,7 +100,7 @@
     width: 100%;
     box-sizing: border-box;
     border: 1px solid #dfe6ec;
-    padding: 20px 30px 800px 30px;
+    padding: 20px 20px 800px 20px;
   }
 
   div.queryLists h3 button {

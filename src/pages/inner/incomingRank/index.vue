@@ -230,7 +230,7 @@ div.consumeData {
 }
 
 div.countInfo {
-  padding: 20px 20px 20px 32px;
+  padding: 20px 20px 20px 22px;
   background: #fff;
   border: 1px solid #dfe6ec;
   margin-bottom: 20px;

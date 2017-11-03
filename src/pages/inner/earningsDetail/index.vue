@@ -11,7 +11,7 @@
       <div class="earD_con" style="margin-top: 10px;">
         <div>
           <el-row class="city">
-            <div class="citys" style="margin-left: 100px;">
+            <div class="citys" style="margin-left: 90px;">
               <address class="joinArea" style="margin-left: -66px;">加盟区域</address>
               <span @click="handleClick" myId='0' class="active">全部地区</span>
               <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
@@ -193,7 +193,8 @@
       background: #fff;
       border: 1px solid #e7ecf1;
       overflow: hidden;
-      padding-bottom: 10px;
+      padding-bottom: 17px;
+      padding-top: 3px;
     }
 
     #earD_header div.time_earning {
@@ -201,7 +202,7 @@
       float:left;
       margin-right: 8px;
       margin-top: 8px;
-      padding-left: 25px;
+      padding-left: 15px;
     }
 
     #earD_header div.time_earning button {
@@ -228,7 +229,7 @@
     /*#earD_header div.time_earning button:hover{color:#999;}*/
 
     #earD_excel {
-      padding: 0px 30px 0px 30px;
+      padding: 0px 20px 0px 20px;
       background:#fff;
       border: 1px solid #e7ecf1;
       border-bottom: none;
@@ -273,11 +274,7 @@
     #earD_body {
       padding: 10px 20px 800px 20px;
       background: #fff;
-      /* margin-top: 20px; */
-      padding-left: 28px;
-      padding-right: 28px;
       border: 1px solid #e7ecf1;
-      /* border-bottom: none; */
       border-top: none;
     }
 

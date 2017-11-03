@@ -1,6 +1,6 @@
 <template>
   <div class="settlementManager">
-        <div class="settlementManager_head">
+        <div class="settlementManager_head1">
             <el-row class="selectPlace">
                 <div class="citys" style="margin-left: 80px;">
                 <address class="joinArea" style="margin-left: -57px;">加盟区域：</address>
@@ -9,7 +9,7 @@
                 </div>
             </el-row>
         </div>
-        <div class="settlementManager_head">
+        <div class="settlementManager_head2">
             <el-row class="selectPlace">
                 <div class="citys" style="margin-left: 67px;">
                     <address class="joinArea" style="margin-left: -57px;">结算单状态：</address>
@@ -384,8 +384,13 @@ export default {
 </script>
 <style scoped>
 
-div.settlementManager_head {
-    padding: 10px;
+div.settlementManager_head1 {
+    padding: 20px 10px 5px 10px;
+    background: #fff;
+}
+
+div.settlementManager_head2 {
+    padding: 5px 10px 20px 10px;
     background: #fff;
 }
 

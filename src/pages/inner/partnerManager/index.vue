@@ -389,22 +389,26 @@ div.menuIcon i.icon-jian{right:-36px;}
 
 ::-webkit-input-placeholder {
   /* WebKit browsers */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 :-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 ::-moz-placeholder {
   /* Mozilla Firefox 19+ */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10+ */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 /*#partner_header button {
