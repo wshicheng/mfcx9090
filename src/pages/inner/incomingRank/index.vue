@@ -292,7 +292,7 @@ div.timeSelectBtn button {
   display: inline-block;
   border: 1px solid #ddd;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   color: #666;
   /*background: rgba(66, 66, 66, 0.8);*/
   background: #fff;

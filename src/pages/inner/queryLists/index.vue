@@ -208,6 +208,23 @@ export default {
     }
   },
   methods: {
+    getCurrentCity (res) {
+      var data = JSON.parse(res.text).data
+      var arr = []
+      data.map( item => {
+        var obj = {}
+        obj.cityId = item.cityId
+        obj.cityName = item.cityName
+
+        arr.push(obj)
+
+        return arr
+      })
+
+      this.$store.dispatch('setIncomingCityList', arr)
+      console.log('this.$store.state', this.$store.state.users.incomingCityListStr)
+      console.log('arr', arr)
+    },
     handleCurrentChange (val) {
       this.loading2 = true
       request
@@ -230,6 +247,7 @@ export default {
             console.log('error:', error)
           } else {
             this.checkLogin(res)
+            this.getCurrentCity(res)
             this.loading2 = false
             var arr = JSON.parse(res.text).data
             var totalPage = Number(JSON.parse(res.text).totalPage)
@@ -280,7 +298,7 @@ export default {
             'currentPage': 1,
             'showType': 'table',
             'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
-              'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
+            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
           })
           .end((error, res) => {
             if (error) {
@@ -288,6 +306,7 @@ export default {
               console.log('error:', error)
             } else {
               this.checkLogin(res)
+              this.getCurrentCity(res)
               this.loading2 = false
               var arr = JSON.parse(res.text).data
               var totalPage = Number(JSON.parse(res.text).totalPage)
@@ -335,6 +354,7 @@ export default {
             console.log('error:', error)
           } else {
             this.checkLogin(res)
+            this.getCurrentCity(res)
             this.loading2 = false
             var arr = JSON.parse(res.text).data
             var totalPage = Number(JSON.parse(res.text).totalPage)
@@ -388,6 +408,7 @@ export default {
                 console.log('error:', error)
               } else {
                 this.checkLogin(res)
+                this.getCurrentCity(res)
                 this.loading2 = false
 
                 var totalPage = Number(JSON.parse(res.text).totalPage)
@@ -459,7 +480,6 @@ export default {
     }
   },
   mounted () {
-   
     document.title = '蜜蜂平台管理——收益排行列表'
     setTimeout(()=>{
       this.getDateMount()
@@ -470,9 +490,6 @@ export default {
       return
     }
     var that = this
-    setInterval( function () {
-      that.getDateMount()
-    }, 60000)
   },
   // // created () {
   // //   this.dataUpdate()

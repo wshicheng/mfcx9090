@@ -435,12 +435,12 @@
 #partner_add button {
   width: 100px;
   height: 30px;
-  line-height: 30px;
+  line-height: 25px;
   display: inline-block;
   border: none;
   outline: none;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   background: rgba(66, 66, 66, 0.8);
   transition: all 0.2s linear 0s;

@@ -52,9 +52,10 @@ export default {
         .send({
           cityId:this.cityId,
           'type': this.$route.query.type,
+          'cityList': this.$store.state.users.incomingCityListStr.toString(),
           'showType': 'chart',
-           'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
-            'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
+          'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
+          'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
         })
         .end((error, res) => {
           if (error) {
@@ -211,6 +212,7 @@ export default {
           cityId:this.cityId,
           'type': this.$route.query.type,
           'showType': 'chart',
+          'cityList': this.$store.state.users.incomingCityListStr.toString(),
            'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
             'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:''
         })
@@ -264,6 +266,7 @@ export default {
             'startTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time1:'',
             'endTimeStr': isOwnEmpty(this.$store.state.users.timeline)==false?this.$store.state.users.timeline.newObj.time2:'',
             'type': type,
+            'cityList': this.$store.state.users.incomingCityListStr.toString(),
             'showType': 'chart'
           })
           .end((error, res) => {

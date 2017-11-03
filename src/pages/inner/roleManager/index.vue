@@ -764,11 +764,11 @@ div.account>h1 {
 div.account>h1 button {
   width: 100px;
   height: 30px;
-  line-height: 30px;
+  line-height: 25px;
   display: inline-block;
   border: none;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   border-radius: 4px;
   background: rgba(66, 66, 66, 0.8);

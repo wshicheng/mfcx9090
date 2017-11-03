@@ -1,26 +1,24 @@
 <template>
   <div class="settlementManager">
-        <div style="padding: 20px; background: #fff;">
-            <div class="settlementManager_head">
-                <el-row class="selectPlace">
-                    <div class="citys" style="margin-left: 80px;">
-                    <address class="joinArea" style="margin-left: -57px;">加盟区域：</address>
-                    <span @click="handleClick" myId='0' class="active">全部地区</span>
-                    <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
-                    </div>
-                </el-row>
-            </div>
-            <div class="settlementManager_head">
-                <el-row class="selectPlace">
-                    <div class="citys" style="margin-left: 67px;">
-                        <address class="joinArea" style="margin-left: -57px;">结算单状态：</address>
-                        <span :myStatus='0' @click="handleTypeClick">全部状态</span>
-                        <span :myStatus='1' @click="handleTypeClick">待确认</span>
-                        <span :myStatus='2' @click="handleTypeClick" class="active">待结算</span>
-                        <span :myStatus='3' @click="handleTypeClick">已结算</span>
-                    </div>
-                </el-row>
-            </div>
+        <div class="settlementManager_head">
+            <el-row class="selectPlace">
+                <div class="citys" style="margin-left: 80px;">
+                <address class="joinArea" style="margin-left: -57px;">加盟区域：</address>
+                <span @click="handleClick" myId='0' class="active">全部地区</span>
+                <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
+                </div>
+            </el-row>
+        </div>
+        <div class="settlementManager_head">
+            <el-row class="selectPlace">
+                <div class="citys" style="margin-left: 67px;">
+                    <address class="joinArea" style="margin-left: -57px;">结算单状态：</address>
+                    <span :myStatus='0' @click="handleTypeClick">全部状态</span>
+                    <span :myStatus='1' @click="handleTypeClick">待确认</span>
+                    <span :myStatus='2' @click="handleTypeClick" class="active">待结算</span>
+                    <span :myStatus='3' @click="handleTypeClick">已结算</span>
+                </div>
+            </el-row>
         </div>
         <div id="settlementManager_table">
         <el-row class="table">
@@ -388,7 +386,7 @@ export default {
 
 div.settlementManager_head {
     padding: 10px;
-    background: #faebd7;
+    background: #fff;
 }
 
 div.selectPlace address {
