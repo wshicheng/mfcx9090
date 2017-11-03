@@ -25,7 +25,10 @@
              <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
               
             </div>
-           <el-form-item label="加盟地区"
+           <el-form-item label="加盟地区" :id="'cityId'+ index" 
+             :rules="[
+              { required: true, message: '请输入加盟地区', trigger: 'blur' },
+            ]"
            >
             <el-select v-model="list.cityId" placeholder="请选择">
               <el-option
@@ -75,17 +78,30 @@
           <!-- <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width:700px">
             <city-list v-bind:joinCity="_cityList" v-on:listenToChildEvetn="showMsgFormChild"></city-list>
         </el-form-item> -->
-        <el-form-item label="加盟日期">
+        <el-form-item label="加盟日期" :id="'joinTime'+ index" 
+          
+           :rules="[
+              { required: true, message: '请输入加盟日期', trigger: 'blur' },
+            ]"
+        >
             <el-date-picker
               v-model="list.joinTime"
               placeholder="选择日期">
-            </el-date-picker>           
+            </el-date-picker> 
+                      
         </el-form-item>
-        <el-form-item label="认购车辆"
+        <el-form-item label="认购车辆" :id="'subscriptionNum'+ index"
+         :rules="[
+              { required: true, message: '请输入认购车辆', trigger: 'blur' },
+            ]"
         >
           <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
         </el-form-item>
-        <el-form-item label="加盟资金">
+        <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index"
+          :rules="[
+              { required: true, message: '请输入加盟资金', trigger: 'blur' },
+            ]"
+        >
           <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
         </el-form-item>
         <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
@@ -94,10 +110,18 @@
         <!-- <el-form-item label="加盟商分成比例" prop="percent">
           <el-input max="100" min="0" v-model="ruleForm.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
         </el-form-item>	 -->
-        <el-form-item label="授权费率">
+        <el-form-item label="授权费率" :id="'licenseFeeRate'+ index"
+           :rules="[
+              { required: true, message: '请输入授权费率', trigger: 'blur' },
+            ]"
+        >
           <el-input max="100" min="0" v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
         </el-form-item>
-        <el-form-item label="结算周期" >
+        <el-form-item label="结算周期" :id="'wType'+ index"
+           :rules="[
+              { required: true, message: '请输入结算周期', trigger: 'blur' },
+            ]"
+         >
           <el-radio-group v-model="list.wType">
             <el-radio label="自然月" value='0'></el-radio>
             <el-radio label="自然周(周一到周日)" value='1'></el-radio>
@@ -109,7 +133,11 @@
           </el-radio-group>
         </el-form-item>
         <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-        <el-form-item label="第一次结算开始日期">
+        <el-form-item label="第一次结算开始日期" :id="'firstDealDate'+ index"
+           :rules="[
+              { required: true, message: '请输入第一次结算开始日期', trigger: 'blur' },
+            ]"
+        >
             <el-date-picker
               :readonly="isHaveSettleOrders"
               v-model="list.firstDealDate"
@@ -400,33 +428,11 @@ export default {
         value: "",
       },
       rules: {
-        firstDealDate: [
-          { required: true, message: "请输入第一次结算日期", trigger: "blur" }
-        ],
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
         businessLicense: [
           { required: true, message: "请输入营业执照号", trigger: "blur" }
         ],
         address: [{ message: "请输入正确的地址", trigger: "blur" }],
-        joinTime: [
-          {  required: true, message: "请选择加盟日期", tigger: "blur" }
-        ],
-        subscriptionNum: [
-          {
-            type: "number",
-            required: true,
-            message: "请选择输入认购车辆数",
-            trigger: "blur"
-          }
-        ],
-        subscriptionMoney: [
-          {
-            type: "number",
-            required: true,
-            message: "输入正确的金额",
-            trigger: "blur"
-          }
-        ],
         cardType: [{ required: true, message: "请选择证件类型", trigger: "blur" }],
         percent: [{ required: true, message: "请输入加盟比例", trigger: "blur" }],
         userName: [{ message: "请输入姓名", trigger: "blur" }],
@@ -661,6 +667,9 @@ export default {
       }
     },
     submitForm(formName) {
+      if($('.is-error').length>0){
+        return;
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.ruleForm.file === "") {
@@ -787,6 +796,84 @@ export default {
         this.transformType(n);
       },
       deep: true
+    },
+    "ruleForm.multiForm":{
+      handler:function(n,o){
+        console.log(n)
+       n.map((item,index)=>{
+         if(!item.joinTime==''){
+          setTimeout(()=>{
+            $('#joinTime'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#joinTime'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#joinTime'+index).find('.el-date-editor').append(' <div class="el-form-item__error">请输入加盟日期</div>')
+          },100)
+         }
+         if(!item.subscriptionNum==''){
+          setTimeout(()=>{
+            $('#subscriptionNum'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#subscriptionNum'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#subscriptionNum'+index).find('.el-input').append(' <div class="el-form-item__error">请输入认购车辆数</div>')
+          },100)
+         }
+        if(!item.subscriptionMoney==''){
+          setTimeout(()=>{
+            $('#subscriptionMoney'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#subscriptionMoney'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#subscriptionMoney'+index).find('.el-input').append(' <div class="el-form-item__error">请输入加盟资金</div>')
+          },100)
+         }
+          if(!item.licenseFeeRate==''){
+          setTimeout(()=>{
+            $('#licenseFeeRate'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#licenseFeeRate'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#licenseFeeRate'+index).find('.el-input').append(' <div class="el-form-item__error">请输入收入费率</div>')
+          },100)
+         }
+         if(!item.wType==''){
+          setTimeout(()=>{
+            $('#wType'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#wType'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#wType'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请输入结算周期</div>')
+          },100)
+         }
+         if(!item.firstDealDate==''){
+          setTimeout(()=>{
+            $('#firstDealDate'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#firstDealDate'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#firstDealDate'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请输入结算周期</div>')
+          },100)
+         }
+         if(!item.cityId==''){
+          setTimeout(()=>{
+            $('#cityId'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#cityId'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#cityId'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请选择加盟地区</div>')
+          },100)
+         }
+       })
+      },
+      deep:true
     }
   }
 };
