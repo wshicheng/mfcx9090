@@ -1527,8 +1527,7 @@ body {
   top: 0;
 }
 
-#search_content {
-  border: 1px solid #e7ecf1;
+#search_content { 
   overflow: hidden;
 }
 
@@ -1696,14 +1695,13 @@ div.account>h1 button:hover {
 
 button#accountSearchBtn {
   width: 80px;
-  /* float: right; */
   height: 36px;
   line-height: 11px;
   margin-right: 30px;
   color: #fff;
+  font-size: 14px;
   outline: none;
   border: none;
-  /* border-radius: 4px; */
   background: rgba(52, 52, 67, 0.8);
 }
 
@@ -1714,14 +1712,13 @@ button#accountSearchBtn:hover {
 
 button#accountSearchBtn2 {
   width: 80px;
-  /* float: right; */
   height: 36px;
   line-height: 11px;
   margin-right: 30px;
   color: #fff;
+  font-size: 14px;
   outline: none;
   border: none;
-  /* border-radius: 4px; */
   background: rgba(52, 52, 67, 0.8);
 }
 
@@ -1790,7 +1787,7 @@ div.el-pagination {
   width: 100%;
   min-height: 40px;
   /* border: 1px solid #e7ecf1; */
-  padding: 15px 10px 10px 30px;
+  padding: 15px 10px 0px 30px;
   box-sizing: border-box;
   background-color: #faebd7;
 }

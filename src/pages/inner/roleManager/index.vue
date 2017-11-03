@@ -747,7 +747,7 @@ body {
 
 div.account {
   /* width: 100%; */
-  padding: 0 30px 800px 30px;
+  padding: 0 20px 800px 20px;
   background: #fff;
   margin-top: 20px;
   border: 1px solid #e7ecf1;
@@ -764,11 +764,11 @@ div.account>h1 {
 div.account>h1 button {
   width: 100px;
   height: 30px;
-  line-height: 30px;
+  line-height: 25px;
   display: inline-block;
   border: none;
   outline: none;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   border-radius: 4px;
   background: rgba(66, 66, 66, 0.8);
@@ -798,10 +798,9 @@ div.account>h1 button:hover {
 }
 
 #am_search label {
-  /* width: 190px; */
-  margin-top: 15px;
-  margin-left: 31px;
-  float: left;
+    margin-top: 15px;
+    margin-left: 21px;
+    float: left;
 }
 
 #am_search label span {
@@ -930,7 +929,7 @@ button#roleSearchBtn {
   /* float: right; */
   height: 36px;
   line-height: 11px;
-  margin-right: 30px;
+  margin-right: 20px;
   color: #fff;
   margin-top: 18px;
   outline: none;

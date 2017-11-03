@@ -183,7 +183,7 @@ import $ from 'jquery'
   }
 </script>
 <style>
-  div#container2{width:100%;}
+  div#container2{width:100%; overflow: hidden; min-height: 500px;}
   div#container2 g.highcharts-legend-item{display:none;}
   .my_noDate {
     width: 100%;

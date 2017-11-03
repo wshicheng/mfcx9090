@@ -283,6 +283,7 @@ export default {
                 } else {
                   this.checkLogin(res)
                   var status = JSON.parse(res.text).resultCode
+                  var message = JSON.parse(res.text).message
                   if (status === 1) {
                     that.loading = false
                     that.$router.push('/index/memberCenter')
@@ -293,7 +294,7 @@ export default {
                   } else {
                     that.loading = false
                     that.$message({
-                      message: 'sorry，绑定手机失败',
+                      message: message,
                       type: 'error'
                     })
                   }

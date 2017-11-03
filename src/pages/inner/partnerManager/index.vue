@@ -426,22 +426,26 @@ div.menuIcon i.icon-jian {
 
 ::-webkit-input-placeholder {
   /* WebKit browsers */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 :-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 ::-moz-placeholder {
   /* Mozilla Firefox 19+ */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10+ */
-  color: #bfcbd9;
+  color: #dddddd;
+  font-weight: 400;
 }
 
 /*#partner_header button {
@@ -493,12 +497,12 @@ div.menuIcon i.icon-jian {
 #partner_add button {
   width: 100px;
   height: 30px;
-  line-height: 30px;
+  line-height: 25px;
   display: inline-block;
   border: none;
   outline: none;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
   background: rgba(66, 66, 66, 0.8);
   transition: all 0.2s linear 0s;

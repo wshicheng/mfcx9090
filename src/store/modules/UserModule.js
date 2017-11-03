@@ -18,7 +18,8 @@ const state = {
     isOpenAddAccount:false,
     name:'',
     phone: '',
-    recodeCityId:''
+    recodeCityId:'',
+    incomingCityListStr: []
 }
 
 const mutations = {
@@ -82,6 +83,14 @@ const mutations = {
     loginSign (state) {
         // console.log('loginsian change')
         state.loginSign = !state.loginSign
+    },
+    incomingCityList(state, cityList) {
+        var newArr = []
+        cityList.map( item => {
+            newArr.push(item.cityId)
+            return newArr
+        })
+        state.incomingCityListStr = newArr
     }
 }
 
@@ -92,6 +101,9 @@ const actions = {
     setName({ commit }, name){
         commit('updateName',name)
     },
+    setIncomingCityList( {commit}, cityList) {
+        commit('incomingCityList', cityList)
+    }, 
     setAccountOpendState({commit}){
         commit('changeAddAccount')
     },
