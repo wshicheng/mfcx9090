@@ -34,7 +34,7 @@
   
     <div id="partner_table">
       <div id="partner_add">
-        <button @click="$router.push({path:'/index/partnerManager/addpartner'})">添加加盟商</button>
+        <button @click="checkAuth">添加加盟商</button>
       </div>
       <el-table
         :data="tableData"
@@ -107,7 +107,7 @@
             <!--dialog 弹窗开始-->
             <el-dialog title="编辑加盟商信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
              <div id="editpartner_form">
-              <el-form :model="editAccount" :rules="editRules"  ref="editAccount" label-width="110px" class="demo-ruleForm">
+              <el-form :model="editAccount" :rules="editRules"  ref="editAccount" label-width="139px" class="demo-ruleForm">
                 <el-form-item label="企业名称" prop="companyName">
                   <el-input v-model="editAccount.companyName" placeholder='长度不超过100字符'></el-input>
                 </el-form-item>
@@ -119,9 +119,24 @@
                 </el-form-item>
                
                 <h1 class="form_table_h1">加盟与结算信息</h1>
-                <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="list of multiForm">
+                <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="(list,index) of multiForm">
+                   <div class="menuIcon">
+                      <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
+                      <i  style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
+                      </div>
+                     
                      <el-form-item label="加盟地区"  id='selectCity' style="width: 700px;">
-                       <el-input v-model="list.cityName" readonly></el-input> 
+                      <div>{{index + 1 + ":"+ Number(multiForm.length)}}</div>
+                       <el-input v-show="(index+1)<=1" v-model="list.cityName" readonly></el-input>
+                        <el-select v-show="(index+1)>1" v-model="list.cityItem" placeholder="请选择">
+                          <el-option
+                            v-for="item in editAccount.options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item">
+                          </el-option>
+                        </el-select>
+                     </el-form-item>   
                    <!-- <el-select disabled @change="handleEditProvince"
                       v-model="editAccount.provinceName"
                       loading-text
@@ -155,7 +170,7 @@
                         :value="item.name">
                       </el-option>
                     </el-select> -->
-                </el-form-item>
+              
                  <el-form-item label="加盟日期" >
                     <el-date-picker
                       v-model="list.joinTime"
@@ -260,7 +275,13 @@
   </div>
 </template>
 
-<style>
+<style scoped>
+div.menuIcon{text-align: right;
+   
+    margin-bottom: 10px;
+   position:relative;}
+div.menuIcon i.iconfont{position:absolute;right:0;z-index:99;}
+div.menuIcon i.icon-jian{right:-36px;}   
 .form_table_h2 {
   width: 100%;
   padding: 0px 0 10px 153px;
@@ -464,7 +485,7 @@
   background: #f87e2b;
   border: none;
   color: #fff;
-  margin-left: 110px;
+  margin-left: 214px;
   margin-top: -30px;
   margin-bottom: 20px;
 }
@@ -560,7 +581,7 @@
 .form_table_h1 {
   width: 100%;
   line-height: 30px;
-  padding: 10px 0 10px 3px;
+  padding: 40px 0 10px 3px;
   height: 30px;
   font-size: 16px;
   border-bottom: 1px solid #eee;
@@ -669,8 +690,21 @@ export default {
       }, 1000);
     };
     return {
+      initNum:0,
+      isClickAddBtn:false,
+      adddialogFormVisible:false,
+      addForm:{
+        cityId:'',
+        cityName:'',
+        licenseFeeRate:'',
+        firstDealDate:'',
+        wType:'',
+        subscriptionNum:'',
+        subscriptionMoney:'',
+        circleDays:'',
+      },
       multiForm:[],
-      newFormObject:{cityName:'',cityId:'',joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',circleDays:''}, 
+      newFormObject:{cityItem:'',cityName:'',cityId:'',joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',circleDays:''}, 
       areaShow: true,
       proloading: false,
       provinceList: [],
@@ -714,18 +748,10 @@ export default {
       dialogVisible: false,
       formLabelWidth: "70px",
       editAccount: {
-        provinceId: "",
-        cityId: "",
-        areaId: "",
-        provinceName: "",
-        cityName: "",
-        areaName: "",
-        joinTime: "",
+        options:[],
         companyName: "",
         businessLicense: "",
         address: "",
-        subscriptionNum: "",
-        subscriptionMoney: "",
         percent: "",
         userName: "",
         cardType: "",
@@ -735,8 +761,6 @@ export default {
         userId: "",
         password: "",
         file: "",
-        licenseFeeRate: "",
-        wType: "",
         cityPartnerId: ''
       },
       editRules: {
@@ -827,7 +851,90 @@ export default {
     document.title = "加盟商管理";
     this.loadData();
   },
+   created() {
+      // 初始化调用查询可加盟城市的接口,动态渲染数据
+    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    .withCredentials()
+    .set({
+      "content-type": "application/x-www-form-urlencoded"
+    })
+    .send({
+      unUsed: 1
+    })
+    .end((error,res)=>{
+      if(error){
+        console.log(error)
+      }else{
+        var result = JSON.parse(res.text)
+        this.editAccount.options = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+      }
+    })
+    // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
+    this.isHaveSettleOrders = false; // true 不可编辑
+  },
   methods: {
+     addMutiCity(){
+         // 初始化调用查询可加盟城市的接口,动态渲染数据
+        request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          unUsed: 1
+        })
+        .end((error,res)=>{
+          if(error){
+            console.log(error)
+          }else{
+            var result = JSON.parse(res.text)
+            this.editAccount.options = result.map((item)=>{
+              return {
+                value:item.code,
+                label:item.name
+              }
+            })
+          }
+        })
+        this.isClickAddBtn = true
+        this.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+    },
+    removeMutiCity(index){
+      this.multiForm.splice(index,1)
+    },
+    checkAuth(){
+       // 初始化调用查询可加盟城市的接口,动态渲染数据
+    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+    .withCredentials()
+    .set({
+      "content-type": "application/x-www-form-urlencoded"
+    })
+    .send({
+      unUsed: 1
+    })
+    .end((error,res)=>{
+      if(error){
+        console.log(error)
+      }else{
+        var result = JSON.parse(res.text)
+        console.log(result)
+        if(result.length==0){
+          this.$message({
+            type:'error',
+            message:'对不起，暂时无可加盟地区'
+          })
+        }else{
+          this.$router.push({path:'/index/partnerManager/addpartner'})
+        }
+      }
+    })
+      //this.$router.push({path:'/index/partnerManager/addpartner'})
+    },
     loadData() {
       this.loading = true;
       var that = this;
@@ -1284,7 +1391,6 @@ export default {
                 })
 
             this.multiForm = newMultForm
-            console.log(this.multiForm)
             this.imageUrl = row.businessLicenseIconUrl
             this.userIDID = row.id;
             this.editAccount.companyName = row.companyName
@@ -1380,10 +1486,15 @@ export default {
             }else{
               wType = 2
             }
+            if(item.cityItem){
+              console.log('2222')
+            }
             joinTime = moment(item.joinTime).format('YYYY-MM-DD')
             firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
+            delete item.cityItem
             return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate})
           })
+    delete this.editAccount.options      
     delete this.editAccount.provinceId
     delete this.editAccount.provinceName      
     delete this.editAccount.areaId
@@ -1464,6 +1575,17 @@ export default {
   },
   watch: {
     "$store.state.users.isOpenAddAccount": "loadData",
+    'multiForm':{
+      handler:function(n,o){
+        n.map((item)=>{
+          if(item.cityItem){
+            item.cityName = item.cityItem.label
+            item.cityId = item.cityItem.value
+          }
+        })
+      },
+      deep:true
+    },
     startTime: {
       handler: function(val, oldVal) {
         if (val === "" && this.endTime === "") {
