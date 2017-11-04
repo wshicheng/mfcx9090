@@ -978,11 +978,13 @@ export default {
         return
       }
       var cityId = '';
+      var cityPartnerId = ''
       if(!list.cityId){
         this.multiForm.splice(index, 1);
         return;
       }else{
         cityId = list.cityId;
+        cityPartnerId = list.cityPartnerId;
       }
       request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
@@ -991,7 +993,8 @@ export default {
           "content-type": "application/x-www-form-urlencoded"
         })
         .send({
-          cityId: cityId
+          cityId: cityId,
+          cityPartnerId: cityPartnerId
         })
         .end((error, res) => {
           if (error) {
@@ -1083,20 +1086,20 @@ export default {
                           //     )
                           //   })
                           // );
-                          that.dialogVisible = false;
-                          that.loadData();
-                          that.currentPage3 = 1;
+                          // that.dialogVisible = false;
+                          // that.loadData();
+                          // that.currentPage3 = 1;
                           that.checkLogin(res);
-                          that.$message({
-                            type: "success",
-                            message: "恭喜您，删除成功"
-                          });
+                          // that.$message({
+                          //   type: "success",
+                          //   message: "删除成功"
+                          // });
                          
                         } else {
-                          that.$message({
-                            type: "error",
-                            message: "对不起，删除失败"
-                          });
+                          // that.$message({
+                          //   type: "error",
+                          //   message: "对不起，删除失败"
+                          // });
                         }
                       }
                     });

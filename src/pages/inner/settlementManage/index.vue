@@ -349,7 +349,8 @@ export default {
           'applyMoney': Number(this.editAccount.applyMoney.toString().split('元')[0]),
           'description': this.editAccount.description,
           'cityPartnerId': this.editAccount.cityPartnerId,
-          'id': this.editAccount.id
+          'id': this.editAccount.id,
+          'wType': row.wType
         })
         .end((error, res) => {
           if (error) {
