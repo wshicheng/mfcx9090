@@ -281,7 +281,7 @@
               </div>
               <div slot="footer" class="dialog-footer">
                 <el-button class="partner_button" type="primary" v-loading.fullscreen.lock="fullscreenLoading" @click="submitForm('editAccount')">确定</el-button>
-                <el-button class="partner_button" @click="dialogVisible = false">取消</el-button>
+                <el-button class="partner_button" @click="cancelEdit">取消</el-button>
               </div>
             </el-dialog>
             <!--dialog 弹窗结束-->
@@ -933,6 +933,10 @@ export default {
     this.isHaveSettleOrders = false; // true 不可编辑
   },
   methods: {
+    cancelEdit(){
+      this.dialogVisible = false
+      this.loadData()
+    },
     addMutiCity() {
       // 初始化调用查询可加盟城市的接口,动态渲染数据
       request
@@ -1009,6 +1013,8 @@ export default {
             } else {
               //this.submitForm("editAccount");
                this.multiForm.splice(index, 1);
+               this.recodeCityList--
+               return;
               this.$refs["editAccount"].validate(valid => {
                 if (valid) {
                   if (this.editAccount.file === "" && this.imageUrl === null) {
