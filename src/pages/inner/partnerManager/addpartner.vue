@@ -800,78 +800,78 @@ export default {
     "ruleForm.multiForm":{
       handler:function(n,o){
         console.log(n)
-       n.map((item,index)=>{
-         if(!item.joinTime==''){
-          setTimeout(()=>{
-            $('#joinTime'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#joinTime'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#joinTime'+index).find('.el-date-editor').append(' <div class="el-form-item__error">请输入加盟日期</div>')
-          },100)
-         }
-         if(!item.subscriptionNum==''){
-          setTimeout(()=>{
-            $('#subscriptionNum'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#subscriptionNum'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#subscriptionNum'+index).find('.el-input').append(' <div class="el-form-item__error">请输入认购车辆数</div>')
-          },100)
-         }
-        if(!item.subscriptionMoney==''){
-          setTimeout(()=>{
-            $('#subscriptionMoney'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#subscriptionMoney'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#subscriptionMoney'+index).find('.el-input').append(' <div class="el-form-item__error">请输入加盟资金</div>')
-          },100)
-         }
-          if(!item.licenseFeeRate==''){
-          setTimeout(()=>{
-            $('#licenseFeeRate'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#licenseFeeRate'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#licenseFeeRate'+index).find('.el-input').append(' <div class="el-form-item__error">请输入收入费率</div>')
-          },100)
-         }
-         if(!item.wType==''){
-          setTimeout(()=>{
-            $('#wType'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#wType'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#wType'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请输入结算周期</div>')
-          },100)
-         }
-         if(!item.firstDealDate==''){
-          setTimeout(()=>{
-            $('#firstDealDate'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#firstDealDate'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#firstDealDate'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请输入结算周期</div>')
-          },100)
-         }
-         if(!item.cityId==''){
-          setTimeout(()=>{
-            $('#cityId'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
-            setTimeout(()=>{
-             $('#cityId'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#cityId'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请选择加盟地区</div>')
-          },100)
-         }
-       })
+      //  n.map((item,index)=>{
+      //    if(!item.joinTime==''){
+      //     setTimeout(()=>{
+      //       $('#joinTime'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#joinTime'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#joinTime'+index).find('.el-date-editor').append(' <div class="el-form-item__error">请输入加盟日期</div>')
+      //     },100)
+      //    }
+      //    if(!item.subscriptionNum==''){
+      //     setTimeout(()=>{
+      //       $('#subscriptionNum'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#subscriptionNum'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#subscriptionNum'+index).find('.el-input').append(' <div class="el-form-item__error">请输入认购车辆数</div>')
+      //     },100)
+      //    }
+      //   if(!item.subscriptionMoney==''){
+      //     setTimeout(()=>{
+      //       $('#subscriptionMoney'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#subscriptionMoney'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#subscriptionMoney'+index).find('.el-input').append(' <div class="el-form-item__error">请输入加盟资金</div>')
+      //     },100)
+      //    }
+      //     if(!item.licenseFeeRate==''){
+      //     setTimeout(()=>{
+      //       $('#licenseFeeRate'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#licenseFeeRate'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#licenseFeeRate'+index).find('.el-input').append(' <div class="el-form-item__error">请输入收入费率</div>')
+      //     },100)
+      //    }
+      //    if(!item.wType==''){
+      //     setTimeout(()=>{
+      //       $('#wType'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#wType'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#wType'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请输入结算周期</div>')
+      //     },100)
+      //    }
+      //    if(!item.firstDealDate==''){
+      //     setTimeout(()=>{
+      //       $('#firstDealDate'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#firstDealDate'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#firstDealDate'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请输入结算周期</div>')
+      //     },100)
+      //    }
+      //    if(!item.cityId==''){
+      //     setTimeout(()=>{
+      //       $('#cityId'+index).removeClass('is-error').find('.el-form-item__error').hide()
+      //     },100)
+      //    }else{
+      //       setTimeout(()=>{
+      //        $('#cityId'+index).addClass('is-error').find('.el-form-item__error').show()
+      //        $('#cityId'+index).find('.el-form-item__content').append(' <div class="el-form-item__error">请选择加盟地区</div>')
+      //     },100)
+      //    }
+      //  })
       },
       deep:true
     }

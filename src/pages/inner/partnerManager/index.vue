@@ -119,16 +119,13 @@
                 </el-form-item>
                
                 <h1 class="form_table_h1">加盟与结算信息</h1>
-                <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="(list,index) of multiForm">
+                <div class="mutiFormSelect" v-bind:key="list.cityName" v-for="(list,index) of editAccount.multiForm">
                    <div class="menuIcon">
                       <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
                       <i  style="cursor:pointer;" @click="removeMutiCity(index,list)" class="iconfont icon-jian"></i>
                       </div>
                      
                      <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
-                      :rules="[
-                        { required: true, message: '请输入加盟地区', trigger: 'blur' },
-                      ]"
                      >
                        
                        <el-input v-show="(index+1)<=recodeCityList" v-model="list.cityName" readonly></el-input>
@@ -281,7 +278,7 @@
               </div>
               <div slot="footer" class="dialog-footer">
                 <el-button class="partner_button" type="primary" v-loading.fullscreen.lock="fullscreenLoading" @click="submitForm('editAccount')">确定</el-button>
-                <el-button class="partner_button" @click="dialogVisible = false">取消</el-button>
+                <el-button class="partner_button" @click="cancelEdit">取消</el-button>
               </div>
             </el-dialog>
             <!--dialog 弹窗结束-->
@@ -746,7 +743,6 @@ export default {
         subscriptionMoney: "",
         circleDays: ""
       },
-      multiForm: [],
       newFormObject: {
         cityItem: "",
         cityName: "",
@@ -802,6 +798,7 @@ export default {
       dialogVisible: false,
       formLabelWidth: "70px",
       editAccount: {
+         multiForm: [],
         options: [],
         companyName: "",
         businessLicense: "",
@@ -933,6 +930,10 @@ export default {
     this.isHaveSettleOrders = false; // true 不可编辑
   },
   methods: {
+    cancelEdit(){
+      this.dialogVisible = false
+      this.loadData()
+    },
     addMutiCity() {
       // 初始化调用查询可加盟城市的接口,动态渲染数据
       request
@@ -965,12 +966,12 @@ export default {
           }
         });
       this.isClickAddBtn = true;
-      this.multiForm.push(
+      this.editAccount.multiForm.push(
         Object.assign({}, this.newFormObject, { id: this.initNum++ })
       );
     },
     removeMutiCity(index, list) {
-      if(this.multiForm.length==1){
+      if(this.editAccount.multiForm.length==1){
         this.$message({
           type:'error',
           message:'对不起，请至少保留一个地区'
@@ -978,11 +979,13 @@ export default {
         return
       }
       var cityId = '';
+      var cityPartnerId = ''
       if(!list.cityId){
-        this.multiForm.splice(index, 1);
+        this.editAccount.multiForm.splice(index, 1);
         return;
       }else{
         cityId = list.cityId;
+        cityPartnerId = list.cityPartnerId;
       }
       request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
@@ -991,7 +994,8 @@ export default {
           "content-type": "application/x-www-form-urlencoded"
         })
         .send({
-          cityId: cityId
+          cityId: cityId,
+          cityPartnerId: cityPartnerId
         })
         .end((error, res) => {
           if (error) {
@@ -999,13 +1003,30 @@ export default {
           } else {
             var result = JSON.parse(res.text).data;
             if (result[0].withDrawCount > 0) {
-              this.$message({
-                type: "error",
-                message: "该地区有结算单，不可删除"
+              this.$confirm('该地区有结算单, 是否继续删除?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                // this.$message({
+                //   type: 'success',
+                //   message: '删除成功!'
+                // });
+                 this.editAccount.multiForm.splice(index, 1);
+                this.recodeCityList--
+                 $('.v-modal').hide() 
+              }).catch(() => {
+                $('.v-modal').hide()        
               });
+              // this.$message({
+              //   type: "error",
+              //   message: "该地区有结算单，不可删除"
+              // });
             } else {
               //this.submitForm("editAccount");
-               this.multiForm.splice(index, 1);
+              
+              
+               return;
               this.$refs["editAccount"].validate(valid => {
                 if (valid) {
                   if (this.editAccount.file === "" && this.imageUrl === null) {
@@ -1017,7 +1038,7 @@ export default {
                   }
                   var that = this;
                   //this.fullscreenLoading = true
-                  var newMultForm = this.multiForm.map(item => {
+                  var newMultForm = this.editAccount.multiForm.map(item => {
                     var wType, joinTime, firstDealDate;
                     if (item.wType === "自然月") {
                       wType = 0;
@@ -1083,20 +1104,20 @@ export default {
                           //     )
                           //   })
                           // );
-                          that.dialogVisible = false;
-                          that.loadData();
-                          that.currentPage3 = 1;
+                          // that.dialogVisible = false;
+                          // that.loadData();
+                          // that.currentPage3 = 1;
                           that.checkLogin(res);
-                          that.$message({
-                            type: "success",
-                            message: "恭喜您，删除成功"
-                          });
+                          // that.$message({
+                          //   type: "success",
+                          //   message: "删除成功"
+                          // });
                          
                         } else {
-                          that.$message({
-                            type: "error",
-                            message: "对不起，删除失败"
-                          });
+                          // that.$message({
+                          //   type: "error",
+                          //   message: "对不起，删除失败"
+                          // });
                         }
                       }
                     });
@@ -1598,8 +1619,8 @@ export default {
               );
             });
 
-            this.multiForm = newMultForm;
-            this.recodeCityList =  this.multiForm.length
+            this.editAccount.multiForm = newMultForm;
+            this.recodeCityList =  this.editAccount.multiForm.length
             this.imageUrl = row.businessLicenseIconUrl;
             this.userIDID = row.id;
             this.editAccount.companyName = row.companyName;
@@ -1619,7 +1640,7 @@ export default {
     editConfim() {
       var that = this;
       //this.fullscreenLoading = true
-      var newMultForm = this.multiForm.map(item => {
+      var newMultForm = this.editAccount.multiForm.map(item => {
         var cityName = item.cityId.label;
         var cityId = item.cityId.value;
         var wType, joinTime, firstDealDate;
@@ -1693,7 +1714,7 @@ export default {
           }
           var that = this;
           //this.fullscreenLoading = true
-          var newMultForm = this.multiForm.map(item => {
+          var newMultForm = this.editAccount.multiForm.map(item => {
             var wType, joinTime, firstDealDate;
             if (item.wType === "自然月") {
               wType = 0;
@@ -1794,20 +1815,24 @@ export default {
   },
   watch: {
     "$store.state.users.isOpenAddAccount": "loadData",
-    multiForm: {
+    'editAccount.multiForm': {
       handler: function(n, o) {
-       
+        console.log(n)
         n.map((item,index) => {
           if (item.cityItem) {
             item.cityName = item.cityItem.label;
             item.cityId = item.cityItem.value;
           }
-          if(item.joinTime==''){
-             setTimeout(()=>{
-               var _class = $('#joinTime'+index).attr('class')
-              $('#joinTime'+index).addClass('hover')
-             },200)
-          }
+          if(!item.joinTime==''){
+          setTimeout(()=>{
+           // $('#joinTime'+index).removeClass('is-error').find('.el-form-item__error').hide()
+          },100)
+         }else{
+            setTimeout(()=>{
+             $('#joinTime'+index).addClass('is-error').find('.el-form-item__error').show()
+             $('#joinTime'+index).find('.el-date-editor').append(' <div class="el-form-item__error">请输入加盟日期</div>')
+          },100)
+         }
         });
       },
       deep: true

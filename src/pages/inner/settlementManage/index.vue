@@ -350,7 +350,7 @@ export default {
           'description': this.editAccount.description,
           'cityPartnerId': this.editAccount.cityPartnerId,
           'id': this.editAccount.id,
-          cityId:row.cityId
+          'wType': row.wType
         })
         .end((error, res) => {
           if (error) {
