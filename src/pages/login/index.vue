@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="topHeader"><h1>蜜蜂出行加盟商管理平台<span>平台端</span></h1></div>
-    <div id="login">
+    <div id="login" :style="{backgroundImage: 'url(' +bg + ')'}">
       <div id="cover">
         <div v-title>蜜蜂出行加盟商管理平台</div>
             <div class="content">
@@ -124,6 +124,7 @@ export default {
       }
     };
     return {
+       bg:require('../../assets/img/1.jpg'),
       showErrorMsg:false,
       showMessage:'',
       showUserNameError:false,
@@ -505,7 +506,7 @@ div.footer h4 {
 
 div#login {
     width: 100%;
-    background: url('../../assets/img/1.jpg') no-repeat;
+   
     background-position: left;
     border-radius: 4px;
     overflow: hidden;
