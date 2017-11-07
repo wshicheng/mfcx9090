@@ -501,6 +501,7 @@ export default {
     this.isHaveSettleOrders = false; // true 不可编辑
   },
   mounted: function() {
+     this.$refs['ruleForm'].resetFields();
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
     this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     document.title = "添加加盟商";
@@ -516,7 +517,32 @@ export default {
       console.log(this.ruleForm._cityName);
     },
     addMutiCity(){
-     this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+       request
+        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          unUsed: 1
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            var result = JSON.parse(res.text);
+          
+            if (result.length == 0) {
+              this.$message({
+                type: "error",
+                message: "对不起，暂时无可加盟地区"
+              });
+            } else {
+               this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+            }
+          }
+        });
+    
     },
     removeMutiCity(index){
       this.ruleForm.multiForm.splice(index,1)

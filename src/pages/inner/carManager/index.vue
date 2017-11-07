@@ -612,9 +612,9 @@ export default {
         if(val===undefined){
            if (this.activeName === '未分配') {
             this.form.data1 = ''
-            this.getDateByTabName('1')
+            //this.getDateByTabName('1')
           } else {
-            this.getDateByTabName('0')
+            //this.getDateByTabName('0')
           }
         }
         
@@ -652,9 +652,9 @@ export default {
         if(val===undefined){
             this.form.data2 = ''
            if (this.activeName === '未分配') {
-            this.getDateByTabName('1')
+            //this.getDateByTabName('1')
           } else {
-            this.getDateByTabName('0')
+            //this.getDateByTabName('0')
           }
         }
         

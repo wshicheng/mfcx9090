@@ -1148,7 +1148,7 @@ export default {
             console.log(error);
           } else {
             var result = JSON.parse(res.text);
-            console.log(result);
+           
             if (result.length == 0) {
               this.$message({
                 type: "error",
