@@ -12,9 +12,9 @@
       <div class="line">
         结算周期：<span>{{month}}</span>
       </div>
-      <div class="line">
+      <!-- <div class="line">
         本期总收益：<span>{{new Number(totalProfit).thousandFormat()}}</span>元
-      </div>
+      </div> -->
       <div class="line">
         本期结算金额：<span>{{new Number(actProfit).thousandFormat()}}</span>元
       </div>

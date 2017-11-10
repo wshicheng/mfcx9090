@@ -138,39 +138,6 @@
                           </el-option>
                         </el-select>
                      </el-form-item>   
-                   <!-- <el-select disabled @change="handleEditProvince"
-                      v-model="editAccount.provinceName"
-                      loading-text
-                      placeholder="请选择省"
-                      :loading="proloading">
-                      <el-option
-                        v-for="item in provinceList"
-                        :key="item.id"
-                        :value="(item.name)">
-                      </el-option>
-                    </el-select>
-                    <el-select disabled  @change="handleEditCity"
-                      v-model="editAccount.cityName"
-                      placeholder="请选择城市"
-                      :loading="proloading">
-                      <el-option
-                        v-for="item in cityList"
-                        :key="item.id"
-                        :value="(item.name)">
-                      </el-option>
-                    </el-select>
-                    <el-select
-                    disabled
-                      @change="handleEditArea"
-                      v-model="editAccount.areaName"
-                      placeholder="请选择区/县"
-                      :loading="proloading">
-                      <el-option
-                        v-for="item in areaList"
-                        :key="item.id"
-                        :value="item.name">
-                      </el-option>
-                    </el-select> -->
               
                  <el-form-item label="加盟日期" :id="'joinTime'+ index" 
                      :rules="[
@@ -710,7 +677,6 @@ export default {
         return callback(new Error("证件号码不能为空"));
       }
       setTimeout(() => {
-        console.log(this.editAccount.cardType);
 
         if (this.editAccount.cardType === "护照") {
           if (isPassportNo(value) === false) {
@@ -1002,30 +968,23 @@ export default {
             console.log(error);
           } else {
             var result = JSON.parse(res.text).data;
+             if (result[0].withDrawCount == 0) {
+                this.editAccount.multiForm.splice(index, 1);
+                this.recodeCityList--
+            }
             if (result[0].withDrawCount > 0) {
               this.$confirm('该地区有结算单, 是否继续删除?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
               }).then(() => {
-                // this.$message({
-                //   type: 'success',
-                //   message: '删除成功!'
-                // });
                  this.editAccount.multiForm.splice(index, 1);
                 this.recodeCityList--
                  $('.v-modal').hide() 
               }).catch(() => {
                 $('.v-modal').hide()        
               });
-              // this.$message({
-              //   type: "error",
-              //   message: "该地区有结算单，不可删除"
-              // });
             } else {
-              //this.submitForm("editAccount");
-              
-              
                return;
               this.$refs["editAccount"].validate(valid => {
                 if (valid) {
@@ -1095,34 +1054,13 @@ export default {
                       } else {
                         var code = JSON.parse(res.text).resultCode;
                         if (code === 0) {
-                          // that.tableData.splice(
-                          //   this.editAccount.editIndex,
-                          //   1,
-                          //   Object.assign({}, this.editAccount, {
-                          //     joinTime: moment(this.editAccount.joinTime).format(
-                          //       "YYYY-MM-DD"
-                          //     )
-                          //   })
-                          // );
-                          // that.dialogVisible = false;
-                          // that.loadData();
-                          // that.currentPage3 = 1;
-                          that.checkLogin(res);
-                          // that.$message({
-                          //   type: "success",
-                          //   message: "删除成功"
-                          // });
-                         
+                          that.checkLogin(res)
+                          that.loadData()
                         } else {
-                          // that.$message({
-                          //   type: "error",
-                          //   message: "对不起，删除失败"
-                          // });
                         }
                       }
                     });
                 } else {
-                  // console.log('error submit!!')
                   return false;
                 }
               });
@@ -1335,8 +1273,6 @@ export default {
       }
     },
     handleAvatarSuccess(res, file) {
-      // console.log(file)
-      // console.log(URL.createObjectURL(file.raw))
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
@@ -1541,7 +1477,6 @@ export default {
             console.log(error);
           } else {
             this.checkLogin(res);
-            // console.log("settle", res)
             var list = JSON.parse(res.text).data;
             var arr = [];
             list.map(item => {
@@ -1557,12 +1492,13 @@ export default {
 
               return arr;
             });
-            console.log(this.isSettleList);
             this.isSettleList = arr;
           }
         });
     },
     openEdit(row, index) {
+     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId} });
+      return;
       request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
         .withCredentials()
@@ -1578,7 +1514,6 @@ export default {
           } else {
             this.checkLogin(res);
             var newArr = [];
-            // console.log("settle", res)
             var list = JSON.parse(res.text).data;
             var arr = [];
             list.map(item => {
@@ -1755,8 +1690,7 @@ export default {
             { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
           );
           that.dialogVisible = false;
-          //this.fullscreenLoading = true
-          // var obj  = Object.assign({},this.editAccount,{cardType:this.editAccount.cardType==='居民身份证'?0:1, file:this.editAccount.file })
+
           request
             .post(host + "beepartner/admin/cityPartner/updateCityPartner")
             .withCredentials()
@@ -1770,20 +1704,12 @@ export default {
               } else {
                 var code = JSON.parse(res.text).resultCode;
                 if (code === 0) {
-                  // that.tableData.splice(
-                  //   this.editAccount.editIndex,
-                  //   1,
-                  //   Object.assign({}, this.editAccount, {
-                  //     joinTime: moment(this.editAccount.joinTime).format(
-                  //       "YYYY-MM-DD"
-                  //     )
-                  //   })
-                  // );
+                  debugger
                   that.dialogVisible = false;
-                  that.loadData();
                   that.currentPage3 = 1;
-                  this.checkLogin(res);
+                  that.checkLogin(res);
                   that.$message.success("修改成功");
+                  that.loadData();
                 } else {
                   that.$message.error("修改失败");
                   that.dialogVisible = false;
@@ -1814,28 +1740,124 @@ export default {
     }
   },
   watch: {
+    '$route':'loadData',
     "$store.state.users.isOpenAddAccount": "loadData",
-    'editAccount.multiForm': {
-      handler: function(n, o) {
-        console.log(n)
-        n.map((item,index) => {
-          if (item.cityItem) {
-            item.cityName = item.cityItem.label;
-            item.cityId = item.cityItem.value;
-          }
-          if(!item.joinTime==''){
-          setTimeout(()=>{
-           // $('#joinTime'+index).removeClass('is-error').find('.el-form-item__error').hide()
-          },100)
-         }else{
+    "editAccount.multiForm":{
+      handler:function(n,o){
+      n.map((item,index)=>{
+         if(item.cityItem){
+                item.cityId = item.cityItem.value
+                item.cityName = item.cityItem.label
+            }
+        if(!item.subscriptionNum){
+          $("#subscriptionNum" + index).addClass('is-error')
+        }
+      })
+      return;
+        n.map((item,index)=>{
+          if(!item.subscriptionNum==''){
             setTimeout(()=>{
-             $('#joinTime'+index).addClass('is-error').find('.el-form-item__error').show()
-             $('#joinTime'+index).find('.el-date-editor').append(' <div class="el-form-item__error">请输入加盟日期</div>')
-          },100)
-         }
-        });
+            $('#subscriptionNum'+index).find('.error-list').remove()
+              $('#subscriptionNum'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#subscriptionNum'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#subscriptionNum'+index).find('.error-list').remove()
+                  $('#subscriptionNum'+index).addClass('is-error')
+                  $('#subscriptionNum'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
+                }
+              })
+          }
+          if(!item.subscriptionMoney==''){
+            setTimeout(()=>{
+            $('#subscriptionMoney'+index).find('.error-list').remove()
+              $('#subscriptionMoney'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#subscriptionMoney'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#subscriptionMoney'+index).find('.error-list').remove()
+                  $('#subscriptionMoney'+index).addClass('is-error')
+                  $('#subscriptionMoney'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入加盟资金</div>')
+                }
+              })
+          }
+           if(!item.licenseFeeRate==''){
+            setTimeout(()=>{
+            $('#licenseFeeRate'+index).find('.error-list').remove()
+              $('#licenseFeeRate'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#licenseFeeRate'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#licenseFeeRate'+index).find('.error-list').remove()
+                  $('#licenseFeeRate'+index).addClass('is-error')
+                  $('#licenseFeeRate'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入授权费率</div>')
+                }
+              })
+          }
+          if(!item.wType==''){
+            setTimeout(()=>{
+            $('#wType'+index).find('.error-list').remove()
+              $('#wType'+index).removeClass('is-error')
+            },200)
+          }else{
+          }
+            if(!item.circleDays==''){
+            setTimeout(()=>{
+              $('#circleDays'+index).find('.error-list').remove()
+               $('#circleDays'+index).find('.error-list-circle').remove()
+               $('#circleDays'+index).find('.el-input__inner').css({
+                 borderColor:'#ddd'
+               })
+            },200)
+          }else{
+              $('#circleDays'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#circleDays'+index).find('.error-list').remove()
+                   $('#circleDays'+index).find('.error-list-circle').remove()
+                  $('#circleDays'+index).find('.el-input__inner').css({
+                    borderColor:'red'
+                  })
+                  $('#circleDays'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
+                }else{
+                   var reg=/^[1-9]\d*$/;
+                   var res = reg.test(val)
+                   if(res){
+                     return;
+                   }else{
+                      $('#circleDays'+index).find('.error-list').remove()
+                  $('#circleDays'+index).find('.el-input__inner').css({
+                    borderColor:'red'
+                  })
+                  $('#circleDays'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
+                   }
+                }
+              })
+          }
+          if(!item.cityId==''){
+            setTimeout(()=>{
+            $('#cityId'+index).find('.error-list').remove()
+              $('#cityId'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#cityId'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#cityId'+index).find('.error-list').remove()
+                  $('#cityId'+index).addClass('is-error')
+                  $('#cityId'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+                }
+              })
+          }
+        })
       },
-      deep: true
+      deep:true
     },
     startTime: {
       handler: function(val, oldVal) {
@@ -1845,19 +1867,6 @@ export default {
         var startTime = new Date(val).getTime();
         var endTime = new Date(this.startTime).getTime();
         endTime = isNaN(endTime) ? 0 : endTime;
-        // if ((startTime > endTime) && endTime.toString().length > 1) {
-        //   this.$message({
-        //     type: 'warning',
-        //     message: '开始日期不能大于结束日期'
-        //   })
-        // } else if ((startTime > endTime) && endTime.toString().length === 1) {
-        //   // this.$message({
-        //   //   type: 'warning',
-        //   //   message: '请输入结束日期'
-        //   // })
-        // } else {
-        //   return
-        // }
       },
       deep: true
     },
@@ -1869,19 +1878,6 @@ export default {
         var endTime = new Date(val).getTime();
         var startTime = new Date(this.startTime).getTime();
         startTime = isNaN(startTime) ? 0 : startTime;
-        // if ((endTime < startTime) && startTime.toString().length > 1) {
-        //   this.$message({
-        //     type: 'warning',
-        //     message: '开始日期不能大于结束日期'
-        //   })
-        // } else if ((endTime > startTime) && startTime.toString().length === 1) {
-        //   this.$message({
-        //     type: 'warning',
-        //     message: '请选择开始日期'
-        //   })
-        // } else {
-        //   return
-        // }
       },
       deep: true
     }

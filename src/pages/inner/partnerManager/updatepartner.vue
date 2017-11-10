@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div id="addpartner_form">
-				<h1 id="addpartner_title">添加加盟商
+				<h1 id="addpartner_title">编辑加盟商
 					<span>
 						<a style="color:#000;" @click="$router.push({path:'/index/partnerManager'})">
 							<i class="el-icon-close"></i>		
@@ -22,23 +22,26 @@
         <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
            <div class="menuIcon">
              <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
-             <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
+             <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index,list)" class="iconfont icon-jian"></i>
               
             </div>
-           <el-form-item label="加盟地区" :id="'cityId'+ index" 
-             :rules="[
+           <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
+
+           :rules="[
               { required: true, message: '请输入加盟地区', trigger: 'blur' },
             ]"
-           >
-            <el-select v-model="list.cityId" placeholder="请选择">
-              <el-option
+                     >
+                       
+            <el-input v-show="(index+1)<=recodeCityList" v-model="list.cityName" readonly></el-input>
+            <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
+                <el-option
                 v-for="item in ruleForm.options"
                 :key="item.value"
                 :label="item.label"
                 :value="item">
-              </el-option>
+                </el-option>
             </el-select>
-        </el-form-item>
+            </el-form-item>   
         
         <!-- <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width:700px">
             <el-select @change="handleChangeProvince"
@@ -141,6 +144,7 @@
             <el-date-picker
               :readonly="isHaveSettleOrders"
               v-model="list.firstDealDate"
+               :disabled='list.isEdit'
               placeholder="选择日期">
             </el-date-picker>           
         </el-form-item>
@@ -165,15 +169,15 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="ruleForm.email" placeholder='请输入邮箱'></el-input>
         </el-form-item>
-        <el-checkbox v-model="checked" @change="handleCheckbox" id="form_checkBox">同时添加联系人的平台账号</el-checkbox>
+        <!-- <el-checkbox v-model="checked" @change="handleCheckbox" id="form_checkBox">同时添加联系人的平台账号</el-checkbox>
         <el-form-item label="用户名" prop="userId" v-show='add'>
           <el-input v-model="ruleForm.userId" placeholder='请输入用户名'></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password" v-show='add'>
           <el-input type="password" v-model="ruleForm.password" placeholder='6-20位，可包括字母、数字、下划线'></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
-          <el-button class='addpartner_button' v-loading='loading8' type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button class='addpartner_button' v-loading='loading8' type="primary" @click="submitForm('ruleForm')">确定</el-button>
           <el-button class='addpartner_button' @click="$router.push({path:'/index/partnerManager'})">取消</el-button>
         </el-form-item>
       </el-form>
@@ -188,7 +192,7 @@
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          <h3>点击上传营业执照</h3>
+          <h3>点击修改营业执照</h3>
           <p style="font-size: 10px;color: #ccc; margin-left: 20px;">支持jpg、jpeg、png格式</p>
         </el-upload>
 	</div>
@@ -327,7 +331,7 @@ div.menuIcon i.icon-jian{right:-36px;}
 }
 
 .avatar-uploader h3 {
-  margin-top: 20px;
+ 
   font-size: 18px;
   text-align: center;
   margin-left: 14px;
@@ -396,6 +400,8 @@ export default {
       }, 1000);
     };
     return {
+        row:'',
+         recodeCityList:'',
       initNum:0,
       newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:''}, 
       isHaveSettleOrders: false,
@@ -502,14 +508,116 @@ export default {
   mounted: function() {
      this.$refs['ruleForm'].resetFields();
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
-    this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
-    document.title = "添加加盟商";
+     request
+        .post(host + "beepartner/admin/cityPartner/findCityPartner")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          cityPartnerId: this.$route.query.cityPartnerId
+        })
+        .end((error,res)=>{
+            if(error){
+                console.log(error)
+            }else{
+                var result = JSON.parse(res.text)
+                this.row = result.data[0]
+                 request
+        .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          cityPartnerId: this.row.cityPartnerId
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            this.checkLogin(res);
+            var newArr = [];
+            // console.log("settle", res)
+            var list = JSON.parse(res.text).data;
+            var arr = [];
+            list.map(item => {
+              var obj = {};
+
+              if (Number(item.withDrawCount) > 0) {
+                obj.isEdit = true;
+              } else {
+                obj.isEdit = false;
+              }
+
+              obj.cityId = item.cityId;
+              arr.push(obj);
+
+              return arr;
+            });
+            newArr = arr;
+            this.dialogVisible = true;
+            var newMultForm = this.row.areaList.map(item => {
+              var wType, joinTime, firstDealDate, isEdit;
+              if (item.wType == 0) {
+                wType = "自然月";
+              } else if (item.wType == 1) {
+                wType = "自然周(周一到周日)";
+              } else {
+                wType = "自定义";
+              }
+              for (var i = 0; i < newArr.length; i++) {
+                if (Number(item.cityId) === Number(newArr[i].cityId)) {
+                  isEdit = newArr[i].isEdit;
+                }
+              }
+              return Object.assign(
+                {},
+                item,
+                { wType: wType },
+                { isEdit: isEdit }
+              );
+            });
+
+            this.ruleForm.multiForm = newMultForm;
+            this.recodeCityList =  this.ruleForm.multiForm.length
+            this.imageUrl = this.row.businessLicenseIconUrl;
+            this.userIDID = this.row.id;
+            this.ruleForm.companyName = this.row.companyName;
+            this.ruleForm.businessLicense = this.row.businessLicense;
+            this.ruleForm.address = this.row.address;
+            this.ruleForm.userName = this.row.userName;
+            this.ruleForm.cardType = this.row.cardType == 0 ? "居民身份证" : "护照";
+            this.ruleForm.phone = this.row.phone;
+            this.ruleForm.email = this.row.email;
+            this.ruleForm.userId = this.row.userId;
+            this.ruleForm.idCard = this.row.idCard;
+            this.ruleForm.password = this.row.password;
+            this.ruleForm.cityPartnerId = this.row.cityPartnerId;
+          }
+        }); 
+                // console.log(result.data[0].areaList)
+                // this.ruleForm.companyName = result.data[0].companyName
+                // this.ruleForm.address = result.data[0].address
+                // this.ruleForm.businessLicense = result.data[0].businessLicense
+                // this.ruleForm.userName = result.data[0].userName
+                // this.ruleForm.cardType = result.data[0].cardType=='0'?'身份证':'护照'
+                // this.ruleForm.idCard = result.data[0].idCard
+                // this.ruleForm.email = result.data[0].email
+                // this.ruleForm.phone = result.data[0].phone
+                // this.imageUrl = result.data[0].businessLicenseIconUrl
+                
+            }
+        })
+     
+    //this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+    document.title = "编辑加盟商";
    
     // this.filterProvinceMethod();
   },
   methods: {
     checkSettleType(val){
-       $('.el-radio-group').find('.error-list').remove()
+         $('.el-radio-group').find('.error-list').remove()
          $('.el-radio-group').find('.error-list-circle').remove()
      if(val==='自定义'){
        $('.el-radio-group').find('.el-input__inner').css({
@@ -552,8 +660,60 @@ export default {
         });
     
     },
-    removeMutiCity(index){
-      this.ruleForm.multiForm.splice(index,1)
+     removeMutiCity(index, list) {
+      if(this.ruleForm.multiForm.length==1){
+        this.$message({
+          type:'error',
+          message:'对不起，请至少保留一个地区'
+        })
+        return
+      }
+      var cityId = '';
+      var cityPartnerId = ''
+      if(!list.cityId){
+        this.ruleForm.multiForm.splice(index, 1);
+        return;
+      }else{
+        cityId = list.cityId;
+        cityPartnerId = list.cityPartnerId;
+      }
+      request
+        .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          cityId: cityId,
+          cityPartnerId: cityPartnerId
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            var result = JSON.parse(res.text).data;
+             if (result[0].withDrawCount == 0) {
+                this.ruleForm.multiForm.splice(index, 1);
+                this.recodeCityList--
+            }
+            if (result[0].withDrawCount > 0) {
+              this.$confirm('该地区有结算单, 是否继续删除?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                 this.ruleForm.multiForm.splice(index, 1);
+                this.recodeCityList--
+                 $('.v-modal').hide() 
+              }).catch(() => {
+                $('.v-modal').hide()        
+              });
+            } else {
+            }
+          }
+        });
+
+      //this.multiForm.splice(index,1)
     },
     handleCheckbox(e) {
       if (!this.checked) {
@@ -561,148 +721,9 @@ export default {
         this.ruleForm.password = "";
       }
     },
-    handleChangeProvince(val) {
-      if (this.provinceList.length > 0) {
-        this.provinceList.map(item => {
-          if (val === item.name) {
-            this.ruleForm.provinceId = item.id;
-          }
-        });
-        this.ruleForm.cityName = "";
-        this.filterCityMethod();
-      }
-    },
-    handleChangeCity(val) {
-      if (this.cityList.length > 0) {
-        this.cityList.map(item => {
-          if (val === item.name) {
-            this.ruleForm.cityId = item.id;
-          }
-        });
-        this.ruleForm.areaName = "";
-        this.filterAreaMethod();
-      }
-    },
-    handleChangeArea(val) {
-      if (this.areaList.length > 0) {
-        this.areaList.map(item => {
-          if (val === item.name) {
-            this.ruleForm.areaId = item.id;
-            this.ruleForm.cityId = item.areaId;
-            request
-              .post(host + "beepartner/admin/cityPartner/checkBeforeSelectCity")
-              .withCredentials()
-              .set({
-                "content-type": "application/x-www-form-urlencoded"
-              })
-              .send({
-                cityId: this.ruleForm.cityId
-              })
-              .end((error, res) => {
-                if (error) {
-                  console.log(error);
-                } else {
-                  this.checkLogin(res);
-                  if (JSON.parse(res.text).success === false) {
-                    this.areaError = true;
-                  } else {
-                    this.areaError = false;
-                  }
-                }
-              });
-          }
-        });
-      }
-    },
-    filterProvinceMethod() {
-      request
-        .post(host + "beepartner/admin/cityPartner/getProvince")
-        .withCredentials()
-        .set({
-          "content-type": "application/x-www-form-urlencoded"
-        })
-        .end((error, res) => {
-          if (error) {
-            console.log(error);
-          } else {
-            this.checkLogin(res);
-            var result = JSON.parse(res.text).data;
-            var provinceList = result.map(item => {
-              var obj = {};
-              obj.id = item.id;
-              obj.name = item.name;
-              return obj;
-            });
-            this.provinceList = provinceList;
-          }
-        });
-    },
-    filterCityMethod() {
-      if (this.ruleForm.provinceId) {
-        request
-          .post(host + "beepartner/admin/cityPartner/getChildrenArea")
-          .withCredentials()
-          .set({
-            "content-type": "application/x-www-form-urlencoded"
-          })
-          .send({
-            id: this.ruleForm.provinceId
-          })
-          .end((error, res) => {
-            if (error) {
-              console.log(error);
-            } else {
-              this.checkLogin(res);
-              var result = JSON.parse(res.text).data;
-              var cityList = result.map(item => {
-                var obj = {};
-                obj.id = item.id;
-                obj.name = item.name;
-                return obj;
-              });
-              this.cityList = cityList;
-            }
-          });
-      }
-    },
-    filterAreaMethod() {
-      if (this.ruleForm.provinceId) {
-        request
-          .post(host + "beepartner/admin/cityPartner/getChildrenArea")
-          .withCredentials()
-          .set({
-            "content-type": "application/x-www-form-urlencoded"
-          })
-          .send({
-            id: this.ruleForm.cityId
-          })
-          .end((error, res) => {
-            if (error) {
-              console.log(error);
-            } else {
-              this.checkLogin(res);
-              var result = JSON.parse(res.text).data;
-              if (result.length === 0) {
-                this.areaShow = false;
-              } else {
-                this.areaShow = true;
-              }
-              var areaList = result.map(item => {
-                var obj = {};
-                obj.id = item.id;
-                obj.name = item.name;
-                obj.areaId = item.code;
-                return obj;
-              });
-              this.areaList = areaList;
-            }
-          });
-      }
-    },
     submitForm(formName) {
        this.ruleForm.multiForm.map((item,index)=>{
-         
-         if(!item.joinTime==''){
+            if(!item.joinTime==''){
             setTimeout(()=>{
             $('#joinTime'+index).find('.error-list').remove()
               $('#joinTime'+index).removeClass('is-error')
@@ -730,9 +751,8 @@ export default {
           }else{
                $('#subscriptionNum'+index).find('.error-list').remove()
                 $('#subscriptionNum'+index).addClass('is-error')
-                $('#subscriptionNum'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择加盟日期</div>')
+                $('#subscriptionNum'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
           }
-           
           if(!item.subscriptionMoney==''){
             setTimeout(()=>{
             $('#subscriptionMoney'+index).find('.error-list').remove()
@@ -754,13 +774,13 @@ export default {
                   $('#licenseFeeRate'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入授权费率</div>')
           }
           if(!item.wType==''){
-             if(!item.circleDays){
-                $('#circleDays'+index).find('.error-list-circle').remove()
-                  $('#circleDays'+index).find('.el-input__inner').css({
-                    borderColor:'red'
-                  })
-                  $('#circleDays'+index).append('<div class="error-list-circle" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
-             }
+            //  if(!item.circleDays){
+            //     $('#circleDays'+index).find('.error-list-circle').remove()
+            //       $('#circleDays'+index).find('.el-input__inner').css({
+            //         borderColor:'red'
+            //       })
+            //       //$('#circleDays'+index).append('<div class="error-list-circle" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
+            //  }
             setTimeout(()=>{
             $('#wType'+index).find('.error-list').remove()
               $('#wType'+index).removeClass('is-error')
@@ -782,10 +802,9 @@ export default {
                   $('#cityId'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
           }
         })
-     
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.ruleForm.file === "") {
+          if (this.ruleForm.file === "" && this.imageUrl === null) {
             this.$message({
               message: "请上传营业执照",
               type: "warning"
@@ -793,48 +812,52 @@ export default {
             return;
           }
           
-          var obj = {};
-          delete this.ruleForm.value
-          var newMultForm = this.ruleForm.multiForm.map((item)=>{
-
-            var cityName = item.cityId.label
-            var cityId = item.cityId.value 
-            var wType,joinTime,firstDealDate
-            if(item.wType==='自然月'){
-               wType = 0
-            }else if(item.wType==='自然周(周一到周日)'){
-              wType = 1
-            }else{
-              wType = 2
-            }
-            joinTime = moment(item.joinTime).format('YYYY-MM-DD')
-            firstDealDate = moment(item.firstDealDate).format('YYYY-MM-DD')
-            return Object.assign({},item,{wType:wType},{joinTime:joinTime},{firstDealDate:firstDealDate},{cityName: cityName},{cityId: cityId})
-          })
-          obj = Object.assign(
+          var newMultForm = this.ruleForm.multiForm.map(item => {
+                var wType, joinTime, firstDealDate;
+                if (item.wType === "自然月") {
+                wType = 0;
+                } else if (item.wType === "自然周(周一到周日)") {
+                wType = 1;
+                } else {
+                wType = 2;
+                }
+                joinTime = moment(item.joinTime).format("YYYY-MM-DD");
+                firstDealDate = moment(item.firstDealDate).format("YYYY-MM-DD");
+                 delete item.cityItem;
+                return Object.assign(
+                     {},
+                    item,
+                    { wType: wType },
+                    { joinTime: joinTime },
+                    { firstDealDate: firstDealDate }
+                );
+            });
+             delete this.ruleForm.areaId;
+            delete this.ruleForm.areaName;
+            delete this.ruleForm.cityId;
+            delete this.ruleForm.cityName;
+            delete this.ruleForm.joinTime;
+            delete this.ruleForm.licenseFeeRate;
+            delete this.ruleForm.percent;
+            delete this.ruleForm.subscriptionMoney;
+            delete this.ruleForm.subscriptionNum;
+            delete this.ruleForm.wType;
+          var obj = Object.assign(
             {},
-            { unUsed:1},
+            { id: this.userIDID },
             this.ruleForm,
-            {cityList:JSON.stringify(newMultForm)},
+            { cityList: JSON.stringify(newMultForm) },
             { cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 }
           );
-          var len1,len2,len3;
-          if($('.is-error')){
-             var len1 = $('.is-error').length;
-          }
-           if($('.error-list')){
-             var len2 = $('.error-list').length;
-          }
-           if($('.error-list-circle')){
-             var len3 = $('.3').length;
-          }
-       
+          var len1 = $('.is-error').length;
+          var len2 = $('.error-list').length
+          var len3 =  $('.error-list-circle').length
          if(len1>0||len2>0||len3>0){
            return;
          }
          this.loading8 = true;
           request
-            .post(host + "beepartner/admin/cityPartner/addCityPartner")
+            .post(host + "beepartner/admin/cityPartner/updateCityPartner")
             .withCredentials()
             .set({
               "content-type": "application/x-www-form-urlencoded"
@@ -845,19 +868,16 @@ export default {
                 console.log(error);
                 this.loading8 = false;
               } else {
-                this.checkLogin(res);
                 this.loading8 = false;
                 var newAccount = JSON.parse(res.text).data;
                 var code = JSON.parse(res.text).resultCode;
                 var message = JSON.parse(res.text).message;
                 if (code === 0) {
-                  this.setAccountOpendState();
-                  this.$router.push("/index/partnerManager");
+                this.$router.push("/index/partnerManager");
                   this.$message({
                     type: "success",
                     message: message
                   });
-                  this.$store.commit("keepParnterAccount", newAccount);
                 } else {
                   this.$message({
                     type: "error",
@@ -915,9 +935,13 @@ export default {
   watch: {
     "ruleForm.multiForm":{
       handler:function(n,o){
+          
         n.map((item,index)=>{
-         
-          if(!item.firstDealDate==''){
+             if(item.cityItem){
+            item.cityId = item.cityItem.value
+            item.cityName = item.cityItem.label
+          }
+           if(!item.firstDealDate==''){
             setTimeout(()=>{
             $('#firstDealDate'+index).find('.error-list').remove()
               $('#firstDealDate'+index).removeClass('is-error')
@@ -929,21 +953,6 @@ export default {
                   $('#firstDealDate'+index).find('.error-list').remove()
                   $('#firstDealDate'+index).addClass('is-error')
                   $('#firstDealDate'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择第一次结算日期</div>')
-                }
-              })
-          }
-          if(!item.subscriptionNum==''){
-            setTimeout(()=>{
-            $('#subscriptionNum'+index).find('.error-list').remove()
-              $('#subscriptionNum'+index).removeClass('is-error')
-            },200)
-          }else{
-              $('#subscriptionNum'+index).find('input').blur(function(){
-                var val = $(this).val()
-                if(!val){
-                  $('#subscriptionNum'+index).find('.error-list').remove()
-                  $('#subscriptionNum'+index).addClass('is-error')
-                  $('#subscriptionNum'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
                 }
               })
           }
@@ -959,6 +968,21 @@ export default {
                   $('#joinTime'+index).find('.error-list').remove()
                   $('#joinTime'+index).addClass('is-error')
                   $('#joinTime'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择加盟日期</div>')
+                }
+              })
+          }
+          if(!item.subscriptionNum==''){
+            setTimeout(()=>{
+            $('#subscriptionNum'+index).find('.error-list').remove()
+              $('#subscriptionNum'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#subscriptionNum'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#subscriptionNum'+index).find('.error-list').remove()
+                  $('#subscriptionNum'+index).addClass('is-error')
+                  $('#subscriptionNum'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
                 }
               })
           }
@@ -999,7 +1023,7 @@ export default {
             },200)
           }else{
           }
-            if(!item.circleDays==''){
+        if(!item.circleDays==''){
             setTimeout(()=>{
               $('#circleDays'+index).find('.error-list').remove()
                $('#circleDays'+index).find('.error-list-circle').remove()

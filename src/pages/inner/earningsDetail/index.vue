@@ -123,7 +123,7 @@
         </el-table-column>
         <el-table-column
           prop="balanceAmount"
-          label="实际收益合计"
+          label="实际收益"
           :render-header="rendHeader"
         >
           <template scope="scope">
@@ -684,6 +684,7 @@ export default {
       }
     },
     handleClick (e) {
+      this.currentPage = 1;
       var elems = siblings(e.target)
       for (var i = 0; i < elems.length; i++) {
         elems[i].setAttribute('class', '')
@@ -733,7 +734,7 @@ export default {
           style: 'background:#eee;margin-left:-20px;width:240px;'
         }
       }, [
-          h('span', '实际收益合计'),
+          h('span', '实际收益'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true

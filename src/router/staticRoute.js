@@ -18,6 +18,7 @@ import abnormalData from '../pages/inner/abnormalData/index.vue'
 // [ ====== partnerManager ====== ]
 import partnerManager from '../pages/inner/partnerManager/index.vue'
 import addpartner from '../pages/inner/partnerManager/addpartner.vue'
+import updatepartner from '../pages/inner/partnerManager/updatepartner.vue'
 import partnerDetail from '../pages/inner/partnerDetail/index.vue'
 import vehicleDistribution from '../pages/inner/partnerManager/vehicleDistribution.vue'
 
@@ -78,6 +79,11 @@ export default [
           path: '/index/partnerManager/addpartner',
           name: '添加合伙人',
           component: addpartner
+        },
+        {
+          path: '/index/partnerManager/updatepartner',
+          name: '编辑合伙人',
+          component: updatepartner
         }]
       },
       {
