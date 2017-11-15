@@ -10,7 +10,7 @@
             <td>
               <span>加盟商编号：</span>{{franchiseeDetail.cityPartnerId}}</td>
             <td>
-              <span>企业名称：</span>{{franchiseeDetail.companyName}}</td>
+              <span>企业名称/个人姓名：</span>{{franchiseeDetail.companyName}}</td>
           </tr>
            <tr>
             <td>
@@ -353,7 +353,7 @@ table.franchiseeDetail tr td {
 
 table.franchiseeDetail tr td span {
   text-align: right;
-  width: 100px;
+  width: 150px;
   display: inline-block;
   color: rgba(153, 153, 153, 1);
 }

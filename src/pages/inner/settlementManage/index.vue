@@ -3,7 +3,7 @@
         <div class="settlementManager_head1">
             <el-row class="selectPlace">
                 <div class="citys" style="margin-left: 80px;">
-                <address class="joinArea" style="margin-left: -57px;">加盟区域：</address>
+                <address class="joinArea" style="margin-left: -57px;">加盟区域</address>
                 <span @click="handleClick" myId='0' class="active">全部地区</span>
                 <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
                 </div>
@@ -12,7 +12,7 @@
         <div class="settlementManager_head2">
             <el-row class="selectPlace">
                 <div class="citys" style="margin-left: 67px;">
-                    <address class="joinArea" style="margin-left: -57px;">结算单状态：</address>
+                    <address class="joinArea" style="margin-left: -57px;">结算单状态</address>
                     <span :myStatus='0' @click="handleTypeClick">全部状态</span>
                     <span :myStatus='1' @click="handleTypeClick">待确认</span>
                     <span :myStatus='2' @click="handleTypeClick" class="active">待结算</span>
@@ -38,6 +38,8 @@
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="120">
+            </el-table-column>
+            <el-table-column prop="companyName" label="所属加盟商" min-width="150">
             </el-table-column>
             <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
             </el-table-column>

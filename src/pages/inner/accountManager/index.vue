@@ -83,22 +83,23 @@
           </el-table>
         </div>
       </el-tab-pane>
+      
       <el-tab-pane label="加盟商" name="加盟商" id="partner">
         <div id="search_content">
           <el-row class="selectPlace">
             <div class="citys" style="margin-left: 70px;">
-              <address class="joinArea" style="margin-left: -70px;">加盟区域：</address>
+              <address class="joinArea" style="margin-left: -70px;">加盟区域</address>
               <span @click="handleClick" name="0" class="active">全部地区</span>
               <span @click="handleClick" :name="list.cityId" :key="list.cityId" v-for="list of cityList">{{list.cityName}}</span>
             </div>
           </el-row>
           <div class="am_search">
             <label>
-              <span>关键字 :</span>
+              <span>关键字</span>
               <input type="text" v-model="accountOrUsername" placeholder="姓名/用户名" @blur="initQuery" class="account_my_input">
             </label>
             <label>
-              <span>联系方式 :</span>
+              <span>联系方式</span>
               <input type="text" v-model="telOrMail" placeholder="邮箱/手机号" @blur="initQuery" class="account_my_input">
             </label>
             <el-button id="accountSearchBtn2" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
@@ -113,9 +114,10 @@
           <el-table :data="joinTableData" style="width: 100%; font-size:13px;" v-loading="loading" element-loading-text="拼命加载中" :empty-text="emptyText">
             <el-table-column prop="userName" label="用户名" min-width="15%"></el-table-column>
             <el-table-column prop="phoneNo" label="手机号" min-width="15%"></el-table-column>
-            <el-table-column prop="email" label="邮箱" min-width="20%"></el-table-column>
+            <el-table-column prop="email" label="邮箱" min-width="15%"></el-table-column>
             <el-table-column prop="name" label="姓名" min-width="10%"></el-table-column>
-            <el-table-column label="所属加盟商" prop="cityName" min-width="20%"></el-table-column>
+            <el-table-column label="所属加盟商" prop="companyName" min-width="15%"></el-table-column>
+            <el-table-column label="加盟区域" prop="cityName" min-width="20%"></el-table-column>
             <el-table-column label="状态" min-width="10%" style="font-size:12px;">
               <template scope="scope">
                 <el-switch v-on:change="changeState(scope)" v-model="scope.row.status" on-text="启用" off-text="冻结" on-color="#13ce66" off-color="#ff4949">
@@ -747,6 +749,7 @@ export default {
                 var data = JSON.parse(res.text).data
 
                 this.allianceList = data
+                
             })
     },
     handleClick(e) {
@@ -783,6 +786,7 @@ export default {
       })
     },
     openEdit(scope) {
+      console.log(scope)
       if(this.activeName==='平台'){
         if(scope.row.status===false){
           this.$message({
@@ -1213,10 +1217,12 @@ export default {
               that.emptyText = '暂无数据'
             }, 6000)
           } else {
+            
             that.checkLogin(res)
             that.loading = false
             that.emptyText = ' '
             that.totalPage = JSON.parse(res.text).totalPage
+            
             var arr = JSON.parse(res.text).data
             if (that.totalPage > 1) {
               that.emptyText = ' '
@@ -1259,8 +1265,9 @@ export default {
             } else {
               that.checkLogin(res)
               that.loading = false
-              console.log(res)
+              
               that.totalPage = Number(JSON.parse(res.text).totalPage)
+              console.log(JSON.parse(res.text))
               var arr = JSON.parse(res.text).data
               that.totalItems = Number(JSON.parse(res.text).totalItems)
               if (that.totalPage > 1) {
@@ -1274,6 +1281,7 @@ export default {
               // console.log('that.$store.state.joinTableData', that.$store.state.joinTableData)
               that.joinTableData = that.$store.state.joinTableData
               that.initData = that.joinTableData
+              console.log(that.initData)
             }
           })
       }
@@ -1609,7 +1617,7 @@ div.account>h1 button:hover {
 }
 
 .am_search label span {
-  line-height: 70px;
+  line-height: 74px;
   font-weight: 400;
   font-size: 14px;
   display: block;

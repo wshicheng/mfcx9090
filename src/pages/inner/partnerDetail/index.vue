@@ -3,7 +3,9 @@
     <div class="detailTitle">
       <h3>加盟商详情</h3>
     </div>
-    <el-row>
+    <!-- 企业加盟 -->
+    <el-row v-if="joinMode=='a'">
+      
       <el-col :span="16">
         <table>
           <tbody>
@@ -36,16 +38,20 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配：<span class="num">固定 </span>辆)</td>
             </tr>
             <tr>
               <td>
                 <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}}</td>
-             
+              <td>
+                <span class="prex">结算周期：</span>{{franchiseeDetail.circleDays}}
+              </td>
             </tr>
              <tr>
               <td>
-                <span class="prex">拥有车辆：</span>{{new Number(relationBikeNum).thousand()}} 辆</td>
+                <span class="prex">授权费：</span>{{franchiseeDetail.licenseFeeRate}}</td>
+              <td>
+                <span class="prex">首次结算日期：</span>{{franchiseeDetail.firstDealDate}}</td>
             </tr>
           </tbody>
         </table>
@@ -58,6 +64,74 @@
         </ul>
       </el-col>
     </el-row>
+
+    <!-- 个人加盟 -->
+    <el-row v-else>
+      <el-col :span="16">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <span class="prex">加盟商编号：</span>{{franchiseeDetail.cityPartnerId}}</td>
+              <td>
+                <span class="prex">姓名：</span>{{franchiseeDetail.companyName}}</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">证件类别：</span>{{franchiseeDetail.cardType=="1"?'护照':'身份证'}}</td>
+              <td>
+                <span class="prex">证件号码：</span>{{franchiseeDetail.idCard}}</td>
+            </tr>
+             <tr>
+              <td>
+                <span class="prex">手机号：</span>{{franchiseeDetail.phone}}</td>
+              <td>
+                <span class="prex">邮箱：</span>{{franchiseeDetail.email}}</td>
+            </tr>
+            <tr>
+               <td>
+                <span class="prex">加盟区域：</span>
+                    <el-select v-model="cityId" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+                </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
+              <td>
+                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}}
+              </td>
+              <td>
+                <span class="prex">结算周期：</span>{{franchiseeDetail.settleDays}}
+              </td>
+
+            </tr>
+             <tr>
+              <td>
+                <span class="prex">运营管理费：</span>{{franchiseeDetail.manageFee}}</td>
+              <td>
+                <span class="prex">首次结算日期：</span>{{franchiseeDetail.firstDealDate}}</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">后期分成比例：</span>{{franchiseeDetail.divisionPercent}}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </el-col>
+    </el-row>
+
     <el-row class="record">
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <el-tab-pane class="incomeRecord recodeTable" label="车辆明细" name="车辆明细">
@@ -110,6 +184,10 @@
             </el-table>
           </el-tab-pane> -->
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
+          <div class="total">
+            <span>累计已结算：固定 次</span>
+            <span>累计获得收益：固定 元</span>
+          </div>
           <el-table :data="drawalData" style="width: 100%">
             <el-table-column prop="month" label="结算周期">
             </el-table-column>
@@ -129,7 +207,7 @@
         <el-tab-pane label="联系人" name="联系人" class="recodeTable">
           <ul class='contact_ul'>
             <li>
-              <span>姓名：</span>{{franchiseeDetail.userName}}</li>
+              <span>姓名：</span>{{joinMode=='a'?franchiseeDetail.userName:franchiseeDetail.companyName}}</li>
             <li>
               <span>证件类别：</span>{{franchiseeDetail.cardType===0?'身份证':'护照'}}</li>
             <li>
@@ -173,7 +251,8 @@ export default {
       franchiseeDetail: {},
       router: this.$route.query.carNum,
       car_infor_data: [],
-      activeName: '车辆明细'
+      activeName: '车辆明细',
+      joinMode:this.$route.params.id.split('&')[2]
     }
   },
   methods: {
@@ -269,6 +348,7 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
+          console.log(res)
         }
       })
     },
@@ -496,6 +576,21 @@ export default {
 }
 </script>
 <style scoped>
+.num {
+  color:orange;
+  margin-right:10px;
+}
+.total {
+  background:rgb(250,235,215);
+  height:30px;
+  padding-left:15px;
+  font-size:14px;
+  color:#555;
+}
+.total span {
+  line-height:30px;
+  margin-right:60px;
+}
 div.carUseDetail {
   background: #fff;
   margin: 0 auto;

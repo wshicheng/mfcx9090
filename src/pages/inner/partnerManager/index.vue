@@ -1,37 +1,56 @@
 <template>
   <div style="margin-right:20px;">
-    <div id="partner_header">
-      <label>
-        <span>关键字</span>
-          <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\联系人姓名\证件号码" v-model="name" class="partner_my_input1">
-      </label>
-      <label>
-        <span>联系方式</span>
-          <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
-      </label>
-    </div>
+    <div style="background-color:#faebd7">
+      <div style="background-color:#faebd7;font-size:14px" class="partner_new">
+        <address class="joinArea joinMode">加盟模式:</address>
+        <span id="joinMode">
+        <span class="active"  @click="handleClick" mode="0">全部</span>
+        <span @click="handleClick" mode="1">企业</span>
+        <span @click="handleClick" mode="2">个人</span>
+        </span>
+      </div>
+      <div style="background-color:#faebd7;font-size:14px;padding-bottom:2px" class="partner_new">
+        <address class="joinArea">加盟区域:</address>
+        <span id="joinArea">
+          <span  myId="0" class="active"  @click="handleClick">全部地区</span>
+          <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in allcityList">{{item.cityName}}</span>
+        </span>
+      </div>
+      <div style="padding-top:20px">
+        <div id="partner_header"  style="background-color:#faebd7;">
+          <label>
+            <span style="color:#555">关键字:</span>
+              <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1">
+          </label>
+          <label>
+            <span style="color:#555;margin-left:20px;">联系方式:</span>
+              <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
+          </label>
+        </div>
 
-    <div id="partner_data_select">
-      <label>
-        <span>加盟日期</span>
-        <el-date-picker
-        v-model="startTime"
-        type="date"
-        placeholder="选择日期">
-      </el-date-picker>
-      </label>
-      <label>
-        <span>至</span>
-        <el-date-picker
-        v-model="endTime"
-        type="date"
-        placeholder="选择日期">
-      </el-date-picker>
-      </label>
+        <div id="partner_data_select"  style="background-color:#faebd7">
+          <label>
+            <span style="color:#555;margin-right:10px">加盟日期:</span>
+            <el-date-picker
+            v-model="startTime"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+          </label>
+          <label>
+            <span style="color:#555">至</span>
+            <el-date-picker
+            v-model="endTime"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
+          </label>
 
-      <button class="my_btn" @click="queryInfo">查询</button>
+          <button class="my_btn" @click="queryInfo">查询</button>
+        </div>
+        <div style="clear:both"></div>
+      </div>
     </div>
-  
     <div id="partner_table">
       <div id="partner_add">
         <button @click="checkAuth">添加加盟商</button>
@@ -55,33 +74,33 @@
           <template scope="scope">
             <!-- $router.push('/index/partnerDetail/' +  scope.row.id + '&' + scope.row.cityPartnerId) -->
                 <router-link style="color:rgb(118, 103, 233); text-decoration: none; cursor: pointer;" target='_blank' v-bind:to="{
-                  path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId
+                  path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId + '&b'
                 }">{{scope.row.cityPartnerId}}</router-link>   
           </template>
         </el-table-column>
         <el-table-column
           prop="companyName"
-          label="企业名称"
-          min-width="140">
+          label="企业名称/个人姓名"
+          min-width="100">
         </el-table-column>
         <el-table-column
           prop="cityList"
           label="加盟区域"
-          min-width="65">
+          min-width="100">
         </el-table-column>
         <el-table-column
           prop="joinMoneys"
           label="加盟资金(元)"
-          min-width="80">
+          min-width="100">
         </el-table-column>
         <el-table-column
           prop="joinDays"
           label="加盟日期"
-          min-width="80">
+          min-width="100">
         </el-table-column>
         <el-table-column
           label="认购车辆数"
-          min-width="80">
+          min-width="100">
           <template scope="scope">
               <span>{{scope.row.subscriptionNumStr}}</span>
              <!-- @click='handleRowHandle(scope.row.subscription_id)'  -->
@@ -93,7 +112,8 @@
         </el-table-column>    
         <el-table-column
           label="操作"
-          prop="del">
+          prop="del"
+          max-width="80">
           <template scope="scope">
             <!-- <a style="color:#444; margin-right:10px; cursor: pointer;" @click="goDetail(scope)" title="查看">
               <i class="el-icon-document"></i>
@@ -269,6 +289,24 @@
 </template>
 
 <style scoped>
+.partner_new {
+  padding-top:25px;
+}
+.partner_new span {
+  padding:5px;
+}
+address.joinArea {
+    font-style: normal;
+    display: inline;
+    font-size: 16px;
+    margin-left:20px;
+    margin-right:10px;
+    float:left;
+}
+span.active {
+    border: 1px solid orange;
+    border-radius: 4px;
+  }
 div.menuIcon {
   text-align: right;
 
@@ -308,84 +346,48 @@ div.menuIcon i.icon-jian {
   left: 0;
   top: 0;
 }
-
 #partner_header {
-  /*width: 100%;*/
-  height: 70px;
+  height: 55px;
   background: #fff;
   border: 1px solid #e7ecf1;
   border-bottom: none;
+  float:left;
+  padding-left:20px;
+  width:500px;
 }
-
 #partner_header .partner_my_input1 {
-  width: 192px;
+  width: 150px;
   height: 30px;
   outline: none;
-  margin-top: 4px;
+  margin-left:10px;
   border-radius: 4px;
   border: 1px solid #ddd;
   text-indent: 10px;
   display: inline-block;
 }
-
 #partner_header .partner_my_input2 {
-  width: 181px;
+  width: 150px;
   border-radius: 4px;
   height: 30px;
   outline: none;
-  margin-top: 4px;
+  margin-left:10px;
   text-indent: 10px;
   border: 1px solid #ddd;
   display: inline-block;
-}
-
-#partner_header label:nth-of-type(1) {
-  height: 70px;
-  width: 280px;
-  line-height: 70px;
-  margin-left: 30px;
-  font-size: 14px;
-  float: left;
-}
-
-#partner_header label:nth-of-type(1) > span {
-  margin-right: 20px;
-}
-
-#partner_header label:nth-of-type(2) {
-  height: 70px;
-  font-size: 14px;
-  width: 400px;
-  line-height: 70px;
-  /*margin-left: 20px;*/
-  float: left;
-}
-
-#partner_header label:nth-of-type(2) > span {
-  margin-right: 6px;
-}
-
-/*partner_data_select*/
+} 
 #partner_data_select {
-  padding: 0px 30px 20px 30px;
+  height:55px;
   background: #fff;
   border: 1px solid #e7ecf1;
   border-top: none;
 }
 
-#partner_data_select label:nth-child(1) span {
-  font-size: 14px;
-  margin-right: 6px;
-}
-
-#partner_data_select label:nth-child(2) span {
-  font-size: 16px;
-  margin: 0 25px;
-}
-
 #partner_data_select button:hover {
   color: #20a0ff;
   border-color: #20a0ff;
+}
+#partner_data_select .my_btn {
+  margin-right:20px;
 }
 
 ::-webkit-input-placeholder {
@@ -412,26 +414,6 @@ div.menuIcon i.icon-jian {
   font-weight: 400;
 }
 
-/*#partner_header button {
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    background: #fff;
-    float: right;
-    border: 1px solid #c4c4c4;
-    color: #1f2d3d;
-    margin: 17px 33px;
-    padding: 10px 15px;
-    border-radius: 4px;
-  }
-
-  #partner_header button:hover {
-    color: #20a0ff;
-    border-color: #20a0ff;
-  }*/
-
-/*  #partner_table  */
 
 #partner_table {
   padding: 0 30px 800px 30px;
@@ -634,6 +616,7 @@ import request from "superagent";
 import moment from "moment";
 import { host } from "../../../config/index";
 import { isCardNo, isPassportNo } from "../../../../utils/index.js";
+import {siblings} from '../../../../utils/index.js'
 export default {
   data() {
     var checkTime = (rule, value, callback) => {
@@ -694,7 +677,8 @@ export default {
       }, 1000);
     };
     return {
-
+      joinMode:"",
+      allcityList:[],
       recodeCityList:'',
       initNum: 0,
       isClickAddBtn: false,
@@ -867,6 +851,7 @@ export default {
     $('.sign[name="20"]').addClass("is-active");
     document.title = "加盟商管理";
     this.loadData();
+    
   },
   created() {
     // 初始化调用查询可加盟城市的接口,动态渲染数据
@@ -894,8 +879,37 @@ export default {
       });
     // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
     this.isHaveSettleOrders = false; // true 不可编辑
+
+    this.getCityList();
   },
   methods: {
+      handleClick(e){
+          var elems = siblings(e.target)
+          for (var i = 0; i < elems.length; i++) {
+            elems[i].setAttribute('class', '')
+          }
+          e.target.setAttribute('class', 'active')
+  
+          this.queryInfo();
+
+      },
+        getCityList () {
+      request
+        .post(host + 'beepartner/admin/city/findCity')
+        .withCredentials()
+        .set({
+          'content-type': 'application/x-www-form-urlencoded'
+        })
+        .send()
+        .end((error, res) => {
+          if (error) {
+            console.log('error:', error)
+          } else {
+            this.allcityList = JSON.parse(res.text).data
+            // this.checkLogin(res)
+          }
+        })
+    },
     cancelEdit(){
       this.dialogVisible = false
       this.loadData()
@@ -1298,6 +1312,7 @@ export default {
       };
     },
     queryInfo() {
+    
       this.isSearch = true;
 
       var name = this.name.trim();
@@ -1308,7 +1323,9 @@ export default {
         name.length === 0 &&
         phone.length === 0 &&
         startTime.toString().length === 0 &&
-        endTime.toString().length === 0
+        endTime.toString().length === 0 &&
+        $("#joinMode span.active").attr("mode") === "0" &&
+        $("#joinArea span.active").attr("myId") ==="0"
       ) {
         this.$message({
           type: "warning",
@@ -1322,6 +1339,8 @@ export default {
             "content-type": "application/x-www-form-urlencoded"
           })
           .send({
+            joinMode:$("#joinMode span.active").attr("mode"),
+            cityCode:$("#joinArea span.active").attr("myId"),
             name: this.name.trim(),
             phone: this.phone.trim(),
             startTime:
@@ -1338,9 +1357,11 @@ export default {
               this.loading = false;
               console.log("err:" + err);
             } else {
+              
               this.checkLogin(res);
               this.loading = false;
               var newArr = JSON.parse(res.text).data || [];
+              console.log(newArr)
               var result = newArr.map(item => {
                 return Object.assign({}, item, {
                   joinTime: moment(item.joinTime).format("YYYY-MM-DD")
@@ -1498,6 +1519,7 @@ export default {
     },
     openEdit(row, index) {
      this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId} });
+     console.log(row)
       return;
       request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
