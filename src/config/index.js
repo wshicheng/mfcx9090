@@ -33,9 +33,9 @@
 // export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://47.93.48.250:8090/'
-export const host = 'http://47.93.48.250:8090/'
+// export const host = 'http://47.93.48.250:8090/'
 // export const host = 'http://192.168.0.102:8082/'
-// export const host = 'http://192.168.0.166:8080/'
+export const host = 'http://192.168.0.166:8080/'
 // export const host = 'http://47.93.48.250:8090/'
 
 

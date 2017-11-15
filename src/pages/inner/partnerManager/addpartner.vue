@@ -160,9 +160,7 @@
               <el-form-item label="姓名" prop="userName">
                 <el-input v-model="ruleForm.userName" placeholder='请输入姓名'></el-input>
               </el-form-item>
-              <el-form-item label="证件类别" :rules="[
-                    { required: true, message: '证件类别不能为空', trigger: 'blur' },
-                  ]">
+              <el-form-item label="证件类别">
                 <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
                   <el-option label="居民身份证" value="居民身份证"></el-option>
                   <el-option label="护照" value="护照"></el-option>
@@ -195,9 +193,7 @@
               <el-form-item label="姓名" prop="userName">
                 <el-input v-model="ruleForm.userName" placeholder='请输入姓名'></el-input>
               </el-form-item>
-              <el-form-item label="证件类别" :rules="[
-                    { required: true, message: '证件类别不能为空', trigger: 'blur' },
-                  ]">
+              <el-form-item label="证件类别">
                 <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
                   <el-option label="居民身份证" value="居民身份证"></el-option>
                   <el-option label="护照" value="护照"></el-option>
@@ -625,7 +621,7 @@ export default {
         businessLicense: "",
         address: "",
         userName: "",
-        cardType: "",
+        cardType: "居民身份证",
         idCard: "",
         phone: "",
         email: "",
@@ -669,9 +665,9 @@ export default {
         allipayAccount:[{required: true,message: "请输入支付宝账号", trigger: "blur" }],
         wType: [{ required: true, message: "请选择结算周期", tigger: "blur" }],
         
-        userId: [{required:true, message: "请输入用户名", trigger: "blur" }],
+        userId: [{required:false, message: "请输入用户名", trigger: "blur" }],
         password: [
-          { required:true,message: "请输入密码", trigger: "blur" },
+          { required:false,message: "请输入密码", trigger: "blur" },
           { min: 6, max: 19, message: "密码格式不正确", trigger: "blur" }
         ]
       },
@@ -716,6 +712,13 @@ export default {
   methods: {
     clickChange(){
       var that = this
+      // this.$refs['ruleForm'].resetFields();
+      
+      // $("el-form-item").removeClass("is-error")
+      setTimeout(function(){
+          $("div.el-form-item").removeClass("is-error")
+          $("div.el-form-item__error").hide()
+      },200)
       this.ruleForm =  {
         multiForm:[{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',manageFee:"",settleDays:'',divisionPercent:""}],
         subscriptionNum:'',
@@ -723,7 +726,7 @@ export default {
         businessLicense: "",
         address: "",
         userName: "",
-        cardType: "",
+        cardType: "居民身份证",
         idCard: "",
         phone: "",
         email: "",
@@ -957,6 +960,7 @@ export default {
             } else {
               this.checkLogin(res);
               var result = JSON.parse(res.text).data;
+            
               if (result.length === 0) {
                 this.areaShow = false;
               } else {
@@ -1070,7 +1074,7 @@ export default {
      
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.ruleForm.file === "") {
+          if (this.ruleForm.file === "" && this.radio == "1") {
             this.$message({
               message: "请上传营业执照",
               type: "warning"
