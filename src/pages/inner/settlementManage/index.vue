@@ -38,12 +38,24 @@
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="120">
+              <template scope="scope">
+                  {{scope.row.cityName}}
+              </template>
             </el-table-column>
             <el-table-column prop="companyName" label="所属加盟商" min-width="150">
+              <template scope="scope">
+                  {{scope.row.companyName}}
+              </template>
             </el-table-column>
             <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
+              <template scope="scope">
+                  {{scope.row.applyUserName}}
+              </template>
             </el-table-column>
             <el-table-column prop="confirmTimeStr" label="结算确认日期" min-width="140">
+              <template scope="scope">
+                  {{scope.row.confirmTimeStr}}
+              </template>
             </el-table-column>
             <el-table-column label="操作" prop="del">
               <template scope="scope">
@@ -183,6 +195,7 @@ export default {
             var newData = this.tableDataDel(data)
             this.tableData = newData
               this.loading2 = false
+              
           }
         })
     },
@@ -287,6 +300,7 @@ export default {
               this.loading2 = false
               var newData = this.tableDataDel(data)
               this.tableData = newData
+              console.log(this.tableData)
             }
            
           }

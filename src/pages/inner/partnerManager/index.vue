@@ -74,7 +74,7 @@
           <template scope="scope">
             <!-- $router.push('/index/partnerDetail/' +  scope.row.id + '&' + scope.row.cityPartnerId) -->
                 <router-link style="color:rgb(118, 103, 233); text-decoration: none; cursor: pointer;" target='_blank' v-bind:to="{
-                  path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId + '&b'
+                  path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId + '&' + scope.row.joinMode
                 }">{{scope.row.cityPartnerId}}</router-link>   
           </template>
         </el-table-column>
@@ -890,7 +890,64 @@ export default {
           }
           e.target.setAttribute('class', 'active')
   
-          this.queryInfo();
+          // 查询
+           this.isSearch = true;
+
+              var name = this.name.trim();
+              var phone = this.phone.trim();
+              var startTime = this.startTime;
+              var endTime = this.endTime;
+            
+                request
+                  .post(host + "beepartner/admin/cityPartner/findCityPartner")
+                  .withCredentials()
+                  .set({
+                    "content-type": "application/x-www-form-urlencoded"
+                  })
+                  .send({
+                    joinMode:$("#joinMode span.active").attr("mode"),
+                    cityCode:$("#joinArea span.active").attr("myId"),
+                    name: this.name.trim(),
+                    phone: this.phone.trim(),
+                    startTime:
+                      this.startTime === ""
+                        ? ""
+                        : moment(this.startTime).format("YYYY-MM-DD"),
+                    endTime:
+                      this.endTime === ""
+                        ? ""
+                        : moment(this.endTime).format("YYYY-MM-DD")
+                  })
+                  .end((err, res) => {
+                    if (err) {
+                      this.loading = false;
+                      console.log("err:" + err);
+                    } else {
+                      
+                      this.checkLogin(res);
+                      this.loading = false;
+                      var newArr = JSON.parse(res.text).data || [];
+                      console.log(newArr)
+                      var result = newArr.map(item => {
+                        return Object.assign({}, item, {
+                          joinTime: moment(item.joinTime).format("YYYY-MM-DD")
+                        });
+                      });
+                      if (JSON.parse(res.text).data === "") {
+                        this.emptyText = "暂无数据";
+                      }
+                      var pageNumber = Number(JSON.parse(res.text).totalPage);
+                      this.totalItems = Number(JSON.parse(res.text).totalItems);
+                      this.tableData = result;
+                      console.log(this.tableData)
+                      if (pageNumber > 1) {
+                        this.pageShow = true;
+                      } else {
+                        this.pageShow = false;
+                      }
+                    }
+                  });
+      
 
       },
         getCityList () {
@@ -1323,9 +1380,7 @@ export default {
         name.length === 0 &&
         phone.length === 0 &&
         startTime.toString().length === 0 &&
-        endTime.toString().length === 0 &&
-        $("#joinMode span.active").attr("mode") === "0" &&
-        $("#joinArea span.active").attr("myId") ==="0"
+        endTime.toString().length === 0
       ) {
         this.$message({
           type: "warning",
@@ -1373,6 +1428,7 @@ export default {
               var pageNumber = Number(JSON.parse(res.text).totalPage);
               this.totalItems = Number(JSON.parse(res.text).totalItems);
               this.tableData = result;
+              console.log(this.tableData)
               if (pageNumber > 1) {
                 this.pageShow = true;
               } else {
@@ -1518,7 +1574,8 @@ export default {
         });
     },
     openEdit(row, index) {
-     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId} });
+      console.log(row)
+     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId,joinMode:row.joinMode} });
      console.log(row)
       return;
       request
@@ -1537,6 +1594,7 @@ export default {
             this.checkLogin(res);
             var newArr = [];
             var list = JSON.parse(res.text).data;
+            console.log(list)
             var arr = [];
             list.map(item => {
               var obj = {};

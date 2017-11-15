@@ -9,15 +9,27 @@
 					</span>
 				</h1>
 			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
-        <el-form-item label="企业名称" prop="companyName">
+        <!-- 企业 -->
+        <el-form-item label="企业名称" prop="companyName" v-if="joinMode=='1'">
           <el-input v-model="ruleForm.companyName" placeholder='长度不超过100字符'></el-input>
         </el-form-item>
-        <el-form-item label="营业执照注册号" prop="businessLicense">
+        <el-form-item label="营业执照注册号" prop="businessLicense"  v-if="joinMode=='1'">
           <el-input v-model="ruleForm.businessLicense" placeholder='请输入营业执照注册号'></el-input>
         </el-form-item>
-        <el-form-item label="通讯地址" prop="address">
+        <el-form-item label="通讯地址" prop="address"  v-if="joinMode=='1'">
           <el-input v-model="ruleForm.address" placeholder='请输入地址'></el-input>
         </el-form-item>
+          <!-- 个人 -->
+        <el-form-item label="姓名" prop="companyName" v-if="joinMode=='2'">
+          <el-input v-model="ruleForm.companyName" placeholder='请输入姓名'></el-input>
+        </el-form-item>
+        <el-form-item label="证件号" prop="idCard"  v-if="joinMode=='2'">
+          <el-input v-model="ruleForm.idCard" placeholder='请输入证件号'></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone"  v-if="joinMode=='2'">
+          <el-input v-model="ruleForm.phone" placeholder='请输入手机号'></el-input>
+        </el-form-item>
+
         <h1 class="form_table_h1">加盟与结算信息</h1>
         <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
            <div class="menuIcon">
@@ -113,14 +125,25 @@
         <!-- <el-form-item label="加盟商分成比例" prop="percent">
           <el-input max="100" min="0" v-model="ruleForm.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
         </el-form-item>	 -->
-        <el-form-item label="授权费率" :id="'licenseFeeRate'+ index"
+
+        <!-- 企业授权费率 -->
+        <el-form-item v-if="joinMode=='1'" label="授权费率" :id="'licenseFeeRate'+ index"
            :rules="[
               { required: true, message: '请输入授权费率', trigger: 'blur' },
             ]"
         >
           <el-input max="100" min="0" v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
         </el-form-item>
-        <el-form-item label="结算周期" :id="'wType'+ index"
+        <!-- 个人运营管理费 -->
+         <el-form-item v-if="joinMode=='2'" label="运营管理费" :id="'manageFee'+ index"
+           :rules="[
+              { required: true, message: '请输入运营管理费', trigger: 'blur' },
+            ]"
+        >
+          <el-input max="100" min="0" v-model="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;"></span>
+        </el-form-item>
+        <!-- 企业结算周期 -->
+        <el-form-item v-if="joinMode=='1'" label="结算周期" :id="'wType'+ index"
            :rules="[
               { required: true, message: '请输入结算周期', trigger: 'blur' },
             ]"
@@ -135,8 +158,19 @@
             </el-input>  
           </el-radio-group>
         </el-form-item>
+      <!-- 个人结算日期 -->
+         <el-form-item label="结算日" v-if="joinMode=='2'"
+                :rules="[
+                    { required: true, message: '请选择结算日', trigger: 'blur' },
+                  ]"
+              >
+                <el-checkbox-group v-model="list.settleDays"  @change="checkSettleDays">
+                  <el-checkbox label="每月1号" :is-checked="list.settleDays=='1'||list.settleDays=='1,16'||list.settleDays=='16,1'"></el-checkbox>
+                  <el-checkbox label="每月16号"></el-checkbox>
+                </el-checkbox-group>
+        </el-form-item>
         <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-        <el-form-item label="第一次结算开始日期" :id="'firstDealDate'+ index"
+        <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index"
            :rules="[
               { required: true, message: '请输入第一次结算开始日期', trigger: 'blur' },
             ]"
@@ -400,10 +434,11 @@ export default {
       }, 1000);
     };
     return {
+      joinMode:this.$route.query.joinMode,
         row:'',
          recodeCityList:'',
       initNum:0,
-      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:''}, 
+      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",manageFee:""}, 
       isHaveSettleOrders: false,
       _cityList: [],
       areaShow: true,
@@ -431,6 +466,8 @@ export default {
         options: [
         ],
         value: "",
+        settleDays:"",
+        manageFee:""
       },
       rules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -506,6 +543,7 @@ export default {
     this.isHaveSettleOrders = false; // true 不可编辑
   },
   mounted: function() {
+    console.log(this.$route.query.cityPartnerId)
      this.$refs['ruleForm'].resetFields();
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
      request
@@ -523,7 +561,8 @@ export default {
             }else{
                 var result = JSON.parse(res.text)
                 this.row = result.data[0]
-                 request
+                console.log(this.row)
+          request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
         .withCredentials()
         .set({
@@ -616,6 +655,17 @@ export default {
     // this.filterProvinceMethod();
   },
   methods: {
+    checkSettleDays(){
+      if(this.dayList.length === 0){
+        this.newFormObject.settleDays = ""
+      }else if(this.dayList.length === 1){
+        this.newFormObject.settleDays = this.dayList[0].slice(2,-1)
+      }else{
+        this.newFormObject.settleDays = this.dayList[0].slice(2,-1) +","+ this.dayList[1].slice(2,-1)
+      }
+     this.ruleForm.settleDays = this.newFormObject.settleDays
+     console.log(this.ruleForm.settleDays)
+    },
     checkSettleType(val){
          $('.el-radio-group').find('.error-list').remove()
          $('.el-radio-group').find('.error-list-circle').remove()
@@ -872,6 +922,8 @@ export default {
                 var newAccount = JSON.parse(res.text).data;
                 var code = JSON.parse(res.text).resultCode;
                 var message = JSON.parse(res.text).message;
+                console.log(res.text)
+                console.log(obj)
                 if (code === 0) {
                 this.$router.push("/index/partnerManager");
                   this.$message({

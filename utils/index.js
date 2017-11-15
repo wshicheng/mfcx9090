@@ -32,6 +32,7 @@ export function isEmail (str) {
     return false
   }
 }
+
 /**
  * 用途：检查输入手机号码是否正确
   输入：

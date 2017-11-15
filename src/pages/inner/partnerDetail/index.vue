@@ -4,7 +4,7 @@
       <h3>加盟商详情</h3>
     </div>
     <!-- 企业加盟 -->
-    <el-row v-if="joinMode=='a'">
+    <el-row v-if="joinMode=='1'">
       
       <el-col :span="16">
         <table>
@@ -185,8 +185,8 @@
           </el-tab-pane> -->
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
           <div class="total">
-            <span>累计已结算：固定 次</span>
-            <span>累计获得收益：固定 元</span>
+            <span>累计已结算：{{franchiseeDetail.alreadyWidthDrawTimes}}次</span>
+            <span>累计获得收益：{{franchiseeDetail.alreadyWithDrawMoney}} 元</span>
           </div>
           <el-table :data="drawalData" style="width: 100%">
             <el-table-column prop="month" label="结算周期">
@@ -207,7 +207,7 @@
         <el-tab-pane label="联系人" name="联系人" class="recodeTable">
           <ul class='contact_ul'>
             <li>
-              <span>姓名：</span>{{joinMode=='a'?franchiseeDetail.userName:franchiseeDetail.companyName}}</li>
+              <span>姓名：</span>{{joinMode=='1'?franchiseeDetail.userName:franchiseeDetail.companyName}}</li>
             <li>
               <span>证件类别：</span>{{franchiseeDetail.cardType===0?'身份证':'护照'}}</li>
             <li>
@@ -517,6 +517,7 @@ export default {
   },
     created() {
       var cityPartnerId = this.$route.params.id.split('&')[1]
+      console.log(this.cityPartnerId)
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findCity')
     .withCredentials()
@@ -531,6 +532,7 @@ export default {
         console.log(error)
       }else{
         var result = JSON.parse(res.text).data
+        console.log(result)
         this.options = result.map((item)=>{
           return {
             value:item.cityId,

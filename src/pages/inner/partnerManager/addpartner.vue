@@ -10,9 +10,9 @@
 				</h1>
  
           <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
-            <el-form-item label="加盟模式" prop="joinMode">
-              <el-radio-group v-model="radio">
-                <el-radio label="1" @change='clickChange'>企业</el-radio>
+            <el-form-item label="加盟模式">
+              <el-radio-group v-model="radio" v-on:change='clickChange'>
+                <el-radio label="1">企业</el-radio>
                 <el-radio label="2">个人</el-radio>
               </el-radio-group>
               <span style="font-size:12px;color:#ccc;display:block;line-height:1.5">加盟模式为企业时,一个地区只允许一个企业加盟;加盟模式为个人时,一个地区允许多个人加盟</span>
@@ -48,7 +48,7 @@
                       :value="item">
                     </el-option>
                   </el-select>
-              </el-form-item>
+                </el-form-item>
               
               <!-- <el-form-item label="加盟地区" prop="cityName"  id='selectCity' style="width:700px">
                   <el-select @change="handleChangeProvince"
@@ -100,7 +100,7 @@
                   </el-date-picker> 
                             
               </el-form-item>
-              <el-form-item label="认购车辆" :id="'subscriptionNum'+ index"
+                <el-form-item label="认购车辆" :id="'subscriptionNum'+ index"
               :rules="[
                     { required: true, message: '请输入认购车辆', trigger: 'blur' },
                   ]"
@@ -108,12 +108,12 @@
                 <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
               </el-form-item>
               <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index"
-                :rules="[
-                    { required: true, message: '请输入加盟资金', trigger: 'blur' },
-                  ]"
-              >
-                <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
-              </el-form-item>
+              :rules="[
+                  { required: true, message: '请输入加盟资金', trigger: 'blur' },
+                ]"
+            >
+              <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
+            </el-form-item>
               <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
                 <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
               </el-form-item>	
@@ -121,12 +121,12 @@
                 <el-input max="100" min="0" v-model="ruleForm.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
               </el-form-item>	 -->
               <el-form-item label="授权费率" :id="'licenseFeeRate'+ index"
-                :rules="[
-                    { required: true, message: '请输入授权费率', trigger: 'blur' },
-                  ]"
-              >
-                <el-input max="100" min="0" v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
-              </el-form-item>
+              :rules="[
+                  { required: true, message: '请输入授权费率', trigger: 'blur' },
+                ]"
+            >
+              <el-input max="100" min="0" v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
+            </el-form-item>
               <el-form-item label="结算周期" :id="'wType'+ index"
                 :rules="[
                     { required: true, message: '请输入结算周期', trigger: 'blur' },
@@ -160,7 +160,9 @@
               <el-form-item label="姓名" prop="userName">
                 <el-input v-model="ruleForm.userName" placeholder='请输入姓名'></el-input>
               </el-form-item>
-              <el-form-item label="证件类别" prop="cardType">
+              <el-form-item label="证件类别" :rules="[
+                    { required: true, message: '证件类别不能为空', trigger: 'blur' },
+                  ]">
                 <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
                   <el-option label="居民身份证" value="居民身份证"></el-option>
                   <el-option label="护照" value="护照"></el-option>
@@ -176,10 +178,10 @@
                 <el-input v-model="ruleForm.email" placeholder='请输入邮箱'></el-input>
               </el-form-item>
               <el-checkbox v-model="checked" @change="handleCheckbox" id="form_checkBox">同时添加联系人的平台账号</el-checkbox>
-              <el-form-item label="用户名" prop="userId" v-show='add'>
+              <el-form-item label="用户名" prop="userId" v-if='add'>
                 <el-input v-model="ruleForm.userId" placeholder='请输入用户名'></el-input>
               </el-form-item>
-              <el-form-item label="密码" prop="password" v-show='add'>
+              <el-form-item label="密码" prop="password" v-if='add'>
                 <el-input type="password" v-model="ruleForm.password" placeholder='6-20位，可包括字母、数字、下划线'></el-input>
               </el-form-item>
               <el-form-item>
@@ -193,7 +195,9 @@
               <el-form-item label="姓名" prop="userName">
                 <el-input v-model="ruleForm.userName" placeholder='请输入姓名'></el-input>
               </el-form-item>
-              <el-form-item label="证件类别" prop="cardType">
+              <el-form-item label="证件类别" :rules="[
+                    { required: true, message: '证件类别不能为空', trigger: 'blur' },
+                  ]">
                 <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
                   <el-option label="居民身份证" value="居民身份证"></el-option>
                   <el-option label="护照" value="护照"></el-option>
@@ -210,104 +214,103 @@
               </el-form-item>
               <h1 class="form_table_h1">加盟与结算信息</h1>
             <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
-              <div class="menuIcon">
-                <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
-                <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
-                  
+                <div class="menuIcon">
+                  <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
+                  <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>  
                 </div>
-              <el-form-item label="加盟地区" :id="'cityId'+ index" 
+                <el-form-item label="加盟地区" :id="'cityId'+ index" 
+                  :rules="[
+                    { required: true, message: '请输入加盟地区', trigger: 'blur' },
+                  ]"
+                >
+                  <el-select v-model="list.cityId" placeholder="请选择">
+                    <el-option
+                      v-for="item in ruleForm.options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item">
+                    </el-option>
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="加盟日期" :id="'joinTime'+ index" 
+                
                 :rules="[
-                  { required: true, message: '请输入加盟地区', trigger: 'blur' },
-                ]"
+                    { required: true, message: '请输入加盟日期', trigger: 'blur' },
+                  ]"
               >
-                <el-select v-model="list.cityId" placeholder="请选择">
-                  <el-option
-                    v-for="item in ruleForm.options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item">
-                  </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="加盟日期" :id="'joinTime'+ index" 
-              
-              :rules="[
-                  { required: true, message: '请输入加盟日期', trigger: 'blur' },
-                ]"
-            >
-                <el-date-picker
-                  v-model="list.joinTime"
-                  placeholder="选择日期">
-                </el-date-picker> 
-                          
-            </el-form-item>
-            <el-form-item label="认购车辆" :id="'subscriptionNum'+ index"
-            :rules="[
-                  { required: true, message: '请输入认购车辆', trigger: 'blur' },
-                ]"
-            >
+                  <el-date-picker
+                    v-model="list.joinTime"
+                    placeholder="选择日期">
+                  </el-date-picker> 
+                            
+              </el-form-item>
+              <el-form-item label="认购车辆" :id="'subscriptionNum'+ index"
+                :rules="[
+                      { required: true, message: '请输入认购车辆', trigger: 'blur' },
+                    ]"
+                >
               <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
             </el-form-item>
-            <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index"
+              <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index"
               :rules="[
                   { required: true, message: '请输入加盟资金', trigger: 'blur' },
                 ]"
             >
               <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
             </el-form-item>
-            <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
-              <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
-            </el-form-item>	
-            <!-- <el-form-item label="加盟商分成比例" prop="percent">
-              <el-input max="100" min="0" v-model="ruleForm.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
-            </el-form-item>	 -->
-            <el-form-item label="运营管理费" :id="'manageFee'+ index"
+              <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
+                <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
+              </el-form-item>	
+              <!-- <el-form-item label="加盟商分成比例" prop="percent">
+                <el-input max="100" min="0" v-model="ruleForm.percent" placeholder='请输入分成比例(%)'></el-input><span style="margin-left:5px;">%</span>
+              </el-form-item>	 -->
+               <el-form-item label="运营管理费" :id="'manageFee'+ index"
               :rules="[
                   { required: true, message: '请输入运营管理费', trigger: 'blur' },
                 ]"
             >
-              <el-input  v-model="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;"></span>
+              <el-input v-model.number="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;">元</span>
             </el-form-item>
-            <el-form-item label="结算日" :id="'wType'+ index"
-              :rules="[
-                  { required: true, message: '请输入结算日', trigger: 'blur' },
-                ]"
-            >
-              <!-- <el-radio-group v-model="list.wType" @change="checkSettleType">
-                <el-radio label="自然月" value='0'></el-radio>
-                <el-radio label="自然周(周一到周日)" value='1'></el-radio>
-                <el-radio label="自定义" value='2'></el-radio>
-                <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
-                  v-model="list.circleDays"
-                  placeholder="请输入正整数（天）">
-                </el-input>  
-              </el-radio-group> -->
-              <el-checkbox-group v-model="list.settleDays"  @change="checkSettleType">
-                <el-checkbox label="每月1号"></el-checkbox>
-                <el-checkbox label="每月16号"></el-checkbox>
-            </el-checkbox-group>
-            </el-form-item>
-            <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-            <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index"
-              :rules="[
-                  { required: true, message: '请输入首次结算开始日期', trigger: 'blur' },
-                ]"
-            >
-                <el-date-picker
-                  :readonly="isHaveSettleOrders"
-                  v-model="list.firstDealDate"
-                  placeholder="选择日期">
-                </el-date-picker>           
-            </el-form-item>
-            <h1 class="form_table_h2">生成结算单后，此日期不允许修改</h1>
-            </div>
-            <el-form-item label="后期分成比例" 
+              <el-form-item label="结算日"
+                :rules="[
+                    { required: true, message: '请选择结算日', trigger: 'blur' },
+                  ]"
+              >
+                <!-- <el-radio-group v-model="list.wType" @change="checkSettleType">
+                  <el-radio label="自然月" value='0'></el-radio>
+                  <el-radio label="自然周(周一到周日)" value='1'></el-radio>
+                  <el-radio label="自定义" value='2'></el-radio>
+                  <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
+                    v-model="list.circleDays"
+                    placeholder="请输入正整数（天）">
+                  </el-input>  
+                </el-radio-group> -->
+                <el-checkbox-group v-model="dayList"  @change="checkSettleDays">
+                  <el-checkbox label="每月1号"></el-checkbox>
+                  <el-checkbox label="每月16号"></el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+              <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
+              <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index"
+                :rules="[
+                    { required: true, message: '请输入首次结算开始日期', trigger: 'blur' },
+                  ]"
+              >
+                  <el-date-picker
+                    :readonly="isHaveSettleOrders"
+                    v-model="list.firstDealDate"
+                    placeholder="选择日期">
+                  </el-date-picker>           
+              </el-form-item>
+              <h1 class="form_table_h2">生成结算单后，此日期不允许修改</h1>
+              <el-form-item label="后期分成比例" :id="'divisionPercent'+ index"
               :rules="[
                   { required: true, message: '请输入后期分成比例', trigger: 'blur' },
                 ]"
             >
-              <el-input max="100" min="0"  placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
+              <el-input v-model.number="list.divisionPercent" placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
             </el-form-item>
+            </div>
               <h1 class="form_table_h1">结算账号</h1>
             <el-form-item label="支付宝账号" prop="allipayAccount">
                 <el-input v-model="ruleForm.allipayAccount" placeholder='请输入支付宝号码'></el-input>
@@ -531,7 +534,7 @@ import $ from "jquery";
 import request from "superagent";
 import moment from "moment";
 import { host } from "../../../config/index";
-import { isCardNo, isPassportNo } from "../../../../utils/index.js";
+import { isCardNo, isPassportNo} from "../../../../utils/index.js";
 import { mapActions } from "vuex";
 import cityList from "../../../components/cityList.vue";
 export default {
@@ -557,11 +560,53 @@ export default {
         }
       }, 1000);
     };
+    // var checkNum = (rule, value, callback) => {
+    //   console.log(value)
+    //     if (!value) {
+    //       return callback(new Error('不能为空'));
+    //     }
+    //     setTimeout(() => {
+    //       var myReg = /^100$|^[0-9]{1,2}$/g
+    //       if (!myReg.test(value)) {
+    //         callback(new Error('请输入0-100之间数字值'));
+    //         } else {
+    //           callback();
+    //         }
+    //     }, 1000);
+    //   };
+    //   var checkMon = (rule, value, callback) => {
+    //   console.log(value)
+    //     if (!value) {
+    //       return callback(new Error('不能为空'));
+    //     }
+    //     setTimeout(() => {
+    //       var myReg = /^[1-9]\d*(\.\d+)?$/
+    //       if (!myReg.test(value)) {
+    //         callback(new Error('请输入大于0的数字'));
+    //         } else {
+    //           callback();
+    //         }
+    //     }, 1000);
+    //   }
+
+    //     var checkAc = (rule, value, callback) => {
+    //      console.log(value)
+    //     if (!value) {
+    //       return callback(new Error('不能为空'));
+    //     }
+    //     setTimeout(() => {
+    //       var reg = /^1[34578][0-9]{9}/;
+    //         var reg1 = /[a-zA-Z0-9]{1,10}@[a-zA-Z0-9]{1,5}\.[a-zA-Z0-9]{1,5}/;
+    //         if(!reg.test(value)&&!reg1.test(value)){
+    //             callback(new Error('请输入正确格式的账号'));
+    //         }
+    //     }, 1000);
+      // };
     return {
       radio:"1",
       checkList:[],
       initNum:0,
-      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',manageFee:"",settleDays:[]}, 
+      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',manageFee:"",settleDays:'',divisionPercent:""}, 
       isHaveSettleOrders: false,
       _cityList: [],
       areaShow: true,
@@ -570,6 +615,7 @@ export default {
       provinceList: [],
       cityList: [],
       areaList: [],
+      dayList:[],
       ruleForm: {
         multiForm:[
          
@@ -589,13 +635,13 @@ export default {
         options: [
         ],
         value: "",
-        alllipayAccount:"",
+        allipayAccount:"",
         settleBank:"",
         bankAccount:"",
         accountName:"",
         manageFee:"",
         divisionPercent:"",
-        settleDays:[]
+        settleDays:""
       },
       rules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -604,6 +650,7 @@ export default {
         ],
         address: [{ message: "请输入正确的地址", trigger: "blur" }],
         cardType: [{ required: true, message: "请选择证件类型", trigger: "blur" }],
+        cardNum: [{ required: true, message: "请输入证件号码", trigger: "blur" }],
         percent: [{ required: true, message: "请输入加盟比例", trigger: "blur" }],
         userName: [{ message: "请输入姓名", trigger: "blur" }],
         idCard: [{ validator: checkId, required: true, trigger: "blur" }],
@@ -612,15 +659,19 @@ export default {
           { min: 11, message: "请输入正确的手机号", trigger: "blur" }
         ],
         email: [{ message: "请填写正确邮箱", trigger: "blur" }],
-        licenseFeeRate: [
-          { required: true, message: "请输入授权费率", trigger: "blur" }
-        ],
-        divisionPercent:[{ required: true, message: "请输入后期分成比例", trigger: "blur" }],
+        // licenseFeeRate: [
+        //   {message: "请输入授权费率",required: true,trigger: "blur" }
+        // ],
+        // divisionPercent:[{ required: true,message: "请输入后期分成比例", trigger: "blur" }],
+        // subscriptionMoney:[{required: true,message: "请输入加盟费", trigger: "blur" }],
+        // subscriptionNum:[{required: true,message: "请输入认购车辆", trigger: "blur" }],
+        // manageFee:[{required: true,message: "请输入运营管理费", trigger: "blur" }],
+        allipayAccount:[{required: true,message: "请输入支付宝账号", trigger: "blur" }],
         wType: [{ required: true, message: "请选择结算周期", tigger: "blur" }],
         
-        userId: [{ message: "请输入用户名", trigger: "blur" }],
+        userId: [{required:true, message: "请输入用户名", trigger: "blur" }],
         password: [
-          { message: "请输入密码", trigger: "blur" },
+          { required:true,message: "请输入密码", trigger: "blur" },
           { min: 6, max: 19, message: "密码格式不正确", trigger: "blur" }
         ]
       },
@@ -648,27 +699,9 @@ export default {
   },
   created() {
       // 初始化调用查询可加盟城市的接口,动态渲染数据
-    request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
-    .withCredentials()
-    .set({
-      "content-type": "application/x-www-form-urlencoded"
-    })
-    .send({
-      unUsed: 1
-    })
-    .end((error,res)=>{
-      if(error){
-        console.log(error)
-      }else{
-        var result = JSON.parse(res.text)
-        this.ruleForm.options = result.map((item)=>{
-          return {
-            value:item.code,
-            label:item.name
-          }
-        })
-      }
-    })
+      this.getJoinAreaList();
+      
+
     // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
     this.isHaveSettleOrders = false; // true 不可编辑
   },
@@ -677,12 +710,78 @@ export default {
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
     this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
     document.title = "添加加盟商";
-   
+
     // this.filterProvinceMethod();
   },
   methods: {
     clickChange(){
-      console.log("aaaa")
+      var that = this
+      this.ruleForm =  {
+        multiForm:[{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',manageFee:"",settleDays:'',divisionPercent:""}],
+        subscriptionNum:'',
+        companyName: "",
+        businessLicense: "",
+        address: "",
+        userName: "",
+        cardType: "",
+        idCard: "",
+        phone: "",
+        email: "",
+        userId: "",
+        password: "",
+        file: "",
+        options: [
+        ],
+        value: "",
+        alllipayAccount:"",
+        settleBank:"",
+        bankAccount:"",
+        accountName:"",
+        manageFee:"",
+        divisionPercent:"",
+        settleDays:''
+      }
+      this.imageUrl = ""
+      this.checked = false
+      this.getJoinAreaList();
+    },
+    // 获取可加盟城市的列表
+    getJoinAreaList(){
+      request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+      .withCredentials()
+      .set({
+        "content-type": "application/x-www-form-urlencoded"
+      })
+      .send({
+        unUsed: 1
+      })
+      .end((error,res)=>{
+        if(error){
+          console.log(error)
+        }else{
+          var result = JSON.parse(res.text)
+          this.ruleForm.options = result.map((item)=>{
+            return {
+              value:item.code,
+              label:item.name
+            }
+          })
+          console.log(this.ruleForm.options)
+          console.log(1)
+        }
+      })
+    },
+    // 复选框值改变
+    checkSettleDays(){
+      if(this.dayList.length === 0){
+        this.newFormObject.settleDays = ""
+      }else if(this.dayList.length === 1){
+        this.newFormObject.settleDays = this.dayList[0].slice(2,-1)
+      }else{
+        this.newFormObject.settleDays = this.dayList[0].slice(2,-1) +","+ this.dayList[1].slice(2,-1)
+      }
+     this.ruleForm.settleDays = this.newFormObject.settleDays
+     console.log(this.ruleForm.settleDays)
     },
     checkSettleType(val){
        $('.el-radio-group').find('.error-list').remove()
@@ -715,7 +814,7 @@ export default {
             console.log(error);
           } else {
             var result = JSON.parse(res.text);
-          
+          console.log(result)
             if (result.length == 0) {
               this.$message({
                 type: "error",
@@ -928,6 +1027,16 @@ export default {
               $('#licenseFeeRate'+index).find('.error-list').remove()
                   $('#licenseFeeRate'+index).addClass('is-error')
                   $('#licenseFeeRate'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入授权费率</div>')
+          }
+          if(!item.divisionPercent==''){
+            setTimeout(()=>{
+            $('#divisionPercent'+index).find('.error-list').remove()
+              $('#divisionPercent'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#divisionPercent'+index).find('.error-list').remove()
+                  $('#divisionPercent'+index).addClass('is-error')
+                  $('#divisionPercent'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入后期分成比例</div>')
           }
           if(!item.wType==''){
              if(!item.circleDays){
@@ -1165,6 +1274,21 @@ export default {
                   $('#licenseFeeRate'+index).find('.error-list').remove()
                   $('#licenseFeeRate'+index).addClass('is-error')
                   $('#licenseFeeRate'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入授权费率</div>')
+                }
+              })
+          }
+          if(!item.manageFee==''){
+            setTimeout(()=>{
+            $('#manageFee'+index).find('.error-list').remove()
+              $('#manageFee'+index).removeClass('is-error')
+            },200)
+          }else{
+              $('#manageFee'+index).find('input').blur(function(){
+                var val = $(this).val()
+                if(!val){
+                  $('#manageFee'+index).find('.error-list').remove()
+                  $('#manageFee'+index).addClass('is-error')
+                  $('#manageFee'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请输入运营管理费</div>')
                 }
               })
           }
