@@ -12,7 +12,7 @@
           <el-button class="active" @click="handleChangeType" myId='daily'>今日</el-button>
           <el-button @click="handleChangeType" myId='weekly'>本周</el-button>
           <el-button @click="handleChangeType" myId='monthly'>本月</el-button>
-          <el-button @click="handleChangeType" myId='all'>所有日期</el-button>
+          <!-- <el-button @click="handleChangeType" myId='all'>所有日期</el-button> -->
           <el-button @click='handleChangeType' myId='define' style="margin-right: 15px;">指定时间段</el-button>
         </div>
         <el-date-picker 

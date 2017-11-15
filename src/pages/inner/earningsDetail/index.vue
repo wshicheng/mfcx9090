@@ -22,7 +22,7 @@
           <el-button @click='getDailyDate' v-bind:class="{active: isDay}">今日</el-button>
           <el-button @click='getWeekDate' v-bind:class="{active: isWeek}">本周</el-button>
           <el-button @click='getMonthDate' v-bind:class="{active: isMonth}">本月</el-button>
-          <el-button @click='getAllDate' v-bind:class="{active: AllTime}">所有日期</el-button>
+          <!-- <el-button @click='getAllDate' v-bind:class="{active: AllTime}">所有日期</el-button> -->
           <el-button @click='handleChangeType' v-bind:class="{active: spceTime}">指定时间段</el-button>
         </div>
         <el-date-picker 
