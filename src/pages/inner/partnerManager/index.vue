@@ -1585,7 +1585,8 @@ export default {
           "content-type": "application/x-www-form-urlencoded"
         })
         .send({
-          cityPartnerId: row.cityPartnerId
+          cityPartnerId: row.cityPartnerId,
+          joinMode:row.joinMode
         })
         .end((error, res) => {
           if (error) {

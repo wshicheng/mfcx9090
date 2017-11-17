@@ -56,7 +56,7 @@ import operationLog from '../pages/inner/logManager/operationLog.vue'
 
 // [ ====== settlementManager ====== ]
 import settlementManager from '../pages/inner/settlementManage/index.vue'
-import settlementRecordDetail from '../pages/inner/settlementManage/settlementRecordDetail.vue'
+import settlementRecordDetail from '../pages/inner/settlementManage/settlementRecordDetail2.vue'
 
 
 export default [

@@ -38,7 +38,7 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配：<span class="num">固定 </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配：<span class="num">{{franchiseeDetail.bikeNum}} </span>辆)</td>
             </tr>
             <tr>
               <td>

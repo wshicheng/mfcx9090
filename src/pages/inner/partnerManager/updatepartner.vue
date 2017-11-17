@@ -164,9 +164,9 @@
                     { required: true, message: '请选择结算日', trigger: 'blur' },
                   ]"
               >
-                <el-checkbox-group v-model="list.settleDays"  @change="checkSettleDays">
-                  <el-checkbox label="每月1号" :is-checked="list.settleDays=='1'||list.settleDays=='1,16'||list.settleDays=='16,1'"></el-checkbox>
-                  <el-checkbox label="每月16号"></el-checkbox>
+                <el-checkbox-group v-model="list.dayList"  @change="checkSettleDays">
+                  <el-checkbox label="每月1号" value="1"></el-checkbox>
+                  <el-checkbox label="每月16号" value="16"></el-checkbox>
                 </el-checkbox-group>
         </el-form-item>
         <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
@@ -217,6 +217,7 @@
       </el-form>
 
         <el-upload
+          v-if="joinMode=='1'"
           class="avatar-uploader"
           :show-file-list="false"
           :with-credentials='true'
@@ -438,7 +439,7 @@ export default {
         row:'',
          recodeCityList:'',
       initNum:0,
-      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",manageFee:""}, 
+      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",manageFee:"",divisionPercent:""}, 
       isHaveSettleOrders: false,
       _cityList: [],
       areaShow: true,
@@ -448,6 +449,7 @@ export default {
       cityList: [],
       areaList: [],
       ruleForm: {
+        joinMode:this.joinMode,
         multiForm:[
          
         ],
@@ -467,7 +469,7 @@ export default {
         ],
         value: "",
         settleDays:"",
-        manageFee:""
+        manageFee:"",
       },
       rules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -524,7 +526,8 @@ export default {
       "content-type": "application/x-www-form-urlencoded"
     })
     .send({
-      unUsed: 1
+      unUsed: 1,
+      joinMode:this.radio
     })
     .end((error,res)=>{
       if(error){
@@ -541,13 +544,15 @@ export default {
     })
     // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
     this.isHaveSettleOrders = false; // true 不可编辑
+   
   },
   mounted: function() {
     console.log(this.$route.query.cityPartnerId)
      this.$refs['ruleForm'].resetFields();
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
      request
-        .post(host + "beepartner/admin/cityPartner/findCityPartner")
+        .post(host + "beepartner/admin/cityPartner/findCityPartner"
+        )
         .withCredentials()
         .set({
           "content-type": "application/x-www-form-urlencoded"
@@ -561,7 +566,8 @@ export default {
             }else{
                 var result = JSON.parse(res.text)
                 this.row = result.data[0]
-                console.log(this.row)
+                console.log("this.row",this.row)
+                 
           request
         .post(host + "beepartner/admin/withDraw/findWithdrawsCount")
         .withCredentials()
@@ -610,14 +616,18 @@ export default {
                   isEdit = newArr[i].isEdit;
                 }
               }
+   
               return Object.assign(
                 {},
                 item,
                 { wType: wType },
-                { isEdit: isEdit }
+                { isEdit: isEdit },
+                {dayList:item.dayList},
+                {settleDays:item.settleDays}
               );
             });
-
+            console.log("newMultForm",newMultForm)
+            console.log("this.row.areaList",this.row.areaList)
             this.ruleForm.multiForm = newMultForm;
             this.recodeCityList =  this.ruleForm.multiForm.length
             this.imageUrl = this.row.businessLicenseIconUrl;
@@ -633,6 +643,9 @@ export default {
             this.ruleForm.idCard = this.row.idCard;
             this.ruleForm.password = this.row.password;
             this.ruleForm.cityPartnerId = this.row.cityPartnerId;
+            console.log(this.ruleForm.multiForm)
+            
+            
           }
         }); 
                 // console.log(result.data[0].areaList)
@@ -655,17 +668,13 @@ export default {
     // this.filterProvinceMethod();
   },
   methods: {
+     // 复选框值改变
     checkSettleDays(){
-      if(this.dayList.length === 0){
-        this.newFormObject.settleDays = ""
-      }else if(this.dayList.length === 1){
-        this.newFormObject.settleDays = this.dayList[0].slice(2,-1)
-      }else{
-        this.newFormObject.settleDays = this.dayList[0].slice(2,-1) +","+ this.dayList[1].slice(2,-1)
-      }
-     this.ruleForm.settleDays = this.newFormObject.settleDays
-     console.log(this.ruleForm.settleDays)
+
+   
+
     },
+
     checkSettleType(val){
          $('.el-radio-group').find('.error-list').remove()
          $('.el-radio-group').find('.error-list-circle').remove()
@@ -854,7 +863,7 @@ export default {
         })
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.ruleForm.file === "" && this.imageUrl === null) {
+          if (this.ruleForm.file === "" && this.imageUrl === null && this.joinMode=="1") {
             this.$message({
               message: "请上传营业执照",
               type: "warning"
@@ -879,7 +888,8 @@ export default {
                     item,
                     { wType: wType },
                     { joinTime: joinTime },
-                    { firstDealDate: firstDealDate }
+                    { firstDealDate: firstDealDate },
+                    { settleDays: this.newFormObject.settleDays }
                 );
             });
              delete this.ruleForm.areaId;
@@ -905,6 +915,7 @@ export default {
          if(len1>0||len2>0||len3>0){
            return;
          }
+         console.log("点击更新时发送的数据",obj)
          this.loading8 = true;
           request
             .post(host + "beepartner/admin/cityPartner/updateCityPartner")
@@ -923,7 +934,7 @@ export default {
                 var code = JSON.parse(res.text).resultCode;
                 var message = JSON.parse(res.text).message;
                 console.log(res.text)
-                console.log(obj)
+                
                 if (code === 0) {
                 this.$router.push("/index/partnerManager");
                   this.$message({
@@ -992,6 +1003,7 @@ export default {
              if(item.cityItem){
             item.cityId = item.cityItem.value
             item.cityName = item.cityItem.label
+          
           }
            if(!item.firstDealDate==''){
             setTimeout(()=>{
