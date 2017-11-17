@@ -76,7 +76,7 @@
 
       <div id='right_hasbeen_distribution'>
         <h6>你选择的车辆:
-          <span>{{this.countAllotCars.length}}辆</span>
+          <span>共{{this.countAllotCars.length}}辆</span>
           <span @click="cleanCar">清空</span>
         </h6>
         <ul>
@@ -299,6 +299,7 @@ div.allot {
   height: 70px;
   width: 100%;
   line-height: 70px;
+  font-size:14px;
 }
 
 #right_hasbeen_distribution h6 span:nth-of-type(2) {
@@ -433,6 +434,7 @@ export default {
     }
   },
    created() {
+    
       var cityPartnerId = this.$route.params.id.split('&')[1]
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findCity')
@@ -460,11 +462,13 @@ export default {
             this.cityName = item.label
           }
         })
+         this.loadDate()
       }
     })
    
   },
   methods: {
+    // 通过加盟城市获取相关信息
       getRelationDataByCitId(){
        var cityPartnerId = this.$route.params.id.split('&')[1]
       request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
@@ -544,7 +548,7 @@ export default {
             var res = JSON.parse(res.text).data
             // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
             this.franchiseeDetail = res
-            
+            console.log('分配车辆详情数据',res)
             this.loading2 = true
               request.post(host + 'beepartner/admin/cityPartner/getNotAllotBikes')
                 .withCredentials()
@@ -887,7 +891,7 @@ export default {
   // },
   mounted() {
     document.title = '分配车辆'
-    //this.loadDate()
+    // this.loadDate()
   },
   watch: {
     'tempcar':{

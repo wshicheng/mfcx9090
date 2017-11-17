@@ -5,8 +5,8 @@
         <address class="joinArea joinMode">加盟模式:</address>
         <span id="joinMode">
         <span class="active"  @click="handleClick" mode="0">全部</span>
-        <span @click="handleClick" mode="1">企业</span>
-        <span @click="handleClick" mode="2">个人</span>
+        <span @click="handleClick" mode="1">独家</span>
+        <span @click="handleClick" mode="2">非独家</span>
         </span>
       </div>
       <div style="background-color:#faebd7;font-size:14px;padding-bottom:2px" class="partner_new">
@@ -74,7 +74,7 @@
           <template scope="scope">
             <!-- $router.push('/index/partnerDetail/' +  scope.row.id + '&' + scope.row.cityPartnerId) -->
                 <router-link style="color:rgb(118, 103, 233); text-decoration: none; cursor: pointer;" target='_blank' v-bind:to="{
-                  path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId + '&' + scope.row.joinMode
+                  path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId + '&' + scope.row.joinTarget
                 }">{{scope.row.cityPartnerId}}</router-link>   
           </template>
         </el-table-column>
@@ -1586,7 +1586,7 @@ export default {
         })
         .send({
           cityPartnerId: row.cityPartnerId,
-          joinMode:row.joinMode
+          joinTarget:row.joinTarget
         })
         .end((error, res) => {
           if (error) {

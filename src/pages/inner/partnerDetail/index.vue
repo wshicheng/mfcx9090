@@ -4,7 +4,7 @@
       <h3>加盟商详情</h3>
     </div>
     <!-- 企业加盟 -->
-    <el-row v-if="joinMode=='1'">
+    <el-row v-if="joinTarget=='1'">
       
       <el-col :span="16">
         <table>
@@ -38,20 +38,25 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配：<span class="num">{{franchiseeDetail.bikeNum}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配：<span class="num">{{franchiseeDetail.bikeNum}} </span>辆)</td>
             </tr>
             <tr>
               <td>
-                <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}}</td>
+                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}</td>
               <td>
-                <span class="prex">结算周期：</span>{{franchiseeDetail.circleDays}}
+                <span class="prex">结算周期：</span>{{relationDatas.circleDays}}
               </td>
             </tr>
              <tr>
               <td>
-                <span class="prex">授权费：</span>{{franchiseeDetail.licenseFeeRate}}</td>
+                <span class="prex">授权费：</span>{{relationDatas.licenseFeeRate}}</td>
               <td>
-                <span class="prex">首次结算日期：</span>{{franchiseeDetail.firstDealDate}}</td>
+                <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">加盟模式：</span>{{relationDatas.joinMode=='1'?'独家':'非独家'}}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -105,26 +110,30 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td>
+                <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td>
             </tr>
             <tr>
               <td>
-                <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}}
+                <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
+                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
               </td>
               <td>
-                <span class="prex">结算周期：</span>{{franchiseeDetail.settleDays}}
+                <span class="prex">结算周期：</span>{{relationDatas.settleDays.length<2?("每月"+ relationDatas.settleDays.split(".")[0]+"号、"+relationDatas.settleDays.split(".")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
               </td>
 
             </tr>
              <tr>
               <td>
-                <span class="prex">运营管理费：</span>{{franchiseeDetail.manageFee}}</td>
+                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车/天</td>
               <td>
-                <span class="prex">首次结算日期：</span>{{franchiseeDetail.firstDealDate}}</td>
+                <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
             <tr>
               <td>
-                <span class="prex">后期分成比例：</span>{{franchiseeDetail.divisionPercent}}</td>
+                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent}}</td>
+              <td>
+                <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
               
             </tr>
           </tbody>
@@ -207,7 +216,7 @@
         <el-tab-pane label="联系人" name="联系人" class="recodeTable">
           <ul class='contact_ul'>
             <li>
-              <span>姓名：</span>{{joinMode=='1'?franchiseeDetail.userName:franchiseeDetail.companyName}}</li>
+              <span>姓名：</span>{{franchiseeDetail.companyName}}</li>
             <li>
               <span>证件类别：</span>{{franchiseeDetail.cardType===0?'身份证':'护照'}}</li>
             <li>
@@ -233,11 +242,13 @@ import {isOwnEmpty} from '../../../util/util.js'
 export default {
   data: function () {
     return {
+      relationDatas:'',
       relationJoinTime:'',
+      relationFirstDealDate:'',
       relationSubscriptionNum:'',
       relationSubscriptionMoney:'',
       relationBikeNum:'',
-       cityName:'',
+      cityName:'',
       cityId:'',
       options:[],
       loading2: false,
@@ -252,7 +263,7 @@ export default {
       router: this.$route.query.carNum,
       car_infor_data: [],
       activeName: '车辆明细',
-      joinMode:this.$route.params.id.split('&')[2]
+      joinTarget:this.$route.params.id.split('&')[2]
     }
   },
   methods: {
@@ -308,11 +319,13 @@ export default {
           console.log(error)
         }else{
           var res = JSON.parse(res.text).data
+          console.log(res)
           if(isOwnEmpty(res)==false){
             this.relationBikeNum = res.bikeNum
             this.relationJoinTime  = res.joinTime
             this.relationSubscriptionMoney = res.subscriptionMoney
             this.relationSubscriptionNum = res.subscriptionNum
+            this.divisionPercent  = res.divisionPercent
           }else{
             this.relationBikeNum = ''
             this.relationJoinTime  = ''
@@ -349,6 +362,14 @@ export default {
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
           console.log(res)
+          for(var i = 0; i < res.areaList.length; i++){
+            if(res.areaList[i].cityId==this.cityId){
+              this.relationDatas = res.areaList[i]
+              this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
+              this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
+              
+            }
+          }
         }
       })
     },
@@ -533,6 +554,9 @@ export default {
       }else{
         var result = JSON.parse(res.text).data
         console.log(result)
+
+        
+
         this.options = result.map((item)=>{
           return {
             value:item.cityId,

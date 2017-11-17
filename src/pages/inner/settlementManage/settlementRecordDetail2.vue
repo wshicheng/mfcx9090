@@ -122,10 +122,10 @@
           <tr v-for="list of items" :key="list.id">
            <td class="dateTime">{{list.statisticId}}</td>
             <td class="userTotalPayment">
-              {{list.balanceAmountStr}}
+              {{new Number(list.balanceAmountStr).thousandFormat()}}
             </td>
-            <td class="activeCost">
-              返现消费
+            <td class="activeCost" style="text-align:center">
+              {{new Number(list.grantAmountStr).thousandFormat()}}
             </td>
            <td class="in">
               <!-- <div class="grid_title">经营收入</div> -->
@@ -184,7 +184,7 @@
               <td data-v-3b262524="" class="userTotalPayment">
                   用户总消费金额
               </td>
-              <td data-v-3b262524="" class="activeCost">
+              <td data-v-3b262524="" class="activeCost" style="text-align:center">
                   返现消费
               </td>
               <td data-v-3b262524="" class="in">
@@ -294,19 +294,19 @@
         </thead>
         <tbody>
           <tr v-for="list of items" :key="list.id">
-           <td class="dateTime">{{list.statisticId}}日期</td>
+           <td class="dateTime">{{list.statisticId}}</td>
             <td class="userTotalPayment">
-              {{list.balanceAmountStr}}用户总消费
+              {{new Number(list.balanceAmountStr).thousandFormat()}}
             </td>
-            <td class="activeCost">
-              返现消费
+            <td class="activeCost" style="text-align:center">
+              {{new Number(list.grantAmountStr).thousandFormat()}}
             </td>
            <td class="in">
               <!-- <div class="grid_title">经营收入</div> -->
               <div class="grid">
                 <!-- <span>{{list.statisticId}}</span> -->
-                <span>充值消费{{new Number(list.actualMoneyStr).thousandFormat()}}</span>
-                <span>扣款金额{{new Number(list.decultMoneyStr).thousandFormat()}}</span>
+                <span>{{new Number(list.actualMoneyStr).thousandFormat()}}</span>
+                <span>{{new Number(list.decultMoneyStr).thousandFormat()}}</span>
               </div>
             </td>
             <td class="out">
@@ -332,11 +332,11 @@
                  </div>
                  <div class="item auth">
 
-                   <!-- <div class="list subtitle">授权费</div> -->
+                   <!-- <div class="list subtitle">运营管理费</div> -->
                     <div class="list">
                       <div class="cell">{{new Number(list.bikeNum).thousandFormat()}}</div>
                       <div class="cell">{{list.manageFee}}</div>
-                      <div class="cell">支付金额{{new Number(list.linceFeePayAmt).thousandFormat()}}</div>
+                      <div class="cell">{{new Number(list.managePayAmtStr).thousandFormat()}}</div>
                     </div>
                  </div>
               </div>
@@ -358,7 +358,7 @@
               <td data-v-3b262524="" class="userTotalPayment">
                   用户总消费金额
               </td>
-              <td data-v-3b262524="" class="activeCost">
+              <td data-v-3b262524="" class="activeCost" style="text-align:center">
                   返现消费
               </td>
               <td data-v-3b262524="" class="in">
@@ -465,10 +465,10 @@
           <tr v-for="list of items" :key="list.id">
            <td class="dateTime">{{list.statisticId}}</td>
             <td class="userTotalPayment">
-              {{list.balanceAmountStr}}
+              {{new Number(list.balanceAmountStr).thousandFormat()}}
             </td>
-            <td class="activeCost">
-              返现消费
+            <td class="activeCost" style="text-align:center">
+              {{new Number(list.grantAmountStr).thousandFormat()}}
             </td>
            <td class="in">
               <!-- <div class="grid_title">经营收入</div> -->
@@ -503,7 +503,7 @@
               </div>
             </td>
             <td class="matchRate">
-              分成比例
+              {{list.divisionPercentStr}}
             </td>
             <td class="count">
               <!-- <div class="grid_title">最终收益</div> -->
@@ -522,7 +522,7 @@
             <td data-v-3b262524="" class="userTotalPayment">
                 用户总消费金额
             </td>
-            <td data-v-3b262524="" class="activeCost">
+            <td data-v-3b262524="" class="activeCost" style="text-align:center">
                 返现消费
             </td>
             <td data-v-3b262524="" class="in">
@@ -588,7 +588,7 @@ import {thousandFormat} from '../../../util/util.js'
     },
     data(){
       return {
-        type:2,
+        type:"1",
         list: [],
         state:'',
         actProfit:'',
@@ -601,6 +601,7 @@ import {thousandFormat} from '../../../util/util.js'
         month:'',
         wType: '',
         cityId: '',
+        cityPartnerId:"",
         items:[
         ]
       }
@@ -610,6 +611,7 @@ import {thousandFormat} from '../../../util/util.js'
         this.month = this.$route.query.month
         this.wType = this.$route.query.wType
         this.cityId = this.$route.query.cityId
+        this.cityPartnerId = this.$route.query.id
        request
       .post(host + 'beepartner/franchisee/withDraw/getWithDrawRecordDetail')
       .withCredentials()
@@ -619,7 +621,8 @@ import {thousandFormat} from '../../../util/util.js'
       .send({
         applyTimeStr:this.month,
         wType:this.wType,
-        cityId:this.cityId
+        cityId:this.cityId,
+        cityPartnerId:this.cityPartnerId
       })
       .end((err, res) => {
         if (err) {
@@ -648,6 +651,8 @@ import {thousandFormat} from '../../../util/util.js'
             this.totalProfit =  JSON.parse(res.text).withDrawRecord.totalProfit
             this.actProfit = JSON.parse(res.text).withDrawRecord.actProfit
             this.actProfitStr = JSON.parse(res.text).withDrawRecord.totalProfit
+            // 结算单类型
+            // this.type = JSON.parse(res.text).withDrawRecord.tbType
           }
         }
       })
