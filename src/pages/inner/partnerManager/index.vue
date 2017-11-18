@@ -906,7 +906,7 @@ export default {
                   })
                   .send({
                     joinMode:$("#joinMode span.active").attr("mode"),
-                    cityCode:$("#joinArea span.active").attr("myId"),
+                    cityId:$("#joinArea span.active").attr("myId"),
                     name: this.name.trim(),
                     phone: this.phone.trim(),
                     startTime:
@@ -1183,7 +1183,10 @@ export default {
           name: that.name,
           phone: that.phone,
           startTime: that.startTime,
-          endTime: that.endTime
+          endTime: that.endTime,
+          joinMode:$("#joinMode span.active").attr("mode"),
+          cityId:$("#joinArea span.active").attr("myId"),
+
         })
         .end((err, res) => {
           if (err) {
@@ -1395,7 +1398,7 @@ export default {
           })
           .send({
             joinMode:$("#joinMode span.active").attr("mode"),
-            cityCode:$("#joinArea span.active").attr("myId"),
+            cityId:$("#joinArea span.active").attr("myId"),
             name: this.name.trim(),
             phone: this.phone.trim(),
             startTime:
@@ -1450,6 +1453,8 @@ export default {
           "content-type": "application/x-www-form-urlencoded"
         })
         .send({
+          joinMode:$("#joinMode span.active").attr("mode"),
+          cityId:$("#joinArea span.active").attr("myId"),
           currentPage: val,
           name: this.isSearch === false ? "" : this.name.trim(),
           phone: this.isSearch === false ? "" : this.phone.trim(),
@@ -1575,7 +1580,7 @@ export default {
     },
     openEdit(row, index) {
       console.log(row)
-     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId,joinMode:row.joinMode} });
+     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId,joinTarget:row.joinTarget} });
      console.log(row)
       return;
       request
