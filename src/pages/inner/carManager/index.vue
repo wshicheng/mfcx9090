@@ -9,7 +9,7 @@
                 <el-form :model="form">
                   <el-row>
                     <el-row class="selectPlace_carManage">
-                      <div class="citys" style=" margin-left: 69px;">
+                      <div class="citys" style=" margin-left: 69px;color:#555">
                         <address class="joinArea">加盟区域</address>
                         <span @click="handleClick" myId='0' class="active">全部地区</span>
                         <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
@@ -732,10 +732,11 @@ export default {
     /* border: 1px solid #e7ecf1; */
   }
 
-  /*div.carManager div.queryCarInfo {
-    background: #f3f0f0;
-    padding: 10px 10px 0 10px;
-  }*/
+  div.carManager div.queryCarInfo {
+    /* background: #f3f0f0;
+    padding: 10px 10px 0 10px; */
+    margin-top:5px;
+  }
 
   div.carManager div.queryCarInfo div.el-form-item {
     margin-bottom: 10px;

@@ -36,10 +36,9 @@
               <tr>
                 <td class="lang">
                   <span class="prex">所属区域:</span>{{bikeInfo.cityName}}</td>
-                <!-- <td>
-                  <span class="prex">车辆位置:</span>{{bikeInfo.location}}</td> -->
-                <td class="lang">
-                  <span class="prex">所属加盟商:</span>{{bikeInfo.companyName}}</td>
+                <td>
+                  <span class="prex">车辆位置:</span>{{bikeInfo.location}}</td>
+          
               </tr>
               <tr>
               </tr>
@@ -73,7 +72,7 @@
               <el-table-column label="骑行时间（分钟）" prop="rideTime" min-width='80'>
 
               </el-table-column>
-              <el-table-column label="骑行里程(米)" prop="rideMileage" min-width='60'>
+              <el-table-column label="骑行里程(米)" prop="rideMileage" min-width='70'>
 
               </el-table-column>
               <el-table-column label="订单费用" prop="actualAmount" min-width='60'>
@@ -201,7 +200,7 @@ export default {
         generationsName: '',
         model: '',
         location: '',
-        alliance: ''
+        alliance: '',
       }
     }
   },
@@ -233,6 +232,7 @@ export default {
           } else {
             this.pageShow = false
           }
+          console.log(this.bikeInfo)
         }
       })
     // this.getBikeEarnings(1)

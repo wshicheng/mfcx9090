@@ -2,7 +2,7 @@
   <div style="margin-right:20px;">
     <div style="background-color:#faebd7">
       <div style="background-color:#faebd7;font-size:14px" class="partner_new">
-        <address class="joinArea joinMode">加盟模式:</address>
+        <address class="joinArea joinMode">加盟模式</address>
         <span id="joinMode">
         <span class="active"  @click="handleClick" mode="0">全部</span>
         <span @click="handleClick" mode="1">独家</span>
@@ -10,27 +10,27 @@
         </span>
       </div>
       <div style="background-color:#faebd7;font-size:14px;padding-bottom:2px" class="partner_new">
-        <address class="joinArea">加盟区域:</address>
+        <address class="joinArea">加盟区域</address>
         <span id="joinArea">
           <span  myId="0" class="active"  @click="handleClick">全部地区</span>
           <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in allcityList">{{item.cityName}}</span>
         </span>
       </div>
       <div style="padding-top:20px">
-        <div id="partner_header"  style="background-color:#faebd7;">
+        <div id="partner_header"  style="background-color:#faebd7;font-size:14px;margin-left:13px;margin-right:-20px">
           <label>
-            <span style="color:#555">关键字:</span>
+            <span style="color:#555">关键字</span>
               <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1">
           </label>
           <label>
-            <span style="color:#555;margin-left:20px;">联系方式:</span>
+            <span style="color:#555;margin-left:20px;">联系方式</span>
               <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
           </label>
         </div>
 
-        <div id="partner_data_select"  style="background-color:#faebd7">
+        <div id="partner_data_select"  style="background-color:#faebd7;font-size:14px">
           <label>
-            <span style="color:#555;margin-right:10px">加盟日期:</span>
+            <span style="color:#555;margin-right:10px">加盟日期</span>
             <el-date-picker
             v-model="startTime"
             type="date"
@@ -38,7 +38,7 @@
           </el-date-picker>
           </label>
           <label>
-            <span style="color:#555">至</span>
+            <span style="color:#555;margin:0 10px">至</span>
             <el-date-picker
             v-model="endTime"
             type="date"
@@ -298,7 +298,7 @@
 address.joinArea {
     font-style: normal;
     display: inline;
-    font-size: 16px;
+    font-size: 14px;
     margin-left:20px;
     margin-right:10px;
     float:left;

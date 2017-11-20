@@ -485,7 +485,7 @@ export default {
           console.log(error)
         }else{
           var res = JSON.parse(res.text).data
-          if(isOwnEmpty(res)==false){
+          if(!isOwnEmpty(res)){
             this.relationBikeNum = res.bikeNum
             this.relationSubscriptionNum = res.subscriptionNum
           }else{
@@ -548,7 +548,9 @@ export default {
             var res = JSON.parse(res.text).data
             // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
             this.franchiseeDetail = res
-            console.log('分配车辆详情数据',res)
+            
+            console.log('加盟商详情数据',res)
+
             this.loading2 = true
               request.post(host + 'beepartner/admin/cityPartner/getNotAllotBikes')
                 .withCredentials()

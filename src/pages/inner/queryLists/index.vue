@@ -33,7 +33,7 @@
         <el-table-column
           prop="totalBill"
           label="订单总额"
-          min-width="100">
+          min-width="90">
              <template scope="scope">
             {{new Number(scope.row.totalBill).thousandFormat()}}
           </template>
@@ -48,7 +48,7 @@
         <el-table-column
           prop="grantAmount"
           label="赠送金额支付(元)"
-          min-width="60"
+          min-width="100"
         >
             <template scope="scope">
             {{new Number(scope.row.grantAmount).thousandFormat()}}

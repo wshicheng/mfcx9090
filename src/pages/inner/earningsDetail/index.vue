@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column
           prop="placeOrderTime"
-          min-width="110"
+          min-width="90"
           label="订单结束时间">
           
         </el-table-column>

@@ -38,7 +38,7 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配：<span class="num">{{franchiseeDetail.bikeNum}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配：<span class="num">{{relationBikeNum}} </span>辆)</td>
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
@@ -49,7 +49,7 @@
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">授权费：</span>{{relationDatas.licenseFeeRate}}</td>
+                <span class="prex">授权费率：</span>{{relationDatas.licenseFeeRate+"%"}}</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
@@ -64,7 +64,7 @@
               <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
             </td>
             <td>
-              <span class="prex">结算周期：</span>{{relationDatas.settleDays.length<2?("每月"+ relationDatas.settleDays.split(".")[0]+"号、"+relationDatas.settleDays.split(".")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
+              <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>1?("每月"+ relationDatas.settleDays.split(".")[0]+"号、"+relationDatas.settleDays.split(".")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
             </td>
 
           </tr>
@@ -76,7 +76,7 @@
             </tr>
             <tr v-if="relationDatas.joinMode=='2'">
               <td>
-                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent}}</td>
+                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent + '%'}}</td>
               <td>
                 <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
               
@@ -87,7 +87,7 @@
       <el-col :span="6" class="battery">
         <ul>
           <li>
-            <img :src="imgUrl" alt="img">
+            <img :src="imgUrl" alt=" ">
           </li>
         </ul>
       </el-col>
@@ -134,7 +134,7 @@
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
                 <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配： <span class="num">{{relationBikeNum}}</span>辆)</td>
             </tr>
             <tr>
               <td>
@@ -142,7 +142,7 @@
                 <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
               </td>
               <td>
-                <span class="prex">结算周期：</span>{{relationDatas.settleDays.length<2?("每月"+ relationDatas.settleDays.split(".")[0]+"号、"+relationDatas.settleDays.split(".")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
+                <span class="prex">结算周期：</span>{{relationDatas.settleDays.length > 2 ? ("每月" + relationDatas.settleDays.split(",")[0] + "号、" + relationDatas.settleDays.split(",")[1] + "号"):("每月"+ relationDatas.settleDays + "号")}}
               </td>
 
             </tr>
@@ -154,7 +154,7 @@
             </tr>
             <tr>
               <td>
-                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent}}</td>
+                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent + '%'}}</td>
               <td>
                 <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
               
@@ -217,7 +217,7 @@
           </el-tab-pane> -->
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
           <div class="total">
-            <span>累计已结算：{{franchiseeDetail.alreadyWidthDrawTimes}}次</span>
+            <span>累计已结算：{{franchiseeDetail.alreadyWidthDrawTimes}} 次</span>
             <span>累计获得收益：{{franchiseeDetail.alreadyWithDrawMoney}} 元</span>
           </div>
           <el-table :data="drawalData" style="width: 100%">
@@ -342,9 +342,11 @@ export default {
           console.log(error)
         }else{
           var res = JSON.parse(res.text).data
-          console.log(res)
-          if(isOwnEmpty(res)==false){
+          console.log("queryBikeNum",res)
+          if(!isOwnEmpty(res)){
+            console.log(11111111111111111111111)
             this.relationBikeNum = res.bikeNum
+            console.log("this.relationBikeNum",this.relationBikeNum)
             this.relationJoinTime  = res.joinTime
             this.relationSubscriptionMoney = res.subscriptionMoney
             this.relationSubscriptionNum = res.subscriptionNum
@@ -384,13 +386,13 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
-          console.log(res)
+          console.log("this.franchiseeDetail",res)
           for(var i = 0; i < res.areaList.length; i++){
             if(res.areaList[i].cityId==this.cityId){
               this.relationDatas = res.areaList[i]
               this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
               this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
-              
+              console.log("this.relationDatas",this.relationDatas)
             }
           }
         }
@@ -630,14 +632,16 @@ export default {
   margin-right:10px;
 }
 .total {
-  background:rgb(250,235,215);
-  height:30px;
+  width: 100%;
+  height: 40px;
+  background: #fcfcd3;
+  margin-bottom: 15px;
   padding-left:15px;
   font-size:14px;
   color:#555;
 }
 .total span {
-  line-height:30px;
+  line-height:40px;
   margin-right:60px;
 }
 div.carUseDetail {
@@ -646,10 +650,13 @@ div.carUseDetail {
   border: 1px solid #e7ecf1;
   width: 1000px;
 }
-
+.record {
+ margin-bottom:15px;
+}
 div.carUseDetail table {
   border-collapse: collapse;
   width: 100%;
+  
 }
 
 div.carUseDetail table tr td {

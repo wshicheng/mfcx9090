@@ -49,12 +49,7 @@
 
             <!-- 加盟与结算信息部分 -->
   
-            <h1 class="form_table_h1">加盟与结算信息</h1>
-            
-            
-
-            <!-- 独家时显示 -->
-           
+              <h1 class="form_table_h1">加盟与结算信息</h1>
               <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
                 <div class="menuIcon">
                   <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
@@ -64,13 +59,18 @@
                   :rules="[
                       { required: true, message: '请选择加盟模式', trigger: 'blur' },
                     ]"
+                  :id="'joinMode'+index"
                   >
-                  <el-radio-group v-model="list.joinMode" @change="checkJoinMode" id="">
+                  
+                  <span v-show="(index+1)<=recodeCityList">{{list.joinMode=="1"?'独家':'非独家'}}</span>
+
+                  <el-radio-group v-model="list.joinMode" @change="checkJoinMode" v-show="(index+1)>recodeCityList">
                     <el-radio label="1" :disabled="joinTarget=='2'" value="1">独家</el-radio>
                     <el-radio label="2" value="2">非独家</el-radio>
                   </el-radio-group>
                   <span style="font-size:12px;color:#ccc;display:block;line-height:1.5">加盟模式是独家时，一个地区只允许一个企业加盟；非独家时，一个地区允许多个个人(或企业)加盟</span>
                 </el-form-item>
+                <!-- 独家 -->
                 <div v-if="list.joinMode=='1'">
                   <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
 
@@ -141,6 +141,7 @@
                   <h1 class="form_table_h2">生成结算单后，此日期不允许修改</h1>
                 </div>
 
+              <!-- 非独家 -->
                 <div v-if="list.joinMode=='2'|| joinTarget=='2'">
                   <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
 
@@ -233,8 +234,11 @@
                 <el-input v-model="ruleForm.accountName" placeholder='请输入银行户名'></el-input>
             </el-form-item>
             <h1 class="form_table_h1">联系人信息</h1> 
-            <el-form-item label="姓名" prop="userName">
+            <el-form-item label="姓名" prop="userName" v-if="joinTarget=='1'">
               <el-input v-model="ruleForm.userName" placeholder='请输入姓名'></el-input>
+            </el-form-item>
+            <el-form-item label="姓名" prop="companyName" v-if="joinTarget=='2'">
+              <el-input v-model="ruleForm.companyName" placeholder='请输入姓名'></el-input>
             </el-form-item>
             <el-form-item label="证件类别">
               <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
@@ -493,10 +497,10 @@ export default {
     };
     return {
       joinTarget:this.$route.query.joinTarget,
-        row:'',
-         recodeCityList:'',
+      row:'',
+      recodeCityList:'',
       initNum:0,
-      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",manageFee:"",divisionPercent:"",joinMode:""}, 
+      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",dayList:[],manageFee:"",divisionPercent:"",joinMode:""}, 
       isHaveSettleOrders: false,
       _cityList: [],
       areaShow: true,
@@ -610,6 +614,8 @@ export default {
     console.log(this.$route.query.cityPartnerId)
      this.$refs['ruleForm'].resetFields();
    // var newFormObject =  {id:this.initNum++,joinTime:'',subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:'',customTime:''}
+   
+   // 查询可添加的加盟城市
      request
         .post(host + "beepartner/admin/cityPartner/findCityPartner"
         )
@@ -643,7 +649,8 @@ export default {
           } else {
             this.checkLogin(res);
             var newArr = [];
-            // console.log("settle", res)
+
+            console.log("findWithdrawsCount", res)
             var list = JSON.parse(res.text).data;
             var arr = [];
             list.map(item => {
@@ -663,7 +670,7 @@ export default {
             newArr = arr;
             this.dialogVisible = true;
             var newMultForm = this.row.areaList.map(item => {
-              var wType, joinTime, firstDealDate, isEdit;
+              var wType, joinTime, firstDealDate, isEdit,dayList;
               if (item.wType == 0) {
                 wType = "自然月";
               } else if (item.wType == 1) {
@@ -676,15 +683,14 @@ export default {
                   isEdit = newArr[i].isEdit;
                 }
               }
-   
+              dayList = item.settleDays.length > 2?(item.settleDays.split(",")):(item.settleDays.split(" "))
               return Object.assign(
                 {},
                 item,
                 { wType: wType },
                 { isEdit: isEdit },
-                {dayList:item.dayList},
-                {settleDays:item.settleDays},
-
+                {dayList: dayList},
+                {settleDays:item.settleDays}
               );
             });
             console.log("newMultForm",newMultForm)
@@ -705,14 +711,18 @@ export default {
             this.ruleForm.password = this.row.password;
             this.ruleForm.cityPartnerId = this.row.cityPartnerId;
             this.ruleForm.joinTarget = this.row.joinTarget;
-            this.ruleForm.isChecked = this.row.isChecked;
             this.ruleForm.alipayAccount = this.row.alipayAccount;
             this.ruleForm.settleBank = this.row.settleBank;
             this.ruleForm.bankAccount = this.row.bankAccount;
             this.ruleForm.accountName = this.row.accountName;
             this.ruleForm.userId = this.row.userId;
             this.ruleForm.password = this.row.password;
-            console.log(this.ruleForm.multiForm)
+            
+            // 判断是否同时添加联系人平台账号
+            // 但是row.password与row.userName均为空
+            this.ruleForm.isChecked = this.row.password ? true:false
+            
+            console.log(this.ruleForm)
           }
         }); 
                 // console.log(result.data[0].areaList)
@@ -736,9 +746,9 @@ export default {
   },
   methods: {
      // 非独家时改变结算日
-    checkSettleDays(){
+    checkSettleDays(val){
 
-   
+      console.log("点击切换结算日",val)
 
     },
     // 改变加盟模式
@@ -764,7 +774,11 @@ export default {
     },
     addMutiCity(){
       // 点击加号
-
+       if(this.joinTarget=='1'){
+       this.newFormObject.joinMode='1'
+      }else{
+        this.newFormObject.joinMode='2'
+      }
        request
         .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
         .withCredentials()
@@ -955,6 +969,18 @@ export default {
                 }
                 joinTime = moment(item.joinTime).format("YYYY-MM-DD");
                 firstDealDate = moment(item.firstDealDate).format("YYYY-MM-DD");
+
+              // 非独家结算日
+              if(item.dayList.length === 0){
+                item.settleDays = ""
+              }else if(item.dayList.length === 1){
+                item.settleDays = item.dayList[0]
+                // item.settleDays = item.dayList[0].slice(2,-1)
+              }else{
+                item.settleDays = item.dayList[0] +","+ item.dayList[1]
+                // item.settleDays = item.dayList[0].slice(2,-1) +","+ item.dayList[1].slice(2,-1)
+              }
+
                  delete item.cityItem;
                 return Object.assign(
                      {},
@@ -962,7 +988,7 @@ export default {
                     { wType: wType },
                     { joinTime: joinTime },
                     { firstDealDate: firstDealDate },
-                    { settleDays: this.newFormObject.settleDays }
+                    { settleDays: item.settleDays }
                 );
             });
              delete this.ruleForm.areaId;

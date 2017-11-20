@@ -32,12 +32,12 @@
                 <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId}}"> {{scope.row.applyTimeStr}}</router-link>
               </template>
             </el-table-column>
-            <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="200">
+            <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
                 <template scope="scope">
                   {{new Number(scope.row.applyMoney).thousandFormat()}}
                 </template>
             </el-table-column>
-            <el-table-column prop="cityName" label="加盟区域" min-width="120">
+            <el-table-column prop="cityName" label="加盟区域" min-width="160">
               <template scope="scope">
                   {{scope.row.cityName}}
               </template>
@@ -185,6 +185,7 @@ export default {
           } else {
             this.checkLogin(res)
             var data = JSON.parse(res.text).data
+            console.log("findWithDraw",data)
             this.totalItems = Number(JSON.parse(res.text).totalItems)
             var totalPage = Number(JSON.parse(res.text).totalPage)
             if (totalPage > 1) {
