@@ -29,7 +29,7 @@
                 style="width: 100% font-size:13px; color: #6c6c6c;">
             <el-table-column prop="applyTimeStr" label="结算周期" min-width="200">
                <template scope="scope">
-                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId}}"> {{scope.row.applyTimeStr}}</router-link>
+                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId,cityName:scope.row.cityName}}"> {{scope.row.applyTimeStr}}</router-link>
               </template>
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
@@ -68,6 +68,7 @@
                 </a>
                 <!--dialog 弹窗开始-->
                  <el-dialog id="settle_input" title="结算确认" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
+                    <span id="tips">*当财务给加盟商线下打款后,才可以点击结算按钮，更改结算状态</span>
                     <el-form :model="editAccount">
                       <el-form-item label="结算周期:" :label-width="formLabelWidth" style="width: 300px;">
                         <el-input v-model="editAccount.applyTimeStr" :readonly="true" style="border:none;" auto-complete="off"></el-input>
@@ -75,7 +76,7 @@
                       <el-form-item label="加盟商编号:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
                         <el-input v-model="editAccount.cityPartnerId" style="border:none;"  :readonly="true"></el-input>
                       </el-form-item>
-                      <el-form-item label="加盟企业名称:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
+                      <el-form-item id="com" label="加盟企业名称/个人姓名:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
                         <el-input v-model="editAccount.companyName" style="border:none;"  :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="加盟地区:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
@@ -398,7 +399,13 @@ export default {
 }
 </script>
 <style scoped>
-
+#tips {
+   margin-top: -70px;
+    position: absolute;
+    font-size: 12px;
+    color: #ccc;
+    margin-left: 10px;
+}
 div.settlementManager_head1 {
     padding: 20px 10px 5px 10px;
     background: #faebd7;

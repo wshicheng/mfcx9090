@@ -53,7 +53,7 @@
     
     <div class="table">
       <h3>
-        蜜蜂出行（无为县）周期费用结算单
+        蜜蜂出行({{$route.query.cityName}})周期费用结算单
       </h3>
       <div class="unit"><span>单位：元</span></div>
       <table v-show="type==1">
@@ -585,7 +585,7 @@ import {thousandFormat} from '../../../util/util.js'
     data(){
       return {
         sumData:"",
-        type:"3",
+        type:1,
         list: [],
         state:'',
         actProfit:'',
@@ -651,7 +651,7 @@ import {thousandFormat} from '../../../util/util.js'
             // 表格最后总计部分
             this.sumData = JSON.parse(res.text).withDrawRecord
             // 结算单类型
-            // this.type = JSON.parse(res.text).withDrawRecord.tbType
+            this.type = JSON.parse(res.text).withDrawRecord.tbType
           }
         }
       })

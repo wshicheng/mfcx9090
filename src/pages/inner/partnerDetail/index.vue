@@ -220,7 +220,7 @@
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
           <div class="total">
             <span>累计已结算：{{franchiseeDetail.alreadyWidthDrawTimes}} 次</span>
-            <span>累计获得收益：{{franchiseeDetail.alreadyWithDrawMoney}} 元</span>
+            <span>累计获得收益：{{franchiseeDetail.alreadyWidthDrawMoney}} 元</span>
           </div>
           <el-table :data="drawalData" style="width: 100%">
             <el-table-column prop="month" label="结算周期">
@@ -251,7 +251,7 @@
             <li>
               <span>邮箱：</span>{{franchiseeDetail.email}}</li>
             <li>
-              <span>用户名：</span>{{franchiseeDetail.userName}}</li>
+              <span>用户名：</span>{{franchiseeDetail.userId}}</li>
           </ul>
         </el-tab-pane>
       </el-tabs>
@@ -650,7 +650,7 @@ div.carUseDetail {
   background: #fff;
   margin: 0 auto;
   border: 1px solid #e7ecf1;
-  width: 1000px;
+  width: 1200px;
 }
 .record {
  margin-bottom:15px;

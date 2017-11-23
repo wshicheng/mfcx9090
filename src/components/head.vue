@@ -88,12 +88,12 @@ img.headImg {
     border-radius: 50%;
     float: left;
     margin-right: 10px;
-    margin-top: 15px;
+    margin-top: 17px;
     display: inline-block;
 }
 header {
     height: 65px;
-    /* line-height: 65px; */
+    line-height: 65px;
     background: #4d4d4d;
     border-color: #e9ecf3;
     color: #fff;
@@ -143,7 +143,6 @@ div.admin span.username {
     font-size: 14px;
     margin-right: 25px;
     display:inline-block;
-    margin-top:20px;
 }
 
 div.admin i.iconfont {

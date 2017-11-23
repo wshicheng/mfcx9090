@@ -143,10 +143,14 @@
               <el-radio label="自然月" value='0'></el-radio>
               <el-radio label="自然周(周一到周日)" value='1'></el-radio>
               <el-radio label="自定义" value='2'></el-radio>
-              <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
-                v-model="list.circleDays"
-                placeholder="请输入正整数（天）">
-              </el-input>  
+              <div v-show="list.wType=='自定义'" style="display:inline">
+                <el-input :id="'circleDays'+ index" class="customInput"  
+                  v-model="list.circleDays"
+                  placeholder="请输入正整数（天）"
+                  style="display:inline-block;width:143px;">
+                </el-input>
+                <span>天</span>
+              </div>
             </el-radio-group>
           </el-form-item>
           <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>

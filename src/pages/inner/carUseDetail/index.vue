@@ -494,7 +494,7 @@ div.carUseDetail {
   background: #fff;
   margin: 0 auto;
   border: 1px solid #e7ecf1;
-  width: 1000px;
+  width: 1200px;
 }
 
 div.carUseDetail table.info {

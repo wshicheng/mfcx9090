@@ -4,7 +4,7 @@
       <el-row>
         <el-col class="incomeTitle">
           <span class="title">今日营收
-            <!-- <small>每10分钟自动刷新数据</small> -->
+            <small>数据为订单的实际收益合计(排除地勤人员订单)</small>
           </span>
           <span class="detail_right" @click="$router.push({path:'/index/earningsDetail?type=0'})">&gt;&gt;</span>
         </el-col>
