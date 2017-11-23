@@ -2,17 +2,17 @@
   <div class="settlementManager">
         <div class="settlementManager_head1">
             <el-row class="selectPlace">
-                <div class="citys" style="margin-left: 80px;">
-                <address class="joinArea" style="margin-left: -57px;">加盟区域</address>
+                <div class="citys" style="margin-left: 80px;color:#555">
+                <address class="joinArea" style="margin-left: -57px;margin-right:10px">加盟区域</address>
                 <span @click="handleClick" myId='0' class="active">全部地区</span>
-                <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
+                <span @click="handleClick" :key='item.id' :myId='item.code' v-for="item in cityList">{{item.name}}</span>
                 </div>
             </el-row>
         </div>
         <div class="settlementManager_head2">
             <el-row class="selectPlace">
-                <div class="citys" style="margin-left: 67px;">
-                    <address class="joinArea" style="margin-left: -57px;">结算单状态</address>
+                <div class="citys" style="margin-left: 67px;color:#555">
+                    <address class="joinArea" style="margin-left: -57px;margin-right:10px">结算单状态</address>
                     <span :myStatus='0' @click="handleTypeClick">全部状态</span>
                     <span :myStatus='1' @click="handleTypeClick">待确认</span>
                     <span :myStatus='2' @click="handleTypeClick" class="active">待结算</span>
@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
                 <template scope="scope">
-                  {{new Number(scope.row.applyMoney).thousandFormat()}}
+                  {{scope.row.applyMoney}}
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="160">
@@ -43,9 +43,6 @@
               </template>
             </el-table-column>
             <el-table-column prop="companyName" label="所属加盟商" min-width="150">
-              <template scope="scope">
-                  {{scope.row.companyName}}
-              </template>
             </el-table-column>
             <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
               <template scope="scope">
@@ -88,7 +85,7 @@
                         <el-input v-model="editAccount.applyUserName" style="border:none;"  auto-complete="off" :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="结算金额:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
-                        <el-input  style="border:none;" :value="new Number(editAccount.applyMoney).thousandFormat()"  auto-complete="off" :readonly="true" ></el-input>
+                        <el-input  style="border:none;" :value="editAccount.applyMoney"  auto-complete="off" :readonly="true" ></el-input>
                       </el-form-item>
                       <el-form-item label="备注:" :label-width="formLabelWidth">
                         <el-input type="textarea" v-model="editAccount.description" style="width: 400px;  margin-top: -10px"></el-input>
@@ -253,7 +250,7 @@ export default {
     },
     getCityList () {
       request
-        .post(host + 'beepartner/admin/city/findCity')
+        .post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
@@ -264,7 +261,7 @@ export default {
             console.log('error:', error)
           } else {
             this.checkLogin(res)
-            this.cityList = JSON.parse(res.text).data
+            this.cityList = res.body
           }
         })
     },
@@ -404,12 +401,12 @@ export default {
 
 div.settlementManager_head1 {
     padding: 20px 10px 5px 10px;
-    background: #fff;
+    background: #faebd7;
 }
 
 div.settlementManager_head2 {
     padding: 5px 10px 20px 10px;
-    background: #fff;
+    background: #faebd7;
 }
 
 div.selectPlace address {

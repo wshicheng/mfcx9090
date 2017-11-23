@@ -23,7 +23,7 @@
             </tr>
             <tr>
                <td>
-                <span class="prex">加盟区域：</span>
+                <span class="prex" style="margin-right:0">加盟区域：</span>
                     <el-select v-model="cityId" placeholder="请选择">
                 <el-option
                   v-for="item in options"
@@ -38,13 +38,14 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配：<span class="num">{{relationBikeNum}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{relationBikeNum}} </span>辆)</td>
             </tr>
+            <!-- 独家 -->
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}</td>
+                <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}</td>
               <td>
-                <span class="prex">结算周期：</span>{{relationDatas.circleDays?relationDatas.circleDays:(relationDatas.wType=='0'?"每周":"每月")}}
+                <span class="prex">结算周期：</span>{{relationDatas.circleDays?relationDatas.circleDays+'天':(relationDatas.wType=='0'?"每周":"每月")}}
               </td>
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
@@ -58,19 +59,20 @@
                 <span class="prex">加盟模式：</span>{{relationDatas.joinMode=='1'?'独家':'非独家'}}
               </td>
             </tr>
+            <!-- 非独家 -->
             <tr v-if="relationDatas.joinMode=='2'">
             <td>
               <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
-              <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
+              <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}
             </td>
             <td>
-              <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>1?("每月"+ relationDatas.settleDays.split(".")[0]+"号、"+relationDatas.settleDays.split(".")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
+              <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>2?("每月"+ relationDatas.settleDays.split(",")[0]+"号、"+relationDatas.settleDays.split(",")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
             </td>
 
           </tr>
              <tr v-if="relationDatas.joinMode=='2'">
               <td>
-                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车/天</td>
+                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车.天</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
@@ -85,7 +87,7 @@
         </table>
       </el-col>
       <el-col :span="6" class="battery">
-        <ul>
+        <ul style="padding-left:0">
           <li>
             <img :src="imgUrl" alt=" ">
           </li>
@@ -102,23 +104,23 @@
               <td>
                 <span class="prex">加盟商编号：</span>{{franchiseeDetail.cityPartnerId}}</td>
               <td>
-                <span class="prex">姓名：</span>{{franchiseeDetail.companyName}}</td>
+                <span class="prex">姓名：</span>{{franchiseeDetail.conName}}</td>
             </tr>
             <tr>
               <td>
-                <span class="prex">证件类别：</span>{{franchiseeDetail.cardType=="1"?'护照':'身份证'}}</td>
+                <span class="prex">证件类别：</span>{{franchiseeDetail.conCardType=="1"?'护照':'身份证'}}</td>
               <td>
-                <span class="prex">证件号码：</span>{{franchiseeDetail.idCard}}</td>
+                <span class="prex">证件号码：</span>{{franchiseeDetail.conIdCard}}</td>
             </tr>
              <tr>
               <td>
-                <span class="prex">手机号：</span>{{franchiseeDetail.phone}}</td>
+                <span class="prex">手机号：</span>{{franchiseeDetail.conPhone}}</td>
               <td>
-                <span class="prex">邮箱：</span>{{franchiseeDetail.email}}</td>
+                <span class="prex">邮箱：</span>{{franchiseeDetail.conEmail}}</td>
             </tr>
             <tr>
                <td>
-                <span class="prex">加盟区域：</span>
+                <span class="prex" style="margin-right:0">加盟区域：</span>
                     <el-select v-model="cityId" placeholder="请选择">
                 <el-option
                   v-for="item in options"
@@ -134,12 +136,12 @@
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
                 <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配： <span class="num">{{relationBikeNum}}</span>辆)</td>
+                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配： <span class="num">{{relationBikeNum}}</span>辆)</td>
             </tr>
             <tr>
               <td>
                 <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
-                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
+                <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}
               </td>
               <td>
                 <span class="prex">结算周期：</span>{{relationDatas.settleDays.length > 2 ? ("每月" + relationDatas.settleDays.split(",")[0] + "号、" + relationDatas.settleDays.split(",")[1] + "号"):("每月"+ relationDatas.settleDays + "号")}}
@@ -225,7 +227,7 @@
             </el-table-column>
             <el-table-column prop="money" label="结算金额">
               <template scope="scope">
-                {{new Number(scope.row.money).thousandFormat()}}
+                {{scope.row.money}}
               </template>
             </el-table-column>
             <el-table-column prop="applyTimeS" label="申请时间">
@@ -239,7 +241,7 @@
         <el-tab-pane label="联系人" name="联系人" class="recodeTable">
           <ul class='contact_ul'>
             <li>
-              <span>姓名：</span>{{franchiseeDetail.companyName}}</li>
+              <span>姓名：</span>{{franchiseeDetail.userName}}</li>
             <li>
               <span>证件类别：</span>{{franchiseeDetail.cardType===0?'身份证':'护照'}}</li>
             <li>
@@ -248,8 +250,8 @@
               <span>手机号：</span>{{franchiseeDetail.phone}}</li>
             <li>
               <span>邮箱：</span>{{franchiseeDetail.email}}</li>
-            <!-- <li>
-              <span>用户名：</span>{{franchiseeDetail.userName}}</li> -->
+            <li>
+              <span>用户名：</span>{{franchiseeDetail.userName}}</li>
           </ul>
         </el-tab-pane>
       </el-tabs>
@@ -347,7 +349,7 @@ export default {
             console.log(11111111111111111111111)
             this.relationBikeNum = res.bikeNum
             console.log("this.relationBikeNum",this.relationBikeNum)
-            this.relationJoinTime  = res.joinTime
+            // this.relationJoinTime  = res.joinTime
             this.relationSubscriptionMoney = res.subscriptionMoney
             this.relationSubscriptionNum = res.subscriptionNum
             this.divisionPercent  = res.divisionPercent

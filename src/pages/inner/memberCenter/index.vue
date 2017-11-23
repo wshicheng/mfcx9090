@@ -170,7 +170,7 @@
  	/* homepage_select */
  	.homepage_select {
  		/*width: 100%;*/
- 		min-height: 681px;
+ 		/* min-height: 681px; */
 		border: 1px solid #e7ecf1;
  		padding: 2px 20px 0 20px;
  		background: #fff;

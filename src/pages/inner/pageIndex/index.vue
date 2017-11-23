@@ -107,7 +107,7 @@
   }
 
   div.statuAndData {
-    padding: 20px 15px 100% 15px;
+    padding: 20px 15px 15px 15px;
     background: #fff;
     margin-right: 20px;
     border-bottom: none;

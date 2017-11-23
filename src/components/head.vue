@@ -88,12 +88,12 @@ img.headImg {
     border-radius: 50%;
     float: left;
     margin-right: 10px;
-    margin-top: 18px;
+    margin-top: 15px;
     display: inline-block;
 }
 header {
     height: 65px;
-    line-height: 65px;
+    /* line-height: 65px; */
     background: #4d4d4d;
     border-color: #e9ecf3;
     color: #fff;
@@ -106,6 +106,7 @@ header h2 {
     display:block;
     float: left;
     padding-left: 20px;
+    margin-top:0;
 }
 
 header h2 img {
@@ -127,7 +128,7 @@ header h3>span {
     width: 40px;
     height: 20px;
     right: -50px;
-    top: 4px;
+    top: 10px;
     font-size: 12px;
 }
 
@@ -135,11 +136,14 @@ div.admin {
     float: right;
     float: right;
     margin-right: 28px;
+   
 }
 
 div.admin span.username {
     font-size: 14px;
     margin-right: 25px;
+    display:inline-block;
+    margin-top:20px;
 }
 
 div.admin i.iconfont {

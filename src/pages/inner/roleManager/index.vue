@@ -747,7 +747,7 @@ body {
 
 div.account {
   /* width: 100%; */
-  padding: 0 20px 800px 20px;
+  padding: 0 20px 20px 20px;
   background: #fff;
   margin-top: 20px;
   border: 1px solid #e7ecf1;
@@ -783,7 +783,7 @@ div.account>h1 button:hover {
 #am_search {
   width: 100%;
   height: 70px;
-  background: #fff;
+  background: #faebd7;
   border: 1px solid #e7ecf1;
 }
 

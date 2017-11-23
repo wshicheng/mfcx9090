@@ -1,7 +1,7 @@
 <template>
-  <div style="margin-right:20px;">
-    <div style="background-color:#faebd7">
-      <div style="background-color:#faebd7;font-size:14px" class="partner_new">
+  <div style="margin-right:20px;overflow:auto">
+    <div style="background-color:#faebd7;">
+      <div style="background-color:#faebd7;font-size:14px;color:#555" class="partner_new">
         <address class="joinArea joinMode">加盟模式</address>
         <span id="joinMode">
         <span class="active"  @click="handleClick" mode="0">全部</span>
@@ -9,14 +9,18 @@
         <span @click="handleClick" mode="2">非独家</span>
         </span>
       </div>
-      <div style="background-color:#faebd7;font-size:14px;padding-bottom:2px" class="partner_new">
-        <address class="joinArea">加盟区域</address>
-        <span id="joinArea">
-          <span  myId="0" class="active"  @click="handleClick">全部地区</span>
-          <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in allcityList">{{item.cityName}}</span>
-        </span>
+      <div style="background-color:#faebd7;font-size:14px;padding-bottom:10px;color:#555" class="partner_new">
+        <address class="joinArea" style="margin-top:5px;margin-right:15px">加盟区域</address>
+        <div id="joinArea">
+          <span myId="0" class="active" @click="handleClick">
+              全部地区
+          </span>
+          <span @click="handleClick" :key='item.id' :myId='item.code' v-for="item in allcityList">
+            {{item.name}}
+          </span>
+        </div>
       </div>
-      <div style="padding-top:20px">
+      <div style="padding-top:10px">
         <div id="partner_header"  style="background-color:#faebd7;font-size:14px;margin-left:13px;margin-right:-20px">
           <label>
             <span style="color:#555">关键字</span>
@@ -79,9 +83,11 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="companyName"
           label="企业名称/个人姓名"
           min-width="100">
+          <template scope="scope">
+            {{scope.row.joinTarget=='1'?scope.row.companyName:scope.row.conName}}
+          </template>
         </el-table-column>
         <el-table-column
           prop="cityList"
@@ -290,10 +296,11 @@
 
 <style scoped>
 .partner_new {
-  padding-top:25px;
+  padding-top:21px;
 }
 .partner_new span {
   padding:5px;
+  cursor:pointer;
 }
 address.joinArea {
     font-style: normal;
@@ -302,6 +309,10 @@ address.joinArea {
     margin-left:20px;
     margin-right:10px;
     float:left;
+    height:40px;
+}
+#joinArea span {
+  line-height:30px;
 }
 span.active {
     border: 1px solid orange;
@@ -416,7 +427,7 @@ div.menuIcon i.icon-jian {
 
 
 #partner_table {
-  padding: 0 30px 800px 30px;
+  padding: 0 30px 30px 30px;
   background: #fff;
   border: 1px solid #e7ecf1;
   /* border-bottom: none; */
@@ -716,6 +727,7 @@ export default {
       startTime: "",
       endTime: "",
       currentPage3: 1,
+      currentPage: this.$route.query.currentPage||1,
       totalItems: 1,
       pageShow: false,
       tableData: [],
@@ -762,7 +774,8 @@ export default {
         userId: "",
         password: "",
         file: "",
-        cityPartnerId: ""
+        cityPartnerId: "",
+        cnName:"",
       },
       editRules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -952,7 +965,7 @@ export default {
       },
         getCityList () {
       request
-        .post(host + 'beepartner/admin/city/findCity')
+        .post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
@@ -962,8 +975,9 @@ export default {
           if (error) {
             console.log('error:', error)
           } else {
-            this.allcityList = JSON.parse(res.text).data
+            this.allcityList = res.body
             // this.checkLogin(res)
+            console.log("所有城市",res)
           }
         })
     },
@@ -1186,6 +1200,7 @@ export default {
           endTime: that.endTime,
           joinMode:$("#joinMode span.active").attr("mode"),
           cityId:$("#joinArea span.active").attr("myId"),
+          currentPage:this.currentPage
 
         })
         .end((err, res) => {
@@ -1214,6 +1229,7 @@ export default {
                 that.$store.commit("keepParnterAccount", item);
               });
               this.tableData = that.$store.state.users.keepParnterAccount;
+              console.log("this.tableData",this.tableData)
               if (pageNumber > 1) {
                 that.pageShow = true;
               } else {
@@ -1446,6 +1462,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.loading = true;
+      this.currentPage = val;
       request
         .post(host + "beepartner/admin/cityPartner/findCityPartner")
         .withCredentials()
@@ -1580,7 +1597,7 @@ export default {
     },
     openEdit(row, index) {
       console.log(row)
-     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId,joinTarget:row.joinTarget} });
+     this.$router.push({ path: "/index/partnerManager/updatepartner",query:{cityPartnerId:row.cityPartnerId,joinTarget:row.joinTarget,currentPage:this.currentPage}});
      console.log(row)
       return;
       request
@@ -1645,6 +1662,7 @@ export default {
             this.imageUrl = row.businessLicenseIconUrl;
             this.userIDID = row.id;
             this.editAccount.companyName = row.companyName;
+            this.editAccount.conName = row.conName;
             this.editAccount.businessLicense = row.businessLicense;
             this.editAccount.address = row.address;
             this.editAccount.userName = row.userName;

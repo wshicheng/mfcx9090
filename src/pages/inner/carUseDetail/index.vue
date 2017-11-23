@@ -77,22 +77,22 @@
               </el-table-column>
               <el-table-column label="订单费用" prop="actualAmount" min-width='60'>
                 <template scope="scope">
-                  {{ new Number(scope.row.actualAmount).thousandFormat()}}
+                  {{ scope.row.actualAmount}}
                 </template>
               </el-table-column>
               <el-table-column label="优惠券支付(元)" prop="couponAmount" min-width='80'>
                 <template scope="scope">
-                  {{ new Number(scope.row.couponAmount).thousandFormat()}}
+                  {{ scope.row.couponAmount}}
                 </template>
               </el-table-column>
               <el-table-column label="赠送金额支付(元)" prop="grantAmount" min-width='80'>
                 <template scope="scope">
-                  {{ new Number(scope.row.grantAmount).thousandFormat()}}
+                  {{ scope.row.grantAmount}}
                 </template>
               </el-table-column>
               <el-table-column label="实际收益(元)" prop="balanceAmount" :render-header="rendHeader">
                 <template scope="scope">
-                  {{ new Number(scope.row.balanceAmount).thousandFormat()}}
+                  {{ scope.row.balanceAmount}}
                 </template>
               </el-table-column>
             </el-table>

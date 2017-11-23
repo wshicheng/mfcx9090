@@ -44,7 +44,7 @@
                 <i class="el-icon-edit" @click="openEdit(scope)" title="修改" style="margin-right:10px;"></i>
                 </a>
                 <i class="el-icon-close" title="删除" @click="openDelete(scope)"></i>
-                <!--dialog 弹窗开始-->
+                <!--dialog 弹窗开始 编辑平台账号-->
                 <el-dialog title="编辑平台账号信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
                   <el-form class="editAccount" :model="editAccount" :rules="editAccountRule" ref="editRuleForm">
                     <el-form-item label="用户名" prop="userName" :label-width="formLabelWidth">
@@ -55,7 +55,7 @@
                     </el-form-item>
                     <el-form-item label="所属角色" prop="roleName">
                       <el-select v-model="editAccount.roleName" placeholder="选择角色类型" @change="platChangeRole">
-                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value">
+                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value" style="padding:10px">
                         </el-option>
                       </el-select>
                     </el-form-item>
@@ -83,19 +83,21 @@
           </el-table>
         </div>
       </el-tab-pane>
-      
+
+<!-- 加盟商 -->
       <el-tab-pane label="加盟商" name="加盟商" id="partner">
         <div id="search_content">
           <el-row class="selectPlace">
-            <div class="citys" style="margin-left: 70px;">
-              <address class="joinArea" style="margin-left: -70px;">加盟区域</address>
+            <div class="citys" style="margin-left:65px;color:#555">
+              <address class="joinArea" style="margin-right:10px;margin-left:-65px">加盟区域</address>
               <span @click="handleClick" name="0" class="active">全部地区</span>
-              <span @click="handleClick" :name="list.cityId" :key="list.cityId" v-for="list of cityList">{{list.cityName}}</span>
+              <!-- <span @click="handleClick" :name="list.cityId" :key="list.cityId" v-for="list of cityList">{{list.cityName}}</span> -->
+              <span @click="handleClick" :name="list.code" :key="list.id" v-for="list of cityList">{{list.name}}</span>
             </div>
           </el-row>
           <div class="am_search">
             <label>
-              <span>关键字</span>
+              <span style="margin-right:13px;margin-left:15px">关键字</span>
               <input type="text" v-model="accountOrUsername" placeholder="姓名/用户名" @blur="initQuery" class="account_my_input">
             </label>
             <label>
@@ -116,7 +118,11 @@
             <el-table-column prop="phoneNo" label="手机号" min-width="15%"></el-table-column>
             <el-table-column prop="email" label="邮箱" min-width="15%"></el-table-column>
             <el-table-column prop="name" label="姓名" min-width="10%"></el-table-column>
-            <el-table-column label="所属加盟商" prop="companyName" min-width="15%"></el-table-column>
+            <el-table-column label="所属加盟商"  min-width="15%">
+              <template scope="scope">
+                {{scope.row.joinTarget=='1'?scope.row.companyName:scope.row.conName}}
+              </template>
+            </el-table-column>
             <el-table-column label="加盟区域" prop="cityName" min-width="20%"></el-table-column>
             <el-table-column label="状态" min-width="10%" style="font-size:12px;">
               <template scope="scope">
@@ -130,7 +136,7 @@
                 <i class="el-icon-edit" @click="openEdit(scope)" title="修改" style="cursor:pointer;margin-right:10px;"></i>
                 </a>
                 <i class="el-icon-close" style="cursor:pointer;" title="删除" @click="openDelete(scope)"></i>
-                <!--dialog 弹窗开始-->
+                <!--dialog 弹窗开始 编辑加盟商-->
                 <el-dialog id="err_form" title="编辑加盟商账号信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
                   <el-form :model="editAccount" :rules="editAccountRule">
                     <el-form-item label="用户名" prop='userName' :label-width="formLabelWidth">
@@ -141,7 +147,7 @@
                     </el-form-item>
                     <el-form-item label="所属加盟商" prop="alliance">
                         <el-select v-model="editAccount.alliance" placeholder="请选择加盟商" v-on:input='recode'>
-                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()">
+                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.joinTarget=='1'?item.companyName:item.conName" :value="item.cityPartnerId.toString()" style="padding:10px">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -316,7 +322,7 @@ export default {
         ],
         passWord: [
           { required: true, message: '请填写密码', trigger: 'blur' },
-          { min: 6, max: 20, message: '密码长度应该在6-20位之间', trigger: 'change' }
+          { min: 6, max: 20, message: '密码长度应该在6-20位之间', trigger: 'blur' }
         ],
         roleName: [{ trigger: 'blur', required: true }],
         phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }],
@@ -344,6 +350,9 @@ export default {
     }
   },
   methods: {
+    ha(scope){
+      console.log(scope)
+    },
     platChangeRole(val){
      this.options4.map((item)=>{
        if(item.value==val){
@@ -706,6 +715,7 @@ export default {
                 that.checkLogin(res)
                 var arr = JSON.parse(res.text).list
                 that.joinTableData = that.handleData(arr)
+                console.log("joinTableData",that.joinTableData)
                 that.totalItems = JSON.parse(res.text).totalItems
                 var totalPage = JSON.parse(res.text).totalPage
                 if (totalPage > 1) {
@@ -832,7 +842,7 @@ export default {
             this.editAccount.userName = scope.row.userName
             this.editAccount.email = scope.row.email
             // 显示加盟商
-            this.editAccount.alliance = scope.row.companyName
+            this.editAccount.alliance = scope.row.joinTarget=='1'?scope.row.companyName:scope.row.conName
 
             this.editAccount.phoneNo = scope.row.phoneNo
             this.editAccount.name = scope.row.name
@@ -1173,7 +1183,8 @@ export default {
       return res
     },
     loadCity() {
-      request.post(host + 'beepartner/admin/city/findCity')
+      // request.post(host + 'beepartner/admin/city/findCity')
+      request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
@@ -1184,14 +1195,15 @@ export default {
             this.cityList = []
           } else {
             this.checkLogin(res)
-            var result = JSON.parse(res.text).data
-            var map = result.map((item) => {
-              var obj = {}
-              obj.cityId = item.cityId
-              obj.cityName = item.cityName
-              return obj
-            })
-            this.cityList = map
+            // var result = JSON.parse(res.text).data
+            // var map = result.map((item) => {
+            //   var obj = {}
+            //   obj.cityId = item.cityId
+            //   obj.cityName = item.cityName
+            //   return obj
+            // })
+            // this.cityList = map
+            this.cityList = res.body
           }
         })
     },
@@ -1561,7 +1573,9 @@ div.account {
   background: #fff;
   margin-top: 20px;
   /* border: 1px solid #e7ecf1; */
-  /* padding-bottom: 100%; */
+}
+div.el-tabs.el-tabs--border-card div.el-tabs__content {
+    padding-bottom: 20px !important;
 }
 
 div.account>h1 {
@@ -1623,6 +1637,7 @@ div.account>h1 button:hover {
   display: block;
   margin-right: 10px;
   float: left;
+  color:#555;
 }
 
 .am_search label:nth-child(2) {

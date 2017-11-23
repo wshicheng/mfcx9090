@@ -2,7 +2,7 @@
   <div class="vehicleBikeAlone">
     <div id='distribution_header'>
       <h3>分配车辆
-        <p @click="closeWindow" style="float: right; font-size: 12px; cursor: pointer">关闭</p>
+        <p @click="closeWindow" style="float: right; font-size: 12px; cursor: pointer;line-height:12px">关闭</p>
       </h3>
       <table class="franchiseeDetail">
         <tbody>
@@ -10,7 +10,7 @@
             <td>
               <span>加盟商编号：</span>{{franchiseeDetail.cityPartnerId}}</td>
             <td>
-              <span>企业名称/个人姓名：</span>{{franchiseeDetail.companyName}}</td>
+              <span>企业名称/个人姓名：</span>{{franchiseeDetail.joinTarget=='1'?franchiseeDetail.companyName:franchiseeDetail.conName}}</td>
           </tr>
            <tr>
             <td>
@@ -20,7 +20,8 @@
                   v-for="item in options"
                   :key="item.value"
                   :label="item.label"
-                  :value="item.value">
+                  :value="item.value"
+                  style="position:relative;z-index:1000">
                 </el-option>
               </el-select></td>
               
@@ -41,7 +42,8 @@
       <div id='distribution_table'>
         <div class='distribution_table_search'>
           <h5>【{{cityName}}】待分配的车辆</h5>
-          <input type="text" v-on:blur='inputBlurFun' ref="val" placeholder="车辆号\终端号" />
+          <!-- <input type="text" v-on:blur='inputBlurFun' ref="val" placeholder="车辆号\终端号" /> -->
+          <input type="text"  ref="val" placeholder="车辆号\终端号" />
           <span>
             <i class='el-icon-search'></i>
           </span>
@@ -219,13 +221,16 @@ div.allot {
   box-sizing: border-box;
   height: 100%;
 }
-
+.distribution_table_search {
+  margin-top:-10px;
+}
 .distribution_table_search>h5 {
-  padding: 14px 0 14px 0;
+  /* padding: 14px 0 14px 0; */
   width: 200px;
   height: 30px;
   line-height: 30px;
   float: left;
+  margin:15px;
 }
 
 .distribution_table_search input {
@@ -315,8 +320,8 @@ div.allot {
 #right_hasbeen_distribution ul {
   list-style: none;
   border-top: 1px solid #dfe6ec;
-  max-height: 443px;
-  height: 443px;
+  max-height: 400px;
+  height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -354,7 +359,7 @@ table.franchiseeDetail tr td {
 
 table.franchiseeDetail tr td span {
   text-align: right;
-  width: 150px;
+  width: 180px;
   display: inline-block;
   color: rgba(153, 153, 153, 1);
 }
@@ -512,15 +517,15 @@ export default {
       this.choseBikes = ''
     },
     closeWindow() {
-      this.$confirm('确定要关闭当前页面?', '温馨提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+      // this.$confirm('确定要关闭当前页面?', '温馨提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
         window.close()
-      }).catch(() => {
+      // }).catch(() => {
 
-      })
+      // })
     },
     loadDate() {
       this.signForQuery = false
