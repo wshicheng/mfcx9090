@@ -50,7 +50,7 @@
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">授权费率：</span>{{relationDatas.licenseFeeRate+"%"}}</td>
+                <span class="prex">授权费率：</span>{{new Number(relationDatas.licenseFeeRate)+"%"}}</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
