@@ -38,12 +38,12 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{relationBikeNum}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousandFormat()}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousandFormat()}} </span>辆)</td>
             </tr>
             <!-- 独家 -->
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}</td>
+                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}</td>
               <td>
                 <span class="prex">结算周期：</span>{{relationDatas.wType=='0'?"每月":(relationDatas.wType=='1'?"每周":relationDatas.circleDays+'天')}}
               </td>
@@ -63,7 +63,7 @@
             <tr v-if="relationDatas.joinMode=='2'">
             <td>
               <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
-              <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}
+              <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
             </td>
             <td>
               <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>2?("每月"+ relationDatas.settleDays.split(",")[0]+"号、"+relationDatas.settleDays.split(",")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
@@ -136,12 +136,12 @@
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
                 <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
-                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配： <span class="num">{{relationBikeNum}}</span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousandFormat()}}辆(已分配： <span class="num">{{new Number(relationBikeNum).thousandFormat()}}</span>辆)</td>
             </tr>
             <tr>
               <td>
                 <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
-                <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}
+                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
               </td>
               <td>
                 <span class="prex">结算周期：</span>{{relationDatas.settleDays.length > 2 ? ("每月" + relationDatas.settleDays.split(",")[0] + "号、" + relationDatas.settleDays.split(",")[1] + "号"):("每月"+ relationDatas.settleDays + "号")}}
@@ -348,9 +348,7 @@ export default {
           var res = JSON.parse(res.text).data
           console.log("queryBikeNum",res)
           if(!isOwnEmpty(res)){
-            console.log(11111111111111111111111)
             this.relationBikeNum = res.bikeNum
-            console.log("this.relationBikeNum",this.relationBikeNum)
             // this.relationJoinTime  = res.joinTime
             this.relationSubscriptionMoney = res.subscriptionMoney
             this.relationSubscriptionNum = res.subscriptionNum
@@ -390,13 +388,11 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
-          console.log("this.franchiseeDetail",res)
           for(var i = 0; i < res.areaList.length; i++){
             if(res.areaList[i].cityId==this.cityId){
               this.relationDatas = res.areaList[i]
               this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
               this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
-              console.log("this.relationDatas",this.relationDatas)
             }
           }
         }
