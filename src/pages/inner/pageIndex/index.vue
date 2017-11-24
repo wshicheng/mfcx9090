@@ -272,6 +272,7 @@ import { siblings } from '../../../../utils/index.js'
 export default {
   data: function () {
     return {
+      isloading:true,
       status: [
         {
           money: 99,

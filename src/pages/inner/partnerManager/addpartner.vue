@@ -1303,6 +1303,14 @@ export default {
                     $('#cityId'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
                   }
                 })
+                $('#cityId'+index).find('input').focus(function(){
+                  var val = $(this).val()
+                  if(val){
+                    $('#cityId'+index).find('.error-list').remove()
+                    $('#cityId'+index).removeClass('is-error')
+                    //$('#cityId'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+                  }
+                })
             }
           })
         },

@@ -5,6 +5,7 @@
         <img src="../assets/img/2.png" />
         <p>暂无数据</p>
       </div>
+    
       <div v-loading="loading" id="container2"></div>
   </div>
 </template>
@@ -19,6 +20,7 @@ import $ from 'jquery'
   export default {
     data () {
       return {
+        loading2:true,
         cityList: [],
         noData: false,
         chartData: [],
@@ -183,7 +185,7 @@ import $ from 'jquery'
   }
 </script>
 <style>
-  div#container2{width:100%; overflow: hidden; }
+  div#container2{width:100%; overflow: hidden; height:400px;}
   div#container2 g.highcharts-legend-item{display:none;}
   .my_noDate {
     width: 100%;
