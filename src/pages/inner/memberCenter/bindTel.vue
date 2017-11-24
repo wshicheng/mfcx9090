@@ -36,7 +36,7 @@
 	</div>
 </template>
 <style scoped>
-  button.getVerCode{width:102px;}
+  button.getVerCode{width:100px}
   @media screen and (min-width:1367px) {
     #memberCenter_form {
       /*  适配好的样式 */

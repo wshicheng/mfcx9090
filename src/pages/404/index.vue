@@ -1,6 +1,6 @@
 <template>
   <div class="pageNotFound">
-    <h1>
+    <h1 :style="{backgroundImage: 'url(' +bg + ')'}">
       
     </h1>
     <h2><em><span class="STYLE1">404 Error&nbsp;&nbsp; </span></em>:所查找的页面不存在,可能已被删除或您输错了网址!</h2>
@@ -10,6 +10,13 @@
   </div>  
 </template>
 <script>
+	export default {
+		data(){
+			return {
+				 bg:require('../../assets/img/Main.jpg')
+			}
+		}
+	}
 </script>
 <style scoped>
 body{margin:0;padding:0;font:14px/1.6 Arial,Sans-serif;}
@@ -23,7 +30,7 @@ h1{
 	overflow:hidden;
 	border:1px solid #fff;
 	background-repeat: no-repeat;
-	background-image:url('../../../src/assets/img/Main.jpg')
+	/* background-image:url('../../assets/img/Main.jpg') */
 }
 h2{
 	position:absolute;

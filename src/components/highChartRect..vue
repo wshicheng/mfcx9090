@@ -123,7 +123,7 @@ export default {
             enabled: false
           },
           credits: {
-            enabled: true,
+            enabled: false,
             text: "北京蜜蜂出行科技有限公司",
             href: "http://www.mmuu.com"
           },

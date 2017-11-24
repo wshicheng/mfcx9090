@@ -9,10 +9,10 @@
                 <el-form :model="form">
                   <el-row>
                     <el-row class="selectPlace_carManage">
-                      <div class="citys" style=" margin-left: 69px;">
+                      <div class="citys" style=" margin-left: 69px;color:#555">
                         <address class="joinArea">加盟区域</address>
                         <span @click="handleClick" myId='0' class="active">全部地区</span>
-                        <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
+                        <span @click="handleClick" :key='item.id' :myId='item.code' v-for="item in cityList">{{item.name}}</span>
                       </div>
                     </el-row>
                     <el-col>
@@ -20,13 +20,13 @@
                         <span class="labelAlign">关键字</span>
                         <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号">
                       </el-form-item>
-                      <el-form-item class="filtercar" style="width: 400px;">
+                      <el-form-item class="filtercar" style="width: 400px;color:#555">
                         <span class="labelAlign">运营状态</span>
                         <el-checkbox-group v-model="checkList">
-                            <el-checkbox label="4">待出租</el-checkbox>
-                            <el-checkbox label="5">已预订</el-checkbox>
-                            <el-checkbox label="6">已出租</el-checkbox>
-                            <el-checkbox label="7">维护中</el-checkbox>
+                            <el-checkbox label="4" style="color:#555">待出租</el-checkbox>
+                            <el-checkbox label="5" style="color:#555">已预订</el-checkbox>
+                            <el-checkbox label="6" style="color:#555">已出租</el-checkbox>
+                            <el-checkbox label="7" style="color:#555">维护中</el-checkbox>
                         </el-checkbox-group>
                       </el-form-item>
                     </el-col>
@@ -527,7 +527,7 @@ export default {
     },
     getCityList () {
       request
-        .post(host + 'beepartner/admin/city/findCity')
+        .post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
@@ -537,7 +537,7 @@ export default {
           if (error) {
             console.log('error:', error)
           } else {
-            this.cityList = JSON.parse(res.text).data
+            this.cityList = res.body
             this.checkLogin(res)
           }
         })
@@ -727,15 +727,16 @@ export default {
 
   .carManager_content {
     background: #faebd7;
-    padding: 10px 30px 5px 30px;
+    padding: 10px 30px 5px 20px;
     margin-bottom: 20px;
     /* border: 1px solid #e7ecf1; */
   }
 
-  /*div.carManager div.queryCarInfo {
-    background: #f3f0f0;
-    padding: 10px 10px 0 10px;
-  }*/
+  div.carManager div.queryCarInfo {
+    /* background: #f3f0f0;
+    padding: 10px 10px 0 10px; */
+    margin-top:5px;
+  }
 
   div.carManager div.queryCarInfo div.el-form-item {
     margin-bottom: 10px;
@@ -764,13 +765,18 @@ export default {
   div.el-input {
     width: 200px;
   }
-
-  div.showCarInfo {
-    padding: 20px 0 10px 0px;
-    background: #fff;
-    /* border: 1px solid #e7ecf1; */
-    /* border-bottom: none; */
+  div.carManager div.el-tabs.el-tabs--border-card div.el-tabs__content {
+      padding-bottom: 20px;
   }
+  div.el-tabs.el-tabs--border-card div.el-tabs__content {
+      padding-bottom: 20px;
+  }
+  div.showCarInfo {
+      padding: 20px 0 10px 0px;
+      background: #fff;
+      /* border: 1px solid #e7ecf1; */
+      /* border-bottom: none; */
+    }
 
   div#carManager_page {
       padding: 4px 10px 0 22px;

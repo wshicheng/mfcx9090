@@ -33,7 +33,7 @@
         <el-table-column
           prop="totalBill"
           label="订单总额"
-          min-width="100">
+          min-width="90">
              <template scope="scope">
             {{new Number(scope.row.totalBill).thousandFormat()}}
           </template>
@@ -48,7 +48,7 @@
         <el-table-column
           prop="grantAmount"
           label="赠送金额支付(元)"
-          min-width="60"
+          min-width="100"
         >
             <template scope="scope">
             {{new Number(scope.row.grantAmount).thousandFormat()}}
@@ -463,7 +463,7 @@ export default {
           style: 'background:#eee;margin-left:-20px;width:240px;'
         }
       }, [
-          h('span', '实际收益'),
+          h('span', '实际收益(元)'),
           h('i', {
             class: {
               'icon iconfont icon-wenhao': true

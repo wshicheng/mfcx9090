@@ -88,7 +88,7 @@ img.headImg {
     border-radius: 50%;
     float: left;
     margin-right: 10px;
-    margin-top: 18px;
+    margin-top: 17px;
     display: inline-block;
 }
 header {
@@ -106,6 +106,7 @@ header h2 {
     display:block;
     float: left;
     padding-left: 20px;
+    margin-top:0;
 }
 
 header h2 img {
@@ -127,7 +128,7 @@ header h3>span {
     width: 40px;
     height: 20px;
     right: -50px;
-    top: 4px;
+    top: 10px;
     font-size: 12px;
 }
 
@@ -135,11 +136,13 @@ div.admin {
     float: right;
     float: right;
     margin-right: 28px;
+   
 }
 
 div.admin span.username {
     font-size: 14px;
     margin-right: 25px;
+    display:inline-block;
 }
 
 div.admin i.iconfont {

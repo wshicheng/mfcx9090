@@ -1,6 +1,5 @@
 <template>
   <div class="consumeData">
-     
     <div class="countInfo">
        <!-- <div class="cityContainer" v-show="remoteCityList.length>1" >
           <span class="joinPlace">加盟区域</span>
@@ -231,9 +230,15 @@ div.consumeData {
 
 div.countInfo {
   padding: 20px 20px 20px 22px;
-  background: #fff;
+  background:#faebd7;
   border: 1px solid #dfe6ec;
   margin-bottom: 20px;
+}
+div.queryLists[data-v-6f528dc7] {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #dfe6ec;
+    padding: 20px 20px 20px 20px !important;
 }
 
 

@@ -3,7 +3,9 @@
     <div class="detailTitle">
       <h3>加盟商详情</h3>
     </div>
-    <el-row>
+    <!-- 企业加盟 -->
+    <el-row v-if="joinTarget=='1'">
+      
       <el-col :span="16">
         <table>
           <tbody>
@@ -21,7 +23,7 @@
             </tr>
             <tr>
                <td>
-                <span class="prex">加盟区域：</span>
+                <span class="prex" style="margin-right:0">加盟区域：</span>
                     <el-select v-model="cityId" placeholder="请选择">
                 <el-option
                   v-for="item in options"
@@ -36,28 +38,134 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆</td>
+                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{relationBikeNum}} </span>辆)</td>
             </tr>
-            <tr>
+            <!-- 独家 -->
+            <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}}</td>
-             
+                <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}</td>
+              <td>
+                <span class="prex">结算周期：</span>{{relationDatas.wType=='0'?"每月":(relationDatas.wType=='1'?"每周":relationDatas.circleDays+'天')}}
+              </td>
             </tr>
-             <tr>
+            <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">拥有车辆：</span>{{new Number(relationBikeNum).thousand()}} 辆</td>
+                <span class="prex">授权费率：</span>{{relationDatas.licenseFeeRate+"%"}}</td>
+              <td>
+                <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
+            </tr>
+            <tr v-if="relationDatas.joinMode=='1'">
+              <td>
+                <span class="prex">加盟模式：</span>{{relationDatas.joinMode=='1'?'独家':'非独家'}}
+              </td>
+            </tr>
+            <!-- 非独家 -->
+            <tr v-if="relationDatas.joinMode=='2'">
+            <td>
+              <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
+              <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}
+            </td>
+            <td>
+              <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>2?("每月"+ relationDatas.settleDays.split(",")[0]+"号、"+relationDatas.settleDays.split(",")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
+            </td>
+
+          </tr>
+             <tr v-if="relationDatas.joinMode=='2'">
+              <td>
+                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车.天</td>
+              <td>
+                <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
+            </tr>
+            <tr v-if="relationDatas.joinMode=='2'">
+              <td>
+                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent + '%'}}</td>
+              <td>
+                <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
+              
             </tr>
           </tbody>
         </table>
       </el-col>
       <el-col :span="6" class="battery">
-        <ul>
+        <ul style="padding-left:0">
           <li>
-            <img :src="imgUrl" alt="img">
+            <img :src="imgUrl" alt=" ">
           </li>
         </ul>
       </el-col>
     </el-row>
+
+    <!-- 个人加盟 -->
+    <el-row v-else>
+      <el-col :span="16">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <span class="prex">加盟商编号：</span>{{franchiseeDetail.cityPartnerId}}</td>
+              <td>
+                <span class="prex">姓名：</span>{{franchiseeDetail.conName}}</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">证件类别：</span>{{franchiseeDetail.conCardType=="1"?'护照':'身份证'}}</td>
+              <td>
+                <span class="prex">证件号码：</span>{{franchiseeDetail.conIdCard}}</td>
+            </tr>
+             <tr>
+              <td>
+                <span class="prex">手机号：</span>{{franchiseeDetail.conPhone}}</td>
+              <td>
+                <span class="prex">邮箱：</span>{{franchiseeDetail.conEmail}}</td>
+            </tr>
+            <tr>
+               <td>
+                <span class="prex" style="margin-right:0">加盟区域：</span>
+                    <el-select v-model="cityId" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+                </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
+              <td>
+                <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
+                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配： <span class="num">{{relationBikeNum}}</span>辆)</td>
+            </tr>
+            <tr>
+              <td>
+                <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
+                <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}
+              </td>
+              <td>
+                <span class="prex">结算周期：</span>{{relationDatas.settleDays.length > 2 ? ("每月" + relationDatas.settleDays.split(",")[0] + "号、" + relationDatas.settleDays.split(",")[1] + "号"):("每月"+ relationDatas.settleDays + "号")}}
+              </td>
+
+            </tr>
+             <tr>
+              <td>
+                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车.天</td>
+              <td>
+                <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
+            </tr>
+            <tr>
+              <td>
+                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent + '%'}}</td>
+              <td>
+                <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </el-col>
+    </el-row>
+
     <el-row class="record">
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <el-tab-pane class="incomeRecord recodeTable" label="车辆明细" name="车辆明细">
@@ -110,12 +218,16 @@
             </el-table>
           </el-tab-pane> -->
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
+          <div class="total">
+            <span>累计已结算：{{alreadyWidthDrawTimes}} 次</span>
+            <span>累计获得收益：{{alreadyWidthDrawMoney}} 元</span>
+          </div>
           <el-table :data="drawalData" style="width: 100%">
             <el-table-column prop="month" label="结算周期">
             </el-table-column>
             <el-table-column prop="money" label="结算金额">
               <template scope="scope">
-                {{new Number(scope.row.money).thousandFormat()}}
+                {{scope.row.money}}
               </template>
             </el-table-column>
             <el-table-column prop="applyTimeS" label="申请时间">
@@ -138,8 +250,8 @@
               <span>手机号：</span>{{franchiseeDetail.phone}}</li>
             <li>
               <span>邮箱：</span>{{franchiseeDetail.email}}</li>
-            <!-- <li>
-              <span>用户名：</span>{{franchiseeDetail.userName}}</li> -->
+            <li>
+              <span>用户名：</span>{{franchiseeDetail.userId}}</li>
           </ul>
         </el-tab-pane>
       </el-tabs>
@@ -155,11 +267,15 @@ import {isOwnEmpty} from '../../../util/util.js'
 export default {
   data: function () {
     return {
+      alreadyWidthDrawTimes:"",
+      alreadyWidthDrawMoney:"",
+      relationDatas:'',
       relationJoinTime:'',
+      relationFirstDealDate:'',
       relationSubscriptionNum:'',
       relationSubscriptionMoney:'',
       relationBikeNum:'',
-       cityName:'',
+      cityName:'',
       cityId:'',
       options:[],
       loading2: false,
@@ -173,7 +289,8 @@ export default {
       franchiseeDetail: {},
       router: this.$route.query.carNum,
       car_infor_data: [],
-      activeName: '车辆明细'
+      activeName: '车辆明细',
+      joinTarget:this.$route.params.id.split('&')[2]
     }
   },
   methods: {
@@ -181,7 +298,7 @@ export default {
        var id = this.$route.params.id.split('&')[0]
       var cityPartnerId = this.$route.params.id.split('&')[1]
       var val = this.currentPage3
-      request.post(host + 'beepartner/admin/cityPartner/getWithdrawals')
+      request.post(host + 'beepartner/admin/withDraw/getWithdrawals')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -229,11 +346,15 @@ export default {
           console.log(error)
         }else{
           var res = JSON.parse(res.text).data
-          if(isOwnEmpty(res)==false){
+          console.log("queryBikeNum",res)
+          if(!isOwnEmpty(res)){
+            console.log(11111111111111111111111)
             this.relationBikeNum = res.bikeNum
-            this.relationJoinTime  = res.joinTime
+            console.log("this.relationBikeNum",this.relationBikeNum)
+            // this.relationJoinTime  = res.joinTime
             this.relationSubscriptionMoney = res.subscriptionMoney
             this.relationSubscriptionNum = res.subscriptionNum
+            this.divisionPercent  = res.divisionPercent
           }else{
             this.relationBikeNum = ''
             this.relationJoinTime  = ''
@@ -269,6 +390,15 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
+          console.log("this.franchiseeDetail",res)
+          for(var i = 0; i < res.areaList.length; i++){
+            if(res.areaList[i].cityId==this.cityId){
+              this.relationDatas = res.areaList[i]
+              this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
+              this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
+              console.log("this.relationDatas",this.relationDatas)
+            }
+          }
         }
       })
     },
@@ -361,7 +491,7 @@ export default {
         this.getBikeDetail()
       } else if (tab.label === '结算记录') {
         this.activeName = '结算记录'
-        request.post(host + 'beepartner/admin/cityPartner/getWithdrawals')
+        request.post(host + 'beepartner/admin/withDraw/getWithdrawals')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -389,6 +519,8 @@ export default {
               }
               this.drawalData = result
             }
+            this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
+            this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
           })
       } else {
         this.pageShow = false
@@ -437,6 +569,7 @@ export default {
   },
     created() {
       var cityPartnerId = this.$route.params.id.split('&')[1]
+      console.log(this.cityPartnerId)
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findCity')
     .withCredentials()
@@ -451,6 +584,10 @@ export default {
         console.log(error)
       }else{
         var result = JSON.parse(res.text).data
+        console.log(result)
+
+        
+
         this.options = result.map((item)=>{
           return {
             value:item.cityId,
@@ -496,16 +633,36 @@ export default {
 }
 </script>
 <style scoped>
+.num {
+  color:orange;
+  margin-right:10px;
+}
+.total {
+  width: 100%;
+  height: 40px;
+  background: #fcfcd3;
+  margin-bottom: 15px;
+  padding-left:15px;
+  font-size:14px;
+  color:#555;
+}
+.total span {
+  line-height:40px;
+  margin-right:60px;
+}
 div.carUseDetail {
   background: #fff;
   margin: 0 auto;
   border: 1px solid #e7ecf1;
-  width: 1000px;
+  width: 1200px;
 }
-
+.record {
+ margin-bottom:15px;
+}
 div.carUseDetail table {
   border-collapse: collapse;
   width: 100%;
+  
 }
 
 div.carUseDetail table tr td {

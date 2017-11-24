@@ -487,7 +487,8 @@ div.topHeader h1 span {
     margin-left: 10px;
     font-size: 14px;
     position: absolute;
-    left: 371px;bottom: 25px;
+    left: 371px;
+    bottom: 25px;
     line-height:initial;
 }
 
@@ -519,9 +520,6 @@ div#login {
 }
 
 #cover {
-    /* background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%; */
     position: relative;
     height: 100%;
 }
@@ -533,10 +531,6 @@ div#login div.content {
 
 div#login div.content header {
     width: 100%;
-    /* height: 40px;
-  line-height: 40px;
-  margin-bottom: 20px;
-  padding-top: 10%; */
 }
 
 div#login div.content header p {

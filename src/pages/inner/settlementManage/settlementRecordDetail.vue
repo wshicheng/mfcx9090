@@ -18,8 +18,8 @@
       <div class="line">
         本期结算金额：<span>{{new Number(actProfit).thousandFormat()}}</span>元
       </div>
-      <div class="line ">
-        <button v-show="isSettled" class="open" @click="openDialog">确定结算</button>
+      <div class="line confirm ">
+        <!-- <button v-show="isSettled" class="open" @click="openDialog">确定结算</button> -->
         <el-dialog 
           id="settleMentPage"
           title="结算确认"
@@ -36,40 +36,58 @@
           </div>
           <span slot="footer" class="dialog-footer">
             
-            <el-button type="primary" @click="confirmSubmit">确 定</el-button>
-            <el-button @click="dialogVisible = false">取 消</el-button>
+            <!-- <el-button type="primary" @click="confirmSubmit">确 定</el-button>
+            <el-button @click="dialogVisible = false">取 消</el-button> -->
           </span>
         </el-dialog>
        
       </div>
-      <div class="line line_status " >
+      <!-- <div class="line line_status " v-show="!isSettled"> -->
+      <div class="line line_status ">
         <div v-show="state===3" class="statu rect1"><i>已结算</i></div>
         <div v-show="state===2" class="statu rect2"><i>待结算</i></div>
-        <div v-show="state===1" class="statu rect3"><i>待确认</i></div>
+        <div v-show="state===1" class="statu rect2"><i>待确认</i></div>
       </div>
     </div>
     </div>
     
     <div class="table">
-      <table>
+      <h3>
+        蜜蜂出行({{$route.query.cityName}})周期费用结算单
+      </h3>
+      <div class="unit"><span>单位：元</span></div>
+      <table v-show="type==1">
         <thead>
           <tr>
+            <th class="dateTime">
+              日期
+            </th>
+            <th class="userTotalPayment">
+              用户总消费金额
+            </th>
+            <th class="activeCost">
+              <div class="grid_title">活动成本</div>
+              <div class="grid">
+                <!-- <span title="日期">日期</span> -->
+                返现消费
+              </div>
+            </th>
             <th class="in">
               <div class="grid_title">经营收入</div>
               <div class="grid">
-                <span title="日期">日期</span>
-                <span title="用户消费金额" >用户消费金额</span>
+                <!-- <span title="日期">日期</span> -->
+                <span title="充值消费" >充值消费</span>
                 <span title="扣款金额">扣款金额</span>
               </div>
             </th>
             <th class="out">
               <div class="grid_title">经营支出</div>
               <div class="grid">
-                 <div class="item money" title="用户余额退还">用户余额退还</div>
+                 <!-- <div class="item money" title="用户余额退还">用户余额退还</div> -->
                  <div class="item third">
                    <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div>
                    <div class="list">
-                     <div class="cell" title="需缴押金/次">需缴押金/次</div>
+                     <div class="cell" title="缴纳押金/次">缴纳押金/次</div>
                      <div class="cell" title="押金金额">押金金额</div>
                      <div class="cell" title="服务费率">服务费率</div>
                      <div class="cell" title="支付金额">支付金额</div>
@@ -104,10 +122,17 @@
         </thead>
         <tbody>
           <tr v-for="list of items" :key="list.id">
+           <td class="dateTime">{{list.statisticId}}</td>
+            <td class="userTotalPayment">
+              {{new Number(list.balanceAmountStr).thousandFormat()}}
+            </td>
+            <td class="activeCost" style="text-align:center">
+              {{new Number(list.grantAmountStr).thousandFormat()}}
+            </td>
            <td class="in">
               <!-- <div class="grid_title">经营收入</div> -->
               <div class="grid">
-                <span>{{list.statisticId}}</span>
+                <!-- <span>{{list.statisticId}}</span> -->
                 <span>{{new Number(list.actualMoneyStr).thousandFormat()}}</span>
                 <span>{{new Number(list.decultMoneyStr).thousandFormat()}}</span>
               </div>
@@ -115,7 +140,7 @@
             <td class="out">
               <!-- <div class="grid_title">经营支出</div> -->
               <div class="grid">
-                 <div class="item money">{{new Number(list.rebackMoneyStr).thousandFormat()}}</div>
+                 <!-- <div class="item money">{{new Number(list.rebackMoneyStr).thousandFormat()}}</div> -->
                  <div class="item third">
                    <!-- <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div> -->
                    <div class="list">
@@ -154,8 +179,382 @@
         </tbody>
         <tfoot>
           <tr class="count">
-            <th class="totalText" colspan = "2">总计：</th>
-            <th class="totalNum">{{new Number(actProfitStr).thousandFormat()}}</th>
+   
+             <td data-v-3b262524="" class="dateTime">总计</td>
+              <td data-v-3b262524="" class="userTotalPayment">
+                  {{sumData.sumbalance}}
+              </td>
+              <td data-v-3b262524="" class="activeCost" style="text-align:center">
+                  {{sumData.sumgrant}}
+              </td>
+              <td data-v-3b262524="" class="in">
+                  <div data-v-3b262524="" class="grid">
+                      <span data-v-3b262524="">{{sumData.sumactual}}</span>
+                      <span data-v-3b262524="">{{sumData.sumdecult}}</span>
+                  </div>
+              </td>
+              <td data-v-3b262524="" class="out">
+                  <div data-v-3b262524="" class="grid">
+                      <div data-v-3b262524="" class="item third">
+                          <div data-v-3b262524="" class="list">
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell">{{sumData.sumdepositpay}}</div>
+                          </div>
+                      </div>
+                      <div data-v-3b262524="" class="item sevice">
+                          <div data-v-3b262524="" class="list">
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell">{{sumData.sumthirdpay}}</div>
+                          </div>
+                      </div>
+                      <div data-v-3b262524="" class="item auth">
+                          <div data-v-3b262524="" class="list">
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell">{{sumData.sumlicensepay}}</div>
+                          </div>
+                      </div>
+                  </div>
+              </td>
+              <td data-v-3b262524="" class="count">
+                  <div data-v-3b262524="" class="grid">
+                      {{actProfitStr}}
+                  </div>
+              </td>
+          
+          </tr>
+        </tfoot>
+      </table>
+      <table v-show="type==2">
+        <thead>
+          <tr>
+            <th class="dateTime">
+              日期
+            </th>
+            <th class="userTotalPayment">
+              用户总消费金额
+            </th>
+            <th class="activeCost">
+              <div class="grid_title">活动成本</div>
+              <div class="grid">
+                <!-- <span title="日期">日期</span> -->
+                返现消费
+              </div>
+            </th>
+            <th class="in">
+              <div class="grid_title">经营收入</div>
+              <div class="grid">
+                <!-- <span title="日期">日期</span> -->
+                <span title="充值消费" >充值消费</span>
+                <span title="扣款金额">扣款金额</span>
+              </div>
+            </th>
+            <th class="out">
+              <div class="grid_title">经营支出</div>
+              <div class="grid">
+                 <!-- <div class="item money" title="用户余额退还">用户余额退还</div> -->
+                 <div class="item third">
+                   <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div>
+                   <div class="list">
+                     <div class="cell" title="缴纳押金/次">缴纳押金/次</div>
+                     <div class="cell" title="押金金额">押金金额</div>
+                     <div class="cell" title="服务费率">服务费率</div>
+                     <div class="cell" title="支付金额">支付金额</div>
+                   </div>
+                 </div>
+                 <div class="item sevice">
+                      <div class="list subtitle">用户消费支付第三方支付平台服务</div>
+                      <div class="list">
+                        <div class="cell" title="用户消费金额">用户消费金额</div>
+                        <div class="cell" title="服务费率">服务费率</div>
+                        <div class="cell" title="支付金额">支付金额</div>
+                      </div>
+                 </div>
+                 <div class="item auth">
+
+                   <div class="list subtitle">运营管理费</div>
+                    <div class="list">
+                      <div class="cell" title="车辆数">车辆数</div>
+                      <div class="cell" title="每车每日管理费">每车每日管理费</div>
+                      <div class="cell" title="支付金额">支付金额</div>
+                    </div>
+                 </div>
+              </div>
+            </th>
+            <th class="count">
+              <div class="grid_title">最终收益</div>
+              <div class="grid">
+                合计
+              </div>
+            </th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr v-for="list of items" :key="list.id">
+           <td class="dateTime">{{list.statisticId}}</td>
+            <td class="userTotalPayment">
+              {{new Number(list.balanceAmountStr).thousandFormat()}}
+            </td>
+            <td class="activeCost" style="text-align:center">
+              {{new Number(list.grantAmountStr).thousandFormat()}}
+            </td>
+           <td class="in">
+              <!-- <div class="grid_title">经营收入</div> -->
+              <div class="grid">
+                <!-- <span>{{list.statisticId}}</span> -->
+                <span>{{new Number(list.actualMoneyStr).thousandFormat()}}</span>
+                <span>{{new Number(list.decultMoneyStr).thousandFormat()}}</span>
+              </div>
+            </td>
+            <td class="out">
+              <!-- <div class="grid_title">经营支出</div> -->
+              <div class="grid">
+                 <!-- <div class="item money">{{new Number(list.rebackMoneyStr).thousandFormat()}}</div> -->
+                 <div class="item third">
+                   <!-- <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div> -->
+                   <div class="list">
+                     <div class="cell">{{new Number(list.depositTimes).thousand()}}</div>
+                     <div class="cell">{{new Number(list.deposit).thousandFormat()}}</div>
+                     <div class="cell">{{list.thirdPartyFeeRate}}</div>
+                     <div class="cell">{{new Number(list.thirdFeePayAmt).thousandFormat()}}</div>
+                   </div>
+                 </div>
+                 <div class="item sevice">
+                      <!-- <div class="list subtitle">用户消费支付第三方支付平台服务</div> -->
+                      <div class="list">
+                        <div class="cell">{{new Number(list.actualMoneyStr).thousandFormat()}}</div>
+                        <div class="cell">{{list.thirdPartyFeeRate}}</div>
+                        <div class="cell">{{new Number(list.payAmtStr).thousandFormat()}}</div>
+                      </div>
+                 </div>
+                 <div class="item auth">
+
+                   <!-- <div class="list subtitle">运营管理费</div> -->
+                    <div class="list">
+                      <div class="cell">{{new Number(list.bikeNum).thousandFormat()}}</div>
+                      <div class="cell">{{list.manageFee}}</div>
+                      <div class="cell">{{new Number(list.managePayAmtStr).thousandFormat()}}</div>
+                    </div>
+                 </div>
+              </div>
+            </td>
+            <td class="count">
+              <!-- <div class="grid_title">最终收益</div> -->
+              <div class="grid">
+                {{new Number(list.actProfitStr).thousandFormat()}}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="count">
+
+             <td data-v-3b262524="" class="dateTime">总计</td>
+              <td data-v-3b262524="" class="userTotalPayment">
+                  {{sumData.sumbalance}}
+              </td>
+              <td data-v-3b262524="" class="activeCost" style="text-align:center">
+                  {{sumData.sumgrant}}
+              </td>
+              <td data-v-3b262524="" class="in">
+                  <div data-v-3b262524="" class="grid">
+                      <span data-v-3b262524="">{{sumData.sumactual}}</span>
+                      <span data-v-3b262524="">{{sumData.sumdecult}}</span>
+                  </div>
+              </td>
+              <td data-v-3b262524="" class="out">
+                  <div data-v-3b262524="" class="grid">
+                      <div data-v-3b262524="" class="item third">
+                          <div data-v-3b262524="" class="list">
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell">{{sumData.sumdepositpay}}</div>
+                          </div>
+                      </div>
+                      <div data-v-3b262524="" class="item sevice">
+                          <div data-v-3b262524="" class="list">
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell">{{sumData.sumthirdpay}}</div>
+                          </div>
+                      </div>
+                      <div data-v-3b262524="" class="item auth">
+                          <div data-v-3b262524="" class="list">
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell"></div>
+                              <div data-v-3b262524="" class="cell">{{sumData.summanagepay}}</div>
+                          </div>
+                      </div>
+                  </div>
+              </td>
+              <td data-v-3b262524="" class="count">
+                  <div data-v-3b262524="" class="grid">
+                      {{actProfitStr}}
+                  </div>
+              </td>
+           
+          </tr>
+        </tfoot>
+      </table>
+      <table class="special" v-show="type==3">
+        <thead>
+          <tr>
+            <th class="dateTime">
+              日期
+            </th>
+            <th class="userTotalPayment">
+              用户总消费金额
+            </th>
+            <th class="activeCost">
+              <div class="grid_title">活动成本</div>
+              <div class="grid">
+                <!-- <span title="日期">日期</span> -->
+                返现消费
+              </div>
+            </th>
+            <th class="in">
+              <div class="grid_title">经营收入</div>
+              <div class="grid">
+                <!-- <span title="日期">日期</span> -->
+                <span title="充值消费" >充值消费</span>
+                <span title="扣款金额">扣款金额</span>
+              </div>
+            </th>
+            <th class="out">
+              <div class="grid_title">经营支出</div>
+              <div class="grid">
+                 <!-- <div class="item money" title="用户余额退还">用户余额退还</div> -->
+                 <div class="item third">
+                   <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div>
+                   <div class="list">
+                     <div class="cell" title="缴纳押金/次">缴纳押金/次</div>
+                     <div class="cell" title="押金金额">押金金额</div>
+                     <div class="cell" title="服务费率">服务费率</div>
+                     <div class="cell" title="支付金额">支付金额</div>
+                   </div>
+                 </div>
+                 <div class="item sevice">
+                      <div class="list subtitle">用户消费支付第三方支付平台服务</div>
+                      <div class="list">
+                        <div class="cell" title="用户消费金额">用户消费金额</div>
+                        <div class="cell" title="服务费率">服务费率</div>
+                        <div class="cell" title="支付金额">支付金额</div>
+                      </div>
+                 </div>
+                
+              </div>
+            </th>
+            <th class="matchRate">
+              分成比例
+            </th>
+            <th class="count">
+              <div class="grid_title">最终收益</div>
+              <div class="grid">
+                合计
+              </div>
+            </th>
+          </tr> 
+        </thead>
+        <tbody>
+          <tr v-for="list of items" :key="list.id">
+           <td class="dateTime">{{list.statisticId}}</td>
+            <td class="userTotalPayment">
+              {{new Number(list.balanceAmountStr).thousandFormat()}}
+            </td>
+            <td class="activeCost" style="text-align:center">
+              {{new Number(list.grantAmountStr).thousandFormat()}}
+            </td>
+           <td class="in">
+              <!-- <div class="grid_title">经营收入</div> -->
+              <div class="grid">
+                <!-- <span>{{list.statisticId}}</span> -->
+                <span>{{new Number(list.actualMoneyStr).thousandFormat()}}</span>
+                <span>{{new Number(list.decultMoneyStr).thousandFormat()}}</span>
+              </div>
+            </td>
+            <td class="out">
+              <!-- <div class="grid_title">经营支出</div> -->
+              <div class="grid">
+                 <!-- <div class="item money">{{new Number(list.rebackMoneyStr).thousandFormat()}}</div> -->
+                 <div class="item third">
+                   <!-- <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div> -->
+                   <div class="list">
+                     <div class="cell">{{new Number(list.depositTimes).thousand()}}</div>
+                     <div class="cell">{{new Number(list.deposit).thousandFormat()}}</div>
+                     <div class="cell">{{list.thirdPartyFeeRate}}</div>
+                     <div class="cell">{{new Number(list.thirdFeePayAmt).thousandFormat()}}</div>
+                   </div>
+                 </div>
+                 <div class="item sevice">
+                      <!-- <div class="list subtitle">用户消费支付第三方支付平台服务</div> -->
+                      <div class="list">
+                        <div class="cell">{{new Number(list.actualMoneyStr).thousandFormat()}}</div>
+                        <div class="cell">{{list.thirdPartyFeeRate}}</div>
+                        <div class="cell">{{new Number(list.payAmtStr).thousandFormat()}}</div>
+                      </div>
+                 </div>
+                
+              </div>
+            </td>
+            <td class="matchRate">
+              {{list.divisionPercentStr}}
+            </td>
+            <td class="count">
+              <!-- <div class="grid_title">最终收益</div> -->
+              <div class="grid">
+                {{new Number(list.actProfitStr).thousandFormat()}}
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="count">
+
+            <td data-v-3b262524="" class="dateTime">总计</td>
+            <td data-v-3b262524="" class="userTotalPayment">
+               {{sumData.sumbalance}}
+            </td>
+            <td data-v-3b262524="" class="activeCost" style="text-align:center">
+                {{sumData.sumgrant}}
+            </td>
+            <td data-v-3b262524="" class="in">
+                <div data-v-3b262524="" class="grid">
+                    <span data-v-3b262524="">{{sumData.sumactual}}</span>
+                    <span data-v-3b262524="">{{sumData.sumdecult}}</span>
+                </div>
+            </td>
+            <td data-v-3b262524="" class="out">
+                <div data-v-3b262524="" class="grid">
+                    <div data-v-3b262524="" class="item third">
+                        <div data-v-3b262524="" class="list">
+                            <div data-v-3b262524="" class="cell"></div>
+                            <div data-v-3b262524="" class="cell"></div>
+                            <div data-v-3b262524="" class="cell"></div>
+                            <div data-v-3b262524="" class="cell">{{sumData.sumdepositpay}}</div>
+                        </div>
+                    </div>
+                    <div data-v-3b262524="" class="item sevice">
+                        <div data-v-3b262524="" class="list">
+                            <div data-v-3b262524="" class="cell"></div>
+                            <div data-v-3b262524="" class="cell"></div>
+                            <div data-v-3b262524="" class="cell">{{sumData.sumthirdpay}}</div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="matchRate">
+              
+            </td>
+            <td data-v-3b262524="" class="count">
+                <div data-v-3b262524="" class="grid">
+                    {{actProfitStr}}
+                </div>
+            </td>
+
           </tr>
         </tfoot>
       </table>
@@ -185,9 +584,9 @@ import {thousandFormat} from '../../../util/util.js'
     },
     data(){
       return {
+        sumData:"",
+        type:1,
         list: [],
-        cityId:'',
-        wType:'',
         state:'',
         actProfit:'',
         actProfitStr: '',
@@ -195,9 +594,11 @@ import {thousandFormat} from '../../../util/util.js'
         status:false,
         isSettled:false,
         dialogVisible:false,
-        cityPartnerId:'',
         isHide:false,
         month:'',
+        wType: '',
+        cityId: '',
+        cityPartnerId:"",
         items:[
         ]
       }
@@ -205,9 +606,9 @@ import {thousandFormat} from '../../../util/util.js'
      mounted(){
        document.title="结算单"
         this.month = this.$route.query.month
-        this.cityPartnerId = this.$route.query.id
         this.wType = this.$route.query.wType
         this.cityId = this.$route.query.cityId
+        this.cityPartnerId = this.$route.query.id
        request
       .post(host + 'beepartner/franchisee/withDraw/getWithDrawRecordDetail')
       .withCredentials()
@@ -215,10 +616,10 @@ import {thousandFormat} from '../../../util/util.js'
         'content-type': 'application/x-www-form-urlencoded'
       })
       .send({
-        wType:this.wType,
         applyTimeStr:this.month,
-        cityPartnerId:this.cityPartnerId,
-        cityId:this.cityId
+        wType:this.wType,
+        cityId:this.cityId,
+        cityPartnerId:this.cityPartnerId
       })
       .end((err, res) => {
         if (err) {
@@ -231,7 +632,7 @@ import {thousandFormat} from '../../../util/util.js'
           this.state = JSON.parse(res.text).withDrawRecord.status
           this.actProfit = JSON.parse(res.text).withDrawRecord.actProfit
           if(this.state===1){
-            this.isSettled = false
+            this.isSettled = true
           }else if(this.state===2||this.actProfit===0){
             this.isSettled = false
           }else{
@@ -243,11 +644,15 @@ import {thousandFormat} from '../../../util/util.js'
           if (code === 1) {
             var newArr = JSON.parse(res.text).data
             this.items = newArr
+            console.log(newArr)
             this.totalProfit =  JSON.parse(res.text).withDrawRecord.totalProfit
             this.actProfit = JSON.parse(res.text).withDrawRecord.actProfit
             this.actProfitStr = JSON.parse(res.text).withDrawRecord.totalProfit
+            // 表格最后总计部分
+            this.sumData = JSON.parse(res.text).withDrawRecord
+            // 结算单类型
+            this.type = JSON.parse(res.text).withDrawRecord.tbType
           }
-
         }
       })
     },
@@ -278,7 +683,9 @@ import {thousandFormat} from '../../../util/util.js'
           'content-type': 'application/x-www-form-urlencoded'
         })
         .send({
-          applyTimeStr:that.month
+          applyTimeStr:that.month,
+          wType:that.wType,
+          cityId:that.cityId
         })
         .end((err,res)=>{
           if(err){
@@ -311,7 +718,7 @@ import {thousandFormat} from '../../../util/util.js'
   }
 </script>
 <style lang="scss" scoped>
-  
+  div.settleMentPage div.title div.line.confirm{float:right;}
   div.hide{
     height: 30px;
     width: 200px;
@@ -390,32 +797,74 @@ import {thousandFormat} from '../../../util/util.js'
         div.rect1{
           background:#009900;
         }
-
         div.rect2{
           background:orange;
-        }
-         div.rect3{
-          background:red;
         }
       }
     }
     $tableBorderColor:1px solid #555;
     div.table{
       padding:0 10px;
-
       margin-top:20px;
+      h3{margin:25px auto;text-align:center;}
+      div.unit{
+        text-align: right;
+        font-size: 12px;
+        font-weight: bold;
+        padding-bottom: 6px;
+        span{margin-right: 20px;}
+      }
+     table.special{
+       thead{
+         tr{
+           th{
+             div.grid{
+               div.third,div.sevice{width:calc(100% / 2)}
+               div.sevice{border-right:none;}
+             }
+           }
+           th.matchRate{
+             background:rgb(255, 190, 0);
+           }
+         }
+       }
+       tbody{
+         tr{
+           td{
+             div.grid{
+               div.third,div.sevice{width:calc(100% / 2)}
+               div.sevice{border-right:none;}
+             }
+           }
+           td.activeCost{text-align:center;}
+           td.matchRate{text-align:center;}
+         }
+       }
+        tfoot{
+         tr{
+           td{
+             div.grid{
+               div.third,div.sevice{width:calc(100% / 2)}
+               div.sevice{border-right:none;}
+             }
+           }
+           td.activeCost{text-align:center;}
+           td.matchRate{text-align:center;}
+         }
+       }
+     }
      table{
        width:100%;
        border-collapse: collapse;
         thead{
           tr{
-            th.in{width:279px;background:#dde7f0;}
+            th.in{width:auto;background:#dde7f0;}
             th{border:$tableBorderColor;
               font-size:12px;
               div.grid_title{border-bottom:$tableBorderColor;height:30px;line-height: 30px;}
               div.grid{
                 span{
-                  width:calc(100% / 3);
+                  width:calc(100% / 2);
                    height: 40px;
                   line-height: 40px;
                   text-align: center;
@@ -445,13 +894,13 @@ import {thousandFormat} from '../../../util/util.js'
                   div.subtitle{ border-bottom:$tableBorderColor;height:20px;line-height:20px;}
                 }
                 div.sevice{
-                  width:26%;
+                   width:calc(100% / 3);
                   div.list{
                     div.cell{width:calc(100% / 3)}
                   }
                 }
                  div.auth{
-                  width:31%;
+                 width:calc(100% / 3);
                   border-right:none;
                   div.list{
                     div.cell{width:calc(100% / 3)}
@@ -463,7 +912,13 @@ import {thousandFormat} from '../../../util/util.js'
                    text-align: center;
                   
                 }
-                div.third{width:34%;}
+                div.third{width:calc( 100% / 3);}
+              }
+            }
+            th.activeCost{
+              background:#ffe9d5;
+              div.grid{
+                height:40px;line-height:40px;
               }
             }
             th.count{
@@ -471,11 +926,15 @@ import {thousandFormat} from '../../../util/util.js'
               div.grid{height:40px;line-height:40px;}
             }
             th.out{background:#ebf1dc;}
+            th.dateTime{background:yellow}
+            th.userTotalPayment{background:#ffe9d5}
           }
         }
-        tbody{
+        tfoot,tbody{
           tr{
-            td.in{width:279px;}
+            td.dateTime{text-align:center;}
+            td.userTotalPayment{text-align:center;}
+            td.in{width:auto;}
             td{border:$tableBorderColor;
               font-size:12px;
               div.grid_title{border-bottom:$tableBorderColor;}
@@ -483,7 +942,7 @@ import {thousandFormat} from '../../../util/util.js'
                 span{
                    height: 30px;
                   line-height: 30px;
-                  width:calc(100% / 3);
+                  width:calc(100% / 2);
                   text-align: center;
                   float:left;
                   // padding:0 10px;
@@ -508,13 +967,13 @@ import {thousandFormat} from '../../../util/util.js'
                   div.subtitle{ border-bottom:$tableBorderColor;height:20px;line-height:20px;}
                 }
                 div.sevice{
-                  width:26%;
+                 width:calc(100% / 3);
                   div.list{
                     div.cell{width:calc(100% / 3)}
                   }
                 }
                  div.auth{
-                  width:31%;
+                  width:calc(100% / 3);
                   border-right:none;
                   div.list{
                     div.cell{width:calc(100% / 3)}
@@ -525,7 +984,7 @@ import {thousandFormat} from '../../../util/util.js'
                    line-height:30px;
                     text-align: center;
                 }
-                div.third{width:34%;}
+                div.third{width:calc(100% / 3);}
               }
             }
             td.count{
@@ -537,6 +996,7 @@ import {thousandFormat} from '../../../util/util.js'
           tr{
             border:$tableBorderColor;
            th.totalText{text-align:right;border-right:$tableBorderColor;} 
+           td{font-weight:bold;}
           }
         }
      }
@@ -558,5 +1018,3 @@ import {thousandFormat} from '../../../util/util.js'
     &:hover{color:#666;}
   }
 </style>
-
-

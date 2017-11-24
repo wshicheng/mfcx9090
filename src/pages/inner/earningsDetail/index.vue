@@ -11,10 +11,10 @@
       <div class="earD_con" style="margin-top: 10px;">
         <div>
           <el-row class="city">
-            <div class="citys" style="margin-left: 90px;">
+            <div class="citys" style="margin-left:90px;color:#555">
               <address class="joinArea" style="margin-left: -66px;">加盟区域</address>
               <span @click="handleClick" myId='0' class="active">全部地区</span>
-              <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
+              <span @click="handleClick" :key='item.id' :myId='item.code' v-for="item in cityList">{{item.name}}</span>
             </div>
           </el-row>
         </div>
@@ -42,7 +42,7 @@
 			<div id="earD_all">
 				<h1>
           <!-- <el-tooltip class="item" effect="dark" content="所有车辆骑行收益" placement="bottom-end">  -->
-					  <p>合计：<span>{{new Number(sumMoney).thousandFormat()}}元</span></p>
+					  <p>合计：<span>{{sumMoney}}元</span></p>
           <!-- </el-tooltip> -->
 					<p @click='export_excel'>导出明细到Excel</p>
 				</h1>
@@ -72,7 +72,7 @@
         </el-table-column>
         <el-table-column
           prop="placeOrderTime"
-          min-width="110"
+          min-width="90"
           label="订单结束时间">
           
         </el-table-column>
@@ -82,7 +82,7 @@
           min-width="90"
         >
           <template scope="scope">
-            {{new Number(scope.row.rideTime).thousand()}}
+            {{scope.row.rideTime}}
           </template>
         </el-table-column>
         <el-table-column
@@ -91,7 +91,7 @@
           min-width="85"
           >
           <template scope="scope">
-            {{new Number(scope.row.rideMileage).thousand()}}
+            {{scope.row.rideMileage}}
           </template>
         </el-table-column>
         <el-table-column
@@ -100,7 +100,7 @@
           min-width="60"
           >
            <template scope="scope">
-            {{new Number(scope.row.orderMoney).thousandFormat()}}
+            {{scope.row.orderMoney}}
           </template>
         </el-table-column>
         <el-table-column
@@ -109,7 +109,7 @@
           min-width="60"
         >
             <template scope="scope">
-            {{new Number(scope.row.couponAmount).thousandFormat()}}
+            {{scope.row.couponAmount}}
           </template>
         </el-table-column>
         <el-table-column
@@ -118,7 +118,7 @@
           min-width="60"
         >
             <template scope="scope">
-            {{new Number(scope.row.grantAmount).thousandFormat()}}
+            {{scope.row.grantAmount}}
           </template>
         </el-table-column>
         <el-table-column
@@ -127,7 +127,7 @@
           :render-header="rendHeader"
         >
           <template scope="scope">
-            {{new Number(scope.row.balanceAmount).thousandFormat()}}
+            {{scope.row.balanceAmount}}
           </template>
         </el-table-column>
       </el-table>
@@ -190,7 +190,7 @@
       /* width: 100%; */
       min-height: 102px;
       line-height: 40px;
-      background: #fff;
+      background:#faebd7;
       border: 1px solid #e7ecf1;
       overflow: hidden;
       padding-bottom: 17px;
@@ -272,7 +272,7 @@
     }
 
     #earD_body {
-      padding: 10px 20px 800px 20px;
+      padding: 10px 20px 20px 20px;
       background: #fff;
       border: 1px solid #e7ecf1;
       border-top: none;
@@ -379,7 +379,7 @@ export default {
       isMonth:false,
       AllTime:false,
       spceTime:false,
-      sumMoney: 0
+      sumMoney:0
     }
   },
   mounted () {
@@ -457,6 +457,7 @@ export default {
             var newArr = JSON.parse(res.text).data
             this.totalItems = Number(JSON.parse(res.text).totalItems)
             this.sumMoney = JSON.parse(res.text).sumMoney
+
             if (totalPage > 1) {
               this.pageShow = true
             } else {
@@ -696,7 +697,7 @@ export default {
     },
     getCityList () {
       request
-        .post(host + 'beepartner/admin/city/findCity')
+        .post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
@@ -706,7 +707,7 @@ export default {
           if (error) {
             console.log('error:', error)
           } else {
-            this.cityList = JSON.parse(res.text).data
+            this.cityList = res.body
           }
         })
     },

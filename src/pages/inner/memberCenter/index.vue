@@ -11,7 +11,8 @@
 						action=''
 						:http-request = 'uploadWay'
 						:on-success="handleAvatarSuccess"
-						:before-upload="beforeAvatarUpload">
+						:before-upload="beforeAvatarUpload"
+						style="margin-top:2px">
 						<img v-if="imageUrl" :src="imageUrl" class="avatar">
 					  <i v-else  class="icon iconfont icon-touxiang" style="font-size: 180px;line-height: 196px; color: #fff; margin-left: 7px;"></i>
 						<!-- <h3>点击上传营业执照</h3> -->
@@ -169,7 +170,7 @@
  	/* homepage_select */
  	.homepage_select {
  		/*width: 100%;*/
- 		min-height: 681px;
+ 		/* min-height: 681px; */
 		border: 1px solid #e7ecf1;
  		padding: 2px 20px 0 20px;
  		background: #fff;
@@ -430,6 +431,7 @@ export default {
           if (err) {
             console.log('err:' + err)
           } else {
+						console.log("请求用户信息",res)
             this.checkLogin(res)
 						this.name = JSON.parse(res.text).data.name
 						this.userName = JSON.parse(res.text).data.userName

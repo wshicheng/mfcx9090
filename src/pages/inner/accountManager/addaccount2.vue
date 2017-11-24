@@ -21,8 +21,8 @@
                         <el-radio :key="list.cityId" :myId="list.cityId" :label="list.cityId.toString()" v-for="list of cityList">{{list.cityName}}</el-radio>
                     </el-radio-group> -->
 
-                    <el-select v-model="ruleForm.alliance" placeholder="选择角色类型" v-on:input='remoteMethod'>
-                        <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()">
+                    <el-select v-model="ruleForm.alliance" placeholder="选择加盟商" v-on:input='remoteMethod'>
+                        <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.joinTarget=='1'?item.companyName:item.conName" :value="item.cityPartnerId.toString()">
                         </el-option>
                         <!--<el-option label="管理员" value="管理员"></el-option>-->
                         <!-- <el-option label="加盟商" value="加盟商"></el-option> -->

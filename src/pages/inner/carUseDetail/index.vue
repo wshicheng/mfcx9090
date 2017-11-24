@@ -36,10 +36,9 @@
               <tr>
                 <td class="lang">
                   <span class="prex">所属区域:</span>{{bikeInfo.cityName}}</td>
-                <!-- <td>
-                  <span class="prex">车辆位置:</span>{{bikeInfo.location}}</td> -->
-                <td class="lang">
-                  <span class="prex">所属加盟商:</span>{{bikeInfo.companyName}}</td>
+                <td>
+                  <span class="prex">车辆位置:</span>{{bikeInfo.location}}</td>
+          
               </tr>
               <tr>
               </tr>
@@ -73,27 +72,27 @@
               <el-table-column label="骑行时间（分钟）" prop="rideTime" min-width='80'>
 
               </el-table-column>
-              <el-table-column label="骑行里程(米)" prop="rideMileage" min-width='60'>
+              <el-table-column label="骑行里程(米)" prop="rideMileage" min-width='70'>
 
               </el-table-column>
               <el-table-column label="订单费用" prop="actualAmount" min-width='60'>
                 <template scope="scope">
-                  {{ new Number(scope.row.actualAmount).thousandFormat()}}
+                  {{ scope.row.actualAmount}}
                 </template>
               </el-table-column>
               <el-table-column label="优惠券支付(元)" prop="couponAmount" min-width='80'>
                 <template scope="scope">
-                  {{ new Number(scope.row.couponAmount).thousandFormat()}}
+                  {{ scope.row.couponAmount}}
                 </template>
               </el-table-column>
               <el-table-column label="赠送金额支付(元)" prop="grantAmount" min-width='80'>
                 <template scope="scope">
-                  {{ new Number(scope.row.grantAmount).thousandFormat()}}
+                  {{ scope.row.grantAmount}}
                 </template>
               </el-table-column>
               <el-table-column label="实际收益(元)" prop="balanceAmount" :render-header="rendHeader">
                 <template scope="scope">
-                  {{ new Number(scope.row.balanceAmount).thousandFormat()}}
+                  {{ scope.row.balanceAmount}}
                 </template>
               </el-table-column>
             </el-table>
@@ -201,7 +200,7 @@ export default {
         generationsName: '',
         model: '',
         location: '',
-        alliance: ''
+        alliance: '',
       }
     }
   },
@@ -233,6 +232,7 @@ export default {
           } else {
             this.pageShow = false
           }
+          console.log(this.bikeInfo)
         }
       })
     // this.getBikeEarnings(1)
@@ -494,7 +494,7 @@ div.carUseDetail {
   background: #fff;
   margin: 0 auto;
   border: 1px solid #e7ecf1;
-  width: 1000px;
+  width: 1200px;
 }
 
 div.carUseDetail table.info {

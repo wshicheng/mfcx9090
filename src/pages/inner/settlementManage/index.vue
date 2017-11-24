@@ -2,17 +2,17 @@
   <div class="settlementManager">
         <div class="settlementManager_head1">
             <el-row class="selectPlace">
-                <div class="citys" style="margin-left: 80px;">
-                <address class="joinArea" style="margin-left: -57px;">加盟区域：</address>
+                <div class="citys" style="margin-left: 80px;color:#555">
+                <address class="joinArea" style="margin-left: -57px;margin-right:10px">加盟区域</address>
                 <span @click="handleClick" myId='0' class="active">全部地区</span>
-                <span @click="handleClick" :key='item.id' :myId='item.cityId' v-for="item in cityList">{{item.cityName}}</span>
+                <span @click="handleClick" :key='item.id' :myId='item.code' v-for="item in cityList">{{item.name}}</span>
                 </div>
             </el-row>
         </div>
         <div class="settlementManager_head2">
             <el-row class="selectPlace">
-                <div class="citys" style="margin-left: 67px;">
-                    <address class="joinArea" style="margin-left: -57px;">结算单状态：</address>
+                <div class="citys" style="margin-left: 67px;color:#555">
+                    <address class="joinArea" style="margin-left: -57px;margin-right:10px">结算单状态</address>
                     <span :myStatus='0' @click="handleTypeClick">全部状态</span>
                     <span :myStatus='1' @click="handleTypeClick">待确认</span>
                     <span :myStatus='2' @click="handleTypeClick" class="active">待结算</span>
@@ -29,19 +29,30 @@
                 style="width: 100% font-size:13px; color: #6c6c6c;">
             <el-table-column prop="applyTimeStr" label="结算周期" min-width="200">
                <template scope="scope">
-                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId}}"> {{scope.row.applyTimeStr}}</router-link>
+                <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId,cityName:scope.row.cityName}}"> {{scope.row.applyTimeStr}}</router-link>
               </template>
             </el-table-column>
-            <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="200">
+            <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
                 <template scope="scope">
-                  {{new Number(scope.row.applyMoney).thousandFormat()}}
+                  {{scope.row.applyMoney}}
                 </template>
             </el-table-column>
-            <el-table-column prop="cityName" label="加盟区域" min-width="120">
+            <el-table-column prop="cityName" label="加盟区域" min-width="160">
+              <template scope="scope">
+                  {{scope.row.cityName}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="companyName" label="所属加盟商" min-width="150">
             </el-table-column>
             <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
+              <template scope="scope">
+                  {{scope.row.applyUserName}}
+              </template>
             </el-table-column>
             <el-table-column prop="confirmTimeStr" label="结算确认日期" min-width="140">
+              <template scope="scope">
+                  {{scope.row.confirmTimeStr}}
+              </template>
             </el-table-column>
             <el-table-column label="操作" prop="del">
               <template scope="scope">
@@ -57,6 +68,7 @@
                 </a>
                 <!--dialog 弹窗开始-->
                  <el-dialog id="settle_input" title="结算确认" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
+                    <span id="tips">*当财务给加盟商线下打款后,才可以点击结算按钮，更改结算状态</span>
                     <el-form :model="editAccount">
                       <el-form-item label="结算周期:" :label-width="formLabelWidth" style="width: 300px;">
                         <el-input v-model="editAccount.applyTimeStr" :readonly="true" style="border:none;" auto-complete="off"></el-input>
@@ -64,7 +76,7 @@
                       <el-form-item label="加盟商编号:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
                         <el-input v-model="editAccount.cityPartnerId" style="border:none;"  :readonly="true"></el-input>
                       </el-form-item>
-                      <el-form-item label="加盟企业名称:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
+                      <el-form-item id="com" label="加盟企业名称/个人姓名:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
                         <el-input v-model="editAccount.companyName" style="border:none;"  :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="加盟地区:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
@@ -74,7 +86,7 @@
                         <el-input v-model="editAccount.applyUserName" style="border:none;"  auto-complete="off" :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="结算金额:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
-                        <el-input  style="border:none;" :value="new Number(editAccount.applyMoney).thousandFormat()"  auto-complete="off" :readonly="true" ></el-input>
+                        <el-input  style="border:none;" :value="editAccount.applyMoney"  auto-complete="off" :readonly="true" ></el-input>
                       </el-form-item>
                       <el-form-item label="备注:" :label-width="formLabelWidth">
                         <el-input type="textarea" v-model="editAccount.description" style="width: 400px;  margin-top: -10px"></el-input>
@@ -171,6 +183,7 @@ export default {
           } else {
             this.checkLogin(res)
             var data = JSON.parse(res.text).data
+            console.log("findWithDraw",data)
             this.totalItems = Number(JSON.parse(res.text).totalItems)
             var totalPage = Number(JSON.parse(res.text).totalPage)
             if (totalPage > 1) {
@@ -181,6 +194,7 @@ export default {
             var newData = this.tableDataDel(data)
             this.tableData = newData
               this.loading2 = false
+              
           }
         })
     },
@@ -237,7 +251,7 @@ export default {
     },
     getCityList () {
       request
-        .post(host + 'beepartner/admin/city/findCity')
+        .post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'
@@ -248,7 +262,7 @@ export default {
             console.log('error:', error)
           } else {
             this.checkLogin(res)
-            this.cityList = JSON.parse(res.text).data
+            this.cityList = res.body
           }
         })
     },
@@ -285,6 +299,7 @@ export default {
               this.loading2 = false
               var newData = this.tableDataDel(data)
               this.tableData = newData
+              console.log(this.tableData)
             }
            
           }
@@ -384,15 +399,21 @@ export default {
 }
 </script>
 <style scoped>
-
+#tips {
+   margin-top: -70px;
+    position: absolute;
+    font-size: 12px;
+    color: #ccc;
+    margin-left: 10px;
+}
 div.settlementManager_head1 {
     padding: 20px 10px 5px 10px;
-    background: #fff;
+    background: #faebd7;
 }
 
 div.settlementManager_head2 {
     padding: 5px 10px 20px 10px;
-    background: #fff;
+    background: #faebd7;
 }
 
 div.selectPlace address {
