@@ -339,6 +339,10 @@ export default {
       if (row.status!= 2) {
         return
       } else {
+        
+        // 打开结算弹窗先清空上次输入的备注
+        this.editAccount.description = ""
+
         this.dialogVisible = true
         this.editAccount.applyTimeStr = row.applyTimeStr
         this.editAccount.cityPartnerId = row.cityPartnerId

@@ -740,7 +740,8 @@ export default {
     },
     // 改变加盟对象 企业、个人
     clickChange(){
-
+      this.joinMode = joinMode;
+      this.getJoinAreaList()
     //  this.isEmpty()
 
       if(this.radio=='1'){
@@ -820,9 +821,7 @@ export default {
           }
         },200)
       
-      this.joinMode = joinMode;
-      this.getJoinAreaList()
-      
+    
     },    
     // 添加多个加盟区域
     addMutiCity(){

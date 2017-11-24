@@ -38,7 +38,7 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousandFormat()}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousandFormat()}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousandFormat()}} </span>辆)</td>
             </tr>
             <!-- 独家 -->
             <tr v-if="relationDatas.joinMode=='1'">
@@ -78,7 +78,7 @@
             </tr>
             <tr v-if="relationDatas.joinMode=='2'">
               <td>
-                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent + '%'}}</td>
+                <span class="prex">后期分成比例：</span>{{new Number(relationDatas.divisionPercent).thousandFormat() + '%'}}</td>
               <td>
                 <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
               
@@ -321,6 +321,8 @@ export default {
               // var newdrawalData = result.map((item)=>{
               //   return Object.assign({},item,{applyTime:moment(item.applyTime).format('YYYY-MM-DD HH:MM:SS')})
               // })
+               this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
+               this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
               if (totalPage > 1) {
                 this.pageShow = true
               } else {
@@ -464,6 +466,8 @@ export default {
               // var newdrawalData = result.map((item)=>{
               //   return Object.assign({},item,{applyTime:moment(item.applyTime).format('YYYY-MM-DD HH:MM:SS')})
               // })
+               this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
+               this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
               if (totalPage > 1) {
                 this.pageShow = true
               } else {
@@ -517,6 +521,7 @@ export default {
             }
             this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
             this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
+            console.log(JSON.parse(res.text))
           })
       } else {
         this.pageShow = false

@@ -139,7 +139,8 @@
         :current-page.sync="currentPage"
         :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="totalItems">
+        :total="totalItems"
+        id="pageInput">
       </el-pagination>
 		</div>
 	</div>
@@ -171,6 +172,7 @@
     border: 1px solid orange;
     border-radius: 4px;
   }
+  #pageInput .el-pagination__editor{width:50px}
 
   /* 加盟商样式 */
     html,body,h1,h2,h3,h4,h5,h6,td,tr,th,table,thead,tbody,dl,dt,dd,p,span,ul,li,ol {

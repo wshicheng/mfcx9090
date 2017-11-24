@@ -1,7 +1,7 @@
 <template>
   <div style="margin-right:20px;overflow:auto">
     <div style="background-color:#faebd7;">
-      <div style="background-color:#faebd7;font-size:14px;color:#555" class="partner_new">
+      <div style="background-color:#faebd7;font-size:14px;color:#555;margin-bottom:5px" class="partner_new">
         <address class="joinArea joinMode">加盟模式</address>
         <span id="joinMode">
         <span class="active"  @click="handleClick" mode="0">全部</span>
@@ -23,7 +23,7 @@
       <div style="padding-top:10px">
         <div id="partner_header"  style="background-color:#faebd7;font-size:14px;margin-left:13px;margin-right:-20px">
           <label>
-            <span style="color:#555">关键字</span>
+            <span style="color:#555;margin-right:-15px;margin-left:15px">关键字</span>
               <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1">
           </label>
           <label>
@@ -36,7 +36,7 @@
       <div>
         <div id="partner_data_select"  style="background-color:#faebd7;font-size:14px">
           <label>
-            <span style="color:#555;margin-right:10px">加盟日期</span>
+            <span style="color:#555;margin-right:7px;margin-left:5px">加盟日期</span>
             <el-date-picker
             v-model="startTime"
             type="date"
@@ -368,8 +368,8 @@ div.menuIcon i.icon-jian {
   width:700px;
 }
 #partner_header .partner_my_input1 {
-    width: 186px;
-    height: 30px;
+    width: 192px;
+    height: 34px;
     outline: none;
     margin-left: 25px;
     border-radius: 4px;
@@ -379,9 +379,9 @@ div.menuIcon i.icon-jian {
 }
 
 #partner_header .partner_my_input2 {
-    width: 146px;
+    width: 191px;
     border-radius: 4px;
-    height: 30px;
+    height: 34px;
     outline: none;
     margin-left: 10px;
     text-indent: 10px;
@@ -913,7 +913,7 @@ export default {
               var phone = this.phone.trim();
               var startTime = this.startTime;
               var endTime = this.endTime;
-            
+                
                 request
                   .post(host + "beepartner/admin/cityPartner/findCityPartner")
                   .withCredentials()
@@ -1966,25 +1966,65 @@ export default {
       },
       deep:true
     },
-    startTime: {
+    "startTime": {
       handler: function(val, oldVal) {
-        if (val === "" && this.endTime === "") {
+        // if (val === "" && this.endTime === "") {
+        //   this.loadData();
+        // }
+        // var startTime = new Date(val).getTime();
+        // var endTime = new Date(this.startTime).getTime();
+        // endTime = isNaN(endTime) ? 0 : endTime;
+         if (val.toString().length === 0 && this.endTime.toString().length === 0) {
           this.loadData();
         }
-        var startTime = new Date(val).getTime();
-        var endTime = new Date(this.startTime).getTime();
-        endTime = isNaN(endTime) ? 0 : endTime;
+        var startTime = new Date(val).getTime()
+        var endTime = new Date(this.startTime).getTime()
+        endTime = isNaN(endTime) ? 0 : endTime
+        console.log(endTime.toString().length)
+        if ((startTime > endTime) && endTime.toString().length > 1) {
+          this.$message({
+            type: 'warning',
+            message: '开始日期不能大于结束日期'
+          })
+        } else if ((startTime > endTime) && endTime.toString().length === 1) {
+          // this.$message({
+          //   type: 'error',
+          //   message: '请输入结束日期'
+          // })
+        } else {
+          return
+        }
       },
       deep: true
     },
-    endTime: {
+    "endTime": {
       handler: function(val, oldVal) {
-        if (val === "" && this.startTime === "") {
-          this.loadData();
+        // if (val === "" && this.startTime === "") {
+        //   this.loadData();
+        // }
+        // var endTime = new Date(val).getTime();
+        // var startTime = new Date(this.startTime).getTime();
+        // startTime = isNaN(startTime) ? 0 : startTime;
+        if (val.toString().length === 0 && this.startTime.toString().length === 0) {
+          this.loadData()
         }
-        var endTime = new Date(val).getTime();
-        var startTime = new Date(this.startTime).getTime();
-        startTime = isNaN(startTime) ? 0 : startTime;
+        var endTime = new Date(val).getTime()
+        var startTime = new Date(this.startTime).getTime()
+        startTime = isNaN(startTime) ? 0 : startTime
+        console.log(startTime.toString().length)
+        if ((endTime < startTime) && startTime.toString().length > 1) {
+          this.$message({
+            type: 'warning',
+            message: '开始日期不能大于结束日期'
+          })
+        } else if ((endTime > startTime) && startTime.toString().length === 1) {
+          this.$message({
+            type: 'warning',
+            message: '开始日期不能为空'
+          })
+        } else {
+          return
+        }
       },
       deep: true
     }

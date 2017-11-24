@@ -122,10 +122,13 @@
                       <el-radio label="自然月" value='0'></el-radio>
                       <el-radio label="自然周(周一到周日)" value='1'></el-radio>
                       <el-radio label="自定义" value='2'></el-radio>
-                      <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
-                        v-model="list.circleDays"
-                        placeholder="请输入正整数（天）">
-                      </el-input>  
+                      <div id="customInputId" v-show="list.wType=='自定义'">
+                        <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
+                          v-model="list.circleDays"
+                          placeholder="请输入正整数（天）">
+                        </el-input>  
+                        <span>天</span>
+                      </div>
                     </el-radio-group>
                   </el-form-item>
                   <h1 class="form_table_h2">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
@@ -397,7 +400,22 @@ div.menuIcon i.icon-jian{right:-36px;}
   width: 120px;
   height: 50px;
 }
+#customInputId {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+}
 
+#customInputId span {
+    position: absolute;
+    width: 30px;
+    line-height: 20px;
+    top: 9px;
+    font-size: 14px;
+    text-align: center;
+    clear: both;
+    float: left;
+}
 #addpartner_title {
   position: absolute;
   left: 0px;
@@ -536,6 +554,7 @@ export default {
       }, 1000);
     }
     return {
+      joinMode:'1',
       joinTarget:this.$route.query.joinTarget,
       row:'',
       recodeCityList:'',
@@ -823,7 +842,7 @@ export default {
       
     },
     // 改变加盟模式
-    checkJoinMode(){
+    checkJoinMode(val){
       // 清空中间部分验证不通过的信息
      setTimeout(function(){
           if($("#isEmpty .is-required.is-error")){
@@ -839,6 +858,29 @@ export default {
             $("#isEmpty div.el-form-item.is-error").removeClass("is-error")
           }
         },200)
+        this.joinMode = val
+        request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          unUsed: 1,
+          joinMode:this.joinMode
+        })
+        .end((error,res)=>{
+          if(error){
+            console.log(error)
+          }else{
+            var result = JSON.parse(res.text)
+            this.ruleForm.options = result.map((item)=>{
+              return {
+                value:item.code,
+                label:item.name
+              }
+            })
+          }
+        })
     },
 
     checkSettleType(val){
@@ -1076,7 +1118,7 @@ export default {
          // 表单验证除加盟与结算信息之外的内容
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.ruleForm.file === "" && this.imageUrl === null && this.joinMode=="1") {
+          if (this.ruleForm.file === "" && this.imageUrl === null && this.joinTarget=="1") {
             this.$message({
               message: "请上传营业执照",
               type: "warning"
