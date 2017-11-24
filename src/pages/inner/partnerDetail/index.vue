@@ -45,7 +45,7 @@
               <td>
                 <span class="prex">加盟资金：</span>￥{{relationDatas.subscriptionMoney + '元'}}</td>
               <td>
-                <span class="prex">结算周期：</span>{{relationDatas.circleDays?relationDatas.circleDays+'天':(relationDatas.wType=='0'?"每周":"每月")}}
+                <span class="prex">结算周期：</span>{{relationDatas.wType=='0'?"每月":(relationDatas.wType=='1'?"每周":relationDatas.circleDays+'天')}}
               </td>
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
@@ -150,7 +150,7 @@
             </tr>
              <tr>
               <td>
-                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车/天</td>
+                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车.天</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
@@ -219,8 +219,8 @@
           </el-tab-pane> -->
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
           <div class="total">
-            <span>累计已结算：{{franchiseeDetail.alreadyWidthDrawTimes}} 次</span>
-            <span>累计获得收益：{{franchiseeDetail.alreadyWidthDrawMoney}} 元</span>
+            <span>累计已结算：{{alreadyWidthDrawTimes}} 次</span>
+            <span>累计获得收益：{{alreadyWidthDrawMoney}} 元</span>
           </div>
           <el-table :data="drawalData" style="width: 100%">
             <el-table-column prop="month" label="结算周期">
@@ -267,6 +267,8 @@ import {isOwnEmpty} from '../../../util/util.js'
 export default {
   data: function () {
     return {
+      alreadyWidthDrawTimes:"",
+      alreadyWidthDrawMoney:"",
       relationDatas:'',
       relationJoinTime:'',
       relationFirstDealDate:'',
@@ -296,7 +298,7 @@ export default {
        var id = this.$route.params.id.split('&')[0]
       var cityPartnerId = this.$route.params.id.split('&')[1]
       var val = this.currentPage3
-      request.post(host + 'beepartner/admin/cityPartner/getWithdrawals')
+      request.post(host + 'beepartner/admin/withDraw/getWithdrawals')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -489,7 +491,7 @@ export default {
         this.getBikeDetail()
       } else if (tab.label === '结算记录') {
         this.activeName = '结算记录'
-        request.post(host + 'beepartner/admin/cityPartner/getWithdrawals')
+        request.post(host + 'beepartner/admin/withDraw/getWithdrawals')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -517,6 +519,8 @@ export default {
               }
               this.drawalData = result
             }
+            this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
+            this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
           })
       } else {
         this.pageShow = false

@@ -538,6 +538,30 @@ export default {
       }, 1000);
     }
     
+    var checkPhone = (rule,value,callback)=>{
+      if (!value) {
+        return callback(new Error("请输入手机号码"));
+      }
+      setTimeout(() => {
+        if (!/^1[345678]\d{9}$/.test(this.ruleForm.conPhone)) {
+          callback(new Error("请输入正确的手机号码"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    }
+    var checkPhone1 = (rule,value,callback)=>{
+      if (!value) {
+        return callback(new Error("请输入手机号码"));
+      }
+      setTimeout(() => {
+        if (!/^1[345678]\d{9}$/.test(this.ruleForm.phone)) {
+          callback(new Error("请输入正确的手机号码"));
+        } else {
+          callback()
+        }
+      }, 1000);
+    }
     return {
  
       joinMode:"1",
@@ -600,12 +624,10 @@ export default {
         idCard: [{ validator: checkId, required: true, trigger: "blur" }],
         conIdCard: [{ validator: checkId1, required: true, trigger: "blur" }],
         phone: [
-          { required: true,message: "请输入正确的手机号", trigger: "blur" },
-          { min: 11, max:11,message: "请输入正确的手机号", trigger: "blur" }
+          { validator: checkPhone1,required: true, trigger: "blur" },
         ],
          conPhone: [
-          { required: true,message: "请输入正确的手机号", trigger: "blur" },
-          { min: 11,max:11, message: "请输入正确的手机号", trigger: "blur" }
+          { validator: checkPhone,required: true, trigger: "blur" },
         ],
         email: [{ message: "请填写正确邮箱", trigger: "blur" }],
         conEmail: [{ message: "请填写正确邮箱", trigger: "blur" }],
