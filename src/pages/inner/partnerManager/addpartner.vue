@@ -143,7 +143,7 @@
               <el-radio label="自然月" value='0'></el-radio>
               <el-radio label="自然周(周一到周日)" value='1'></el-radio>
               <el-radio label="自定义" value='2'></el-radio>
-              <div v-show="list.wType=='自定义'" style="display:inline">
+              <div id="customInputId" v-show="list.wType=='自定义'">
                 <el-input :id="'circleDays'+ index" class="customInput"  
                   v-model="list.circleDays"
                   placeholder="请输入正整数（天）"
@@ -432,6 +432,23 @@ div.menuIcon i.icon-jian{right:-36px;}
   line-height: 40px;
   color: #444;
   border-bottom: 1px solid #eee;
+}
+
+#customInputId {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+}
+
+#customInputId span {
+    position: absolute;
+    width: 30px;
+    line-height: 20px;
+    top: 9px;
+    font-size: 14px;
+    text-align: center;
+    clear: both;
+    float: left;
 }
 
 #addpartner_title span {

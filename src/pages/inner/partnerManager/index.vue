@@ -27,11 +27,13 @@
               <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1">
           </label>
           <label>
-            <span style="color:#555;margin-left:20px;">联系方式</span>
+            <span style="color:#555;margin-left:12px;">联系方式</span>
               <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
           </label>
         </div>
-
+        <div style="clear:both"></div>
+      </div>
+      <div>
         <div id="partner_data_select"  style="background-color:#faebd7;font-size:14px">
           <label>
             <span style="color:#555;margin-right:10px">加盟日期</span>
@@ -52,7 +54,6 @@
 
           <button class="my_btn" @click="queryInfo">查询</button>
         </div>
-        <div style="clear:both"></div>
       </div>
     </div>
     <div id="partner_table">
@@ -306,10 +307,10 @@ address.joinArea {
     font-style: normal;
     display: inline;
     font-size: 14px;
-    margin-left:20px;
-    margin-right:10px;
-    float:left;
-    height:40px;
+    margin-left: 34px;
+    margin-right: 10px;
+    float: left;
+    height: 40px;
 }
 #joinArea span {
   line-height:30px;
@@ -360,37 +361,39 @@ div.menuIcon i.icon-jian {
 #partner_header {
   height: 55px;
   background: #fff;
-  border: 1px solid #e7ecf1;
+  /* border: 1px solid #e7ecf1; */
   border-bottom: none;
   float:left;
   padding-left:20px;
-  width:500px;
+  width:700px;
 }
 #partner_header .partner_my_input1 {
-  width: 150px;
-  height: 30px;
-  outline: none;
-  margin-left:10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  text-indent: 10px;
-  display: inline-block;
+    width: 186px;
+    height: 30px;
+    outline: none;
+    margin-left: 25px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    text-indent: 10px;
+    display: inline-block;
 }
+
 #partner_header .partner_my_input2 {
-  width: 150px;
-  border-radius: 4px;
-  height: 30px;
-  outline: none;
-  margin-left:10px;
-  text-indent: 10px;
-  border: 1px solid #ddd;
-  display: inline-block;
+    width: 146px;
+    border-radius: 4px;
+    height: 30px;
+    outline: none;
+    margin-left: 10px;
+    text-indent: 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
 } 
 #partner_data_select {
-  height:55px;
-  background: #fff;
-  border: 1px solid #e7ecf1;
-  border-top: none;
+    height: 55px;
+    background: #fff;
+    margin-left: 33px;
+    /* border: 1px solid #e7ecf1; */
+    border-top: none;
 }
 
 #partner_data_select button:hover {

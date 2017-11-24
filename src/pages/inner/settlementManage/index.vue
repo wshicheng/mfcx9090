@@ -3,7 +3,7 @@
         <div class="settlementManager_head1">
             <el-row class="selectPlace">
                 <div class="citys" style="margin-left: 80px;color:#555">
-                <address class="joinArea" style="margin-left: -57px;margin-right:10px">加盟区域</address>
+                <address class="joinArea" style="margin-left: -57px;">加盟区域</address>
                 <span @click="handleClick" myId='0' class="active">全部地区</span>
                 <span @click="handleClick" :key='item.id' :myId='item.code' v-for="item in cityList">{{item.name}}</span>
                 </div>
@@ -12,7 +12,7 @@
         <div class="settlementManager_head2">
             <el-row class="selectPlace">
                 <div class="citys" style="margin-left: 67px;color:#555">
-                    <address class="joinArea" style="margin-left: -57px;margin-right:10px">结算单状态</address>
+                    <address class="joinArea" style="margin-left: -57px;margin-right: 1px;">结算单状态</address>
                     <span :myStatus='0' @click="handleTypeClick">全部状态</span>
                     <span :myStatus='1' @click="handleTypeClick">待确认</span>
                     <span :myStatus='2' @click="handleTypeClick" class="active">待结算</span>
