@@ -38,7 +38,7 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousandFormat()}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{new Number(1111).thousand()}} </span>辆)</td>
             </tr>
             <!-- 独家 -->
             <tr v-if="relationDatas.joinMode=='1'">
@@ -50,7 +50,7 @@
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">授权费率：</span>{{new Number(relationDatas.licenseFeeRate)+"%"}}</td>
+                <span class="prex">授权费率：</span>{{new Number(relationDatas.licenseFeeRate).thousand()+"%"}}</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
@@ -72,13 +72,13 @@
           </tr>
              <tr v-if="relationDatas.joinMode=='2'">
               <td>
-                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车.天</td>
+                <span class="prex">运营管理费：</span>{{new Number(relationDatas.manageFee).thousandFormat()}}元/车.天</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
             <tr v-if="relationDatas.joinMode=='2'">
               <td>
-                <span class="prex">后期分成比例：</span>{{new Number(relationDatas.divisionPercent).thousandFormat() + '%'}}</td>
+                <span class="prex">后期分成比例：</span>{{new Number(relationDatas.divisionPercent).toFixed(1) + '%'}}</td>
               <td>
                 <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
               
@@ -136,7 +136,7 @@
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
                 <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousandFormat()}}辆(已分配： <span class="num">{{new Number(relationBikeNum).thousandFormat()}}</span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配： <span class="num">{{new Number(relationBikeNum).thousand()}}</span>辆)</td>
             </tr>
             <tr>
               <td>
@@ -150,13 +150,13 @@
             </tr>
              <tr>
               <td>
-                <span class="prex">运营管理费：</span>{{relationDatas.manageFee}}元/车.天</td>
+                <span class="prex">运营管理费：</span>{{new Number(relationDatas.manageFee).thousandFormat()}}元/车.天</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
             <tr>
               <td>
-                <span class="prex">后期分成比例：</span>{{relationDatas.divisionPercent + '%'}}</td>
+                <span class="prex">后期分成比例：</span>{{new Number(relationDatas.divisionPercent).toFixed(1) + '%'}}</td>
               <td>
                 <span class="prex">加盟模式：</span>{{relationDatas.joinMode=="1"?'独家':'非独家'}}</td>
               
@@ -220,14 +220,14 @@
         <el-tab-pane label="结算记录" name="结算记录" class="recodeTable">
           <div class="total">
             <span>累计已结算：{{alreadyWidthDrawTimes}} 次</span>
-            <span>累计获得收益：{{alreadyWidthDrawMoney}} 元</span>
+            <span>累计获得收益：{{new Number(alreadyWidthDrawMoney).thousandFormat()}} 元</span>
           </div>
           <el-table :data="drawalData" style="width: 100%">
             <el-table-column prop="month" label="结算周期">
             </el-table-column>
             <el-table-column prop="money" label="结算金额">
               <template scope="scope">
-                {{scope.row.money}}
+                {{new Number(scope.row.money).thousandFormat()}}
               </template>
             </el-table-column>
             <el-table-column prop="applyTimeS" label="申请时间">
@@ -263,7 +263,7 @@ import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 import moment from 'moment'
-import {isOwnEmpty} from '../../../util/util.js'
+import {isOwnEmpty,thousand,thousandFormat} from '../../../util/util.js'
 export default {
   data: function () {
     return {
@@ -321,8 +321,8 @@ export default {
               // var newdrawalData = result.map((item)=>{
               //   return Object.assign({},item,{applyTime:moment(item.applyTime).format('YYYY-MM-DD HH:MM:SS')})
               // })
-               this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
-               this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
+               this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner?JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney:0
+               this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner?JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes:0
               if (totalPage > 1) {
                 this.pageShow = true
               } else {
@@ -519,8 +519,8 @@ export default {
               }
               this.drawalData = result
             }
-            this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney
-            this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes
+            this.	alreadyWidthDrawMoney = JSON.parse(res.text).cityPartner?JSON.parse(res.text).cityPartner.alreadyWidthDrawMoney:0
+            this.alreadyWidthDrawTimes = JSON.parse(res.text).cityPartner?JSON.parse(res.text).cityPartner.alreadyWidthDrawTimes:0
             console.log(JSON.parse(res.text))
           })
       } else {

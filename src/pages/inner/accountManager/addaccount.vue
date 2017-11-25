@@ -270,7 +270,7 @@ export default {
         name: [
           { message: '请输入姓名', trigger: 'blur' },
         ],
-        // phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }]
+        phoneNo: [{ validator: validatePhoneNo, trigger: 'blur' }]
         // email: [{ validator: validateEmail, trigger: 'blur' }]
       }
     }

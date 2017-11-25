@@ -909,11 +909,48 @@ export default {
           // 查询
            this.isSearch = true;
 
-              var name = this.name.trim();
-              var phone = this.phone.trim();
-              var startTime = this.startTime;
-              var endTime = this.endTime;
-                
+              // 判断点击城市的时候清空查询信息，点击独家非独家不清空,要进行日期验证
+              if(!(e.target.innerText == '全部'||e.target.innerText == '独家'||e.target.innerText=='非独家')){
+                this.name = ''
+                this.phone = ''
+                this.startTime = ''
+                this.endTime = ''
+                console.log("---------------------------------")
+              }else{
+
+                var _startTime = new Date(this.startTime).getTime()
+                  var _endTime = new Date(this.endTime).getTime()
+                  _endTime = isNaN(_endTime) ? 0 : _endTime
+                  _startTime = isNaN(_startTime) ? 0 : _startTime
+
+                  if (_endTime > 1 && _startTime <= 1) {
+                      this.$message({
+                        type: 'warning',
+                        message: '开始日期不能为空'
+                      })
+                      return
+                 } 
+                if (_endTime < 0) {
+                  this.$message({
+                    type: 'warning',
+                    message: '结束日期不能为空'
+                  })
+                } else {
+                  if(_endTime<_startTime){
+                    this.$message({
+                      type: 'warning',
+                      message: '开始日期不能大于结束日期'
+                    })
+                    return
+                  }
+                }
+              }
+
+
+               var name = this.name.trim();
+               var phone = this.phone.trim();
+               var startTime = this.startTime;
+               var endTime = this.endTime;
                 request
                   .post(host + "beepartner/admin/cityPartner/findCityPartner")
                   .withCredentials()
@@ -923,16 +960,20 @@ export default {
                   .send({
                     joinMode:$("#joinMode span.active").attr("mode"),
                     cityId:$("#joinArea span.active").attr("myId"),
-                    name: this.name.trim(),
-                    phone: this.phone.trim(),
-                    startTime:
-                      this.startTime === ""
-                        ? ""
-                        : moment(this.startTime).format("YYYY-MM-DD"),
-                    endTime:
-                      this.endTime === ""
-                        ? ""
-                        : moment(this.endTime).format("YYYY-MM-DD")
+                    // name: this.name.trim(),
+                    // phone: this.phone.trim(),
+                    // startTime: 
+                    //   this.startTime === ""
+                    //     ? ""
+                    //     : moment(this.startTime).format("YYYY-MM-DD"),
+                    // endTime:
+                    //   this.endTime === ""
+                    //     ? ""
+                    //     : moment(this.endTime).format("YYYY-MM-DD")
+                    name: name,
+                    phone: phone,
+                    startTime: startTime === "" ? "" : moment(startTime).format("YYYY-MM-DD"),
+                    endTime: endTime === "" ? "" : moment(endTime).format("YYYY-MM-DD")
                   })
                   .end((err, res) => {
                     if (err) {
@@ -1396,8 +1437,42 @@ export default {
 
       var name = this.name.trim();
       var phone = this.phone.trim();
-      var startTime = this.startTime;
-      var endTime = this.endTime;
+      // var startTime = this.startTime;
+      // var endTime = this.endTime;
+      var startTime,endTime
+      if (this.startTime === '' || this.endTime === '') {
+        startTime = ''
+        endTime = ''
+      } else {
+        startTime = moment(this.startTime).format('YYYY-MM-DD')
+        endTime = moment(this.endTime).format('YYYY-MM-DD')
+      }
+       var _startTime = new Date(this.startTime).getTime()
+        var _endTime = new Date(this.endTime).getTime()
+        _endTime = isNaN(_endTime) ? 0 : _endTime
+        _startTime = isNaN(_startTime) ? 0 : _startTime
+
+         if (_endTime > 1 && _startTime <= 1) {
+            this.$message({
+              type: 'warning',
+              message: '开始日期不能为空'
+            })
+            return
+          } 
+        if (_endTime < 0) {
+            this.$message({
+              type: 'warning',
+              message: '结束日期不能为空'
+            })
+          } else {
+            if(_endTime<_startTime){
+              this.$message({
+                type: 'warning',
+                message: '开始日期不能大于结束日期'
+              })
+              return
+            }
+          }
       if (
         name.length === 0 &&
         phone.length === 0 &&
@@ -1966,68 +2041,6 @@ export default {
       },
       deep:true
     },
-    "startTime": {
-      handler: function(val, oldVal) {
-        // if (val === "" && this.endTime === "") {
-        //   this.loadData();
-        // }
-        // var startTime = new Date(val).getTime();
-        // var endTime = new Date(this.startTime).getTime();
-        // endTime = isNaN(endTime) ? 0 : endTime;
-         if (val.toString().length === 0 && this.endTime.toString().length === 0) {
-          this.loadData();
-        }
-        var startTime = new Date(val).getTime()
-        var endTime = new Date(this.startTime).getTime()
-        endTime = isNaN(endTime) ? 0 : endTime
-        console.log(endTime.toString().length)
-        if ((startTime > endTime) && endTime.toString().length > 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能大于结束日期'
-          })
-        } else if ((startTime > endTime) && endTime.toString().length === 1) {
-          // this.$message({
-          //   type: 'error',
-          //   message: '请输入结束日期'
-          // })
-        } else {
-          return
-        }
-      },
-      deep: true
-    },
-    "endTime": {
-      handler: function(val, oldVal) {
-        // if (val === "" && this.startTime === "") {
-        //   this.loadData();
-        // }
-        // var endTime = new Date(val).getTime();
-        // var startTime = new Date(this.startTime).getTime();
-        // startTime = isNaN(startTime) ? 0 : startTime;
-        if (val.toString().length === 0 && this.startTime.toString().length === 0) {
-          this.loadData()
-        }
-        var endTime = new Date(val).getTime()
-        var startTime = new Date(this.startTime).getTime()
-        startTime = isNaN(startTime) ? 0 : startTime
-        console.log(startTime.toString().length)
-        if ((endTime < startTime) && startTime.toString().length > 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能大于结束日期'
-          })
-        } else if ((endTime > startTime) && startTime.toString().length === 1) {
-          this.$message({
-            type: 'warning',
-            message: '开始日期不能为空'
-          })
-        } else {
-          return
-        }
-      },
-      deep: true
-    }
   }
 };
 </script>

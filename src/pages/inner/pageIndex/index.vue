@@ -9,7 +9,7 @@
           <span class="detail_right" @click="$router.push({path:'/index/earningsDetail?type=0'})">&gt;&gt;</span>
         </el-col>
         <el-col>
-          <incomingVueChart></incomingVueChart>
+            <incomingVueChart></incomingVueChart>
         </el-col>
       </el-row>
     </div>

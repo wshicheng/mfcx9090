@@ -740,19 +740,22 @@ export default {
     },
     // 改变加盟对象 企业、个人
     clickChange(){
-      this.joinMode = joinMode;
-      this.getJoinAreaList()
+    
     //  this.isEmpty()
 
       if(this.radio=='1'){
+        this.joinMode = "1"
        this.newFormObject.joinMode='1'
       }else{
+        this.joinMode = "2"
         this.newFormObject.joinMode='2'
       }
+
+      this.getJoinAreaList();
        this.$refs['ruleForm'].resetFields();
       var that = this
 
-      // // 清空错误的验证提示
+      // 清空错误的验证提示
         setTimeout(function(){
           if($("#isEmpty .is-required.is-error")){
                 $("#div .is-required.is-error").removeClass("is-error")
@@ -800,12 +803,14 @@ export default {
       }
       this.imageUrl = ""
       this.checked = false
-      this.getJoinAreaList();
+      
     
     },
     // 改变加盟模式 独家、非独家
     checkJoinMode(joinMode){
      // 清空中间部分验证不通过的信息
+     this.joinMode = joinMode;
+     this.getJoinAreaList();
      setTimeout(function(){
           if($("#isEmpty .is-required.is-error")){
             $("#div .is-required.is-error").removeClass("is-error")
@@ -1321,6 +1326,12 @@ export default {
                 })
             }
           })
+        },
+        deep:true
+      },
+      "joinMode":{
+        handler:function(){
+          this.getJoinAreaList();
         },
         deep:true
       }

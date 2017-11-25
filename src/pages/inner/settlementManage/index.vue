@@ -384,7 +384,7 @@ export default {
                 message: '加盟商将收到你的结算信息'
               })
             } else {
-              this.$message('用户名不存在')
+              this.$message('结算失败')
             }
           }
           var that = this

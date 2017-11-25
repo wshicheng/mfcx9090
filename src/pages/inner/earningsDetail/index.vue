@@ -22,7 +22,7 @@
           <el-button @click='getDailyDate' v-bind:class="{active: isDay}">今日</el-button>
           <el-button @click='getWeekDate' v-bind:class="{active: isWeek}">本周</el-button>
           <el-button @click='getMonthDate' v-bind:class="{active: isMonth}">本月</el-button>
-          <!-- <el-button @click='getAllDate' v-bind:class="{active: AllTime}">所有日期</el-button> -->
+          <el-button @click='getAllDate' v-bind:class="{active: AllTime}">近三个月</el-button>
           <el-button @click='handleChangeType' v-bind:class="{active: spceTime}">指定时间段</el-button>
         </div>
         <el-date-picker 
@@ -42,7 +42,7 @@
 			<div id="earD_all">
 				<h1>
           <!-- <el-tooltip class="item" effect="dark" content="所有车辆骑行收益" placement="bottom-end">  -->
-					  <p>合计：<span>{{sumMoney}}元</span></p>
+					  <p>合计：<span>{{sumMoney.thousandFormat()}}元</span></p>
           <!-- </el-tooltip> -->
 					<p @click='export_excel'>导出明细到Excel</p>
 				</h1>
@@ -82,7 +82,7 @@
           min-width="90"
         >
           <template scope="scope">
-            {{scope.row.rideTime}}
+            {{(scope.row.rideTime).thousand()}}
           </template>
         </el-table-column>
         <el-table-column
@@ -91,7 +91,7 @@
           min-width="85"
           >
           <template scope="scope">
-            {{scope.row.rideMileage}}
+            {{(scope.row.rideMileage).thousand()}}
           </template>
         </el-table-column>
         <el-table-column
@@ -100,7 +100,7 @@
           min-width="60"
           >
            <template scope="scope">
-            {{scope.row.orderMoney}}
+            {{(scope.row.orderMoney).thousandFormat()}}
           </template>
         </el-table-column>
         <el-table-column
@@ -109,7 +109,7 @@
           min-width="60"
         >
             <template scope="scope">
-            {{scope.row.couponAmount}}
+            {{(scope.row.couponAmount).thousandFormat()}}
           </template>
         </el-table-column>
         <el-table-column
@@ -118,7 +118,7 @@
           min-width="60"
         >
             <template scope="scope">
-            {{scope.row.grantAmount}}
+            {{(scope.row.grantAmount).thousandFormat()}}
           </template>
         </el-table-column>
         <el-table-column
@@ -127,7 +127,7 @@
           :render-header="rendHeader"
         >
           <template scope="scope">
-            {{scope.row.balanceAmount}}
+            {{(scope.row.balanceAmount).thousandFormat()}}
           </template>
         </el-table-column>
       </el-table>
@@ -326,6 +326,7 @@ import $ from 'jquery'
 import request from 'superagent'
 import moment from 'moment'
 import { siblings } from '../../../../utils/index.js'
+import {thousand,thousandFormat} from '../../../util/util.js'
 // require('../../../assets/lib/js/exportExcel.js')
 require('../../../assets/lib/js/Blob.js')
 import { host } from '../../../config/index.js'
@@ -545,10 +546,10 @@ export default {
         require.ensure([], () => {
           var that = this
           that.$loading({customClass: 'loading_class'})
-          setTimeout(() => {
-            const { export_json_to_excel } = require('../../../assets/lib/js/Export2Excel.js')
-            const tHeader = ['车辆编号', '加盟地区', '订单结束时间', '骑行时间(分钟)', '骑行里程(米)', '订单费用(元)', '优惠劵支付(元)', '赠送金额支付(元)','实际收益(元)']
-            const filterVal = ['bikeCode','cityName', 'placeOrderTime', 'rideTime', 'rideMileage', 'orderMoney', 'couponAmount', 'grantAmount', 'balanceAmount']
+          // setTimeout(() => {
+            // const { export_json_to_excel } = require('../../../assets/lib/js/Export2Excel.js')
+            // const tHeader = ['车辆编号', '加盟地区', '订单结束时间', '骑行时间(分钟)', '骑行里程(米)', '订单费用(元)', '优惠劵支付(元)', '赠送金额支付(元)','实际收益(元)']
+            // const filterVal = ['bikeCode','cityName', 'placeOrderTime', 'rideTime', 'rideMileage', 'orderMoney', 'couponAmount', 'grantAmount', 'balanceAmount']
             var startTime, endTime;
             if (that.timeLine === '') {
               startTime = ''
@@ -558,17 +559,23 @@ export default {
               endTime = moment(that.timeLine[1]).format('YYYY-MM-DD HH:mm:ss')       
             }
             request
-              .post(host + 'beepartner/admin/order/exportOrders')
+              .get(host + 'beepartner/admin/order/exportOrders2')
               .withCredentials()
               .set({
                 'content-type': 'application/x-www-form-urlencoded'
               })
-              .send({
+              .query({
                 'type': that.$route.query.type,
                 'cityId': $('.citys span.active').attr('myId'),
                 'startTime': startTime,
                 'endTime': endTime
               })
+              // .send({
+              //   'type': that.$route.query.type,
+              //   'cityId': $('.citys span.active').attr('myId'),
+              //   'startTime': startTime,
+              //   'endTime': endTime
+              // })
               .end((err, res) => {
                 if (err) {
                   console.log('err:' + err)
@@ -592,7 +599,7 @@ export default {
 
                 }
               })
-          }, 1000)
+          // }, 1000)
         })
       }).catch(() => {
         // this.$message({

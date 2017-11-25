@@ -70,29 +70,33 @@
               <el-table-column prop="placeOrderTimeStr" label="订单结束时间" min-width='90'>
               </el-table-column>
               <el-table-column label="骑行时间（分钟）" prop="rideTime" min-width='80'>
-
+                <template scope="scope">
+                  {{ (scope.row.rideTime).thousand()}}
+                </template>
               </el-table-column>
               <el-table-column label="骑行里程(米)" prop="rideMileage" min-width='70'>
-
+                <template scope="scope">
+                  {{ (scope.row.rideMileage).thousand()}}
+                </template>
               </el-table-column>
               <el-table-column label="订单费用" prop="actualAmount" min-width='60'>
                 <template scope="scope">
-                  {{ scope.row.actualAmount}}
+                  {{ (scope.row.actualAmount).thousandFormat()}}
                 </template>
               </el-table-column>
               <el-table-column label="优惠券支付(元)" prop="couponAmount" min-width='80'>
                 <template scope="scope">
-                  {{ scope.row.couponAmount}}
+                  {{ (scope.row.couponAmount).thousandFormat()}}
                 </template>
               </el-table-column>
               <el-table-column label="赠送金额支付(元)" prop="grantAmount" min-width='80'>
                 <template scope="scope">
-                  {{ scope.row.grantAmount}}
+                  {{ (scope.row.grantAmount).thousandFormat()}}
                 </template>
               </el-table-column>
               <el-table-column label="实际收益(元)" prop="balanceAmount" :render-header="rendHeader">
                 <template scope="scope">
-                  {{ scope.row.balanceAmount}}
+                  {{ (scope.row.balanceAmount).thousandFormat()}}
                 </template>
               </el-table-column>
             </el-table>
@@ -176,6 +180,7 @@ import $ from 'jquery'
 import moment from 'moment'
 import request from 'superagent'
 import { host } from '../../../config/index'
+import {thousand,thousandFormat} from '../../../util/util.js'
 export default {
   data: function() {
     return {

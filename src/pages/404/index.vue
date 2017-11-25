@@ -5,7 +5,7 @@
     </h1>
     <h2><em><span class="STYLE1">404 Error&nbsp;&nbsp; </span></em>:所查找的页面不存在,可能已被删除或您输错了网址!</h2>
     <p class="link">
-      <router-link to="/index">返回首页</router-link>
+      <router-link to="/system/office">返回首页</router-link>
     </p>
   </div>  
 </template>
