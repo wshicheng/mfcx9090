@@ -287,9 +287,44 @@ export default {
             type: 'warning',
             message: '查询条件不能为空！'
           })
+          return
       } else {
-        this.loading2 = true
-        var startTime, endTime
+         
+         var startTime,endTime
+        if (this.form.data1 === '' || this.form.data2 === '') {
+          startTime = ''
+          endTime = ''
+        } else {
+          startTime = moment(this.form.data1).format('YYYY-MM-DD')
+          endTime = moment(this.form.data2).format('YYYY-MM-DD')
+        }
+        var _startTime = new Date(this.form.data1).getTime()
+        var _endTime = new Date(this.form.data2).getTime()
+        _endTime = isNaN(_endTime) ? 0 : _endTime
+        _startTime = isNaN(_startTime) ? 0 : _startTime
+
+        if (_endTime > 1 && _startTime <= 1) {
+            this.$message({
+              type: 'warning',
+              message: '开始日期不能为空'
+            })
+            return
+          } else if (_endTime < 0) {
+            this.$message({
+              type: 'warning',
+              message: '结束日期不能为空'
+            })
+            return
+          } else {
+            if(_endTime<_startTime){
+              this.$message({
+                type: 'warning',
+                message: '开始日期不能大于结束日期'
+              })
+              return
+            }
+          }
+        // var startTime, endTime
         // if (this.form.data1 === '' || this.form.data2 === '') {
         //   startTime = null
         //   endTime = null
@@ -297,8 +332,8 @@ export default {
         //   startTime = moment(this.form.data1).format('YYYY-MM-DD')
         //   endTime = moment(this.form.data2).format('YYYY-MM-DD')
         // }
-         startTime = this.form.data1?moment(this.form.data1).format('YYYY-MM-DD'):''
-          endTime = this.form.data2?moment(this.form.data2).format('YYYY-MM-DD'):''
+          // startTime = this.form.data1?moment(this.form.data1).format('YYYY-MM-DD'):''
+          // endTime = this.form.data2?moment(this.form.data2).format('YYYY-MM-DD'):''
         // if (this.form.data1 === '' && this.form.data2 != '') {
         //   this.$message({
         //     message: '请选择开始日期',
@@ -312,6 +347,7 @@ export default {
         //     type: 'warning'
         //   })
         // } 
+        this.loading2 = true
         // 根据用户选择不同状态进行数据的筛选
         var radio = this.checkList.toString()
         request
@@ -349,24 +385,60 @@ export default {
           })
       }
     },
+    // 通过车辆状态查询
     searchThroughCheckList () {
       console.log(this.form)
       this.currentPage = 1
-      this.loading2 = true
+      
       var type 
       if (this.activeName === '已分配') {
         type = '0'
       } else {
         type = '1'
       }
-      var startTime, endTime
-      if (this.form.data1 === '' && this.form.data2 === '') {
-        startTime = null
-        endTime = null
-      } else {
-        startTime = this.form.data1.toString().length>0?moment(this.form.data1).format('YYYY-MM-DD'):''
-        endTime = this.form.data2.toString().length>0?moment(this.form.data2).format('YYYY-MM-DD'):''
-      }
+       var startTime,endTime
+        if (this.form.data1 === '' || this.form.data2 === '') {
+          startTime = ''
+          endTime = ''
+        } else {
+          startTime = moment(this.form.data1).format('YYYY-MM-DD')
+          endTime = moment(this.form.data2).format('YYYY-MM-DD')
+        }
+        var _startTime = new Date(this.form.data1).getTime()
+        var _endTime = new Date(this.form.data2).getTime()
+        _endTime = isNaN(_endTime) ? 0 : _endTime
+        _startTime = isNaN(_startTime) ? 0 : _startTime
+
+        if (_endTime > 1 && _startTime <= 1) {
+            this.$message({
+              type: 'warning',
+              message: '开始日期不能为空'
+            })
+            return
+          } else if (_endTime < 0) {
+            this.$message({
+              type: 'warning',
+              message: '结束日期不能为空'
+            })
+            return
+          } else {
+            if(_endTime<_startTime){
+              this.$message({
+                type: 'warning',
+                message: '开始日期不能大于结束日期'
+              })
+              return
+            }
+          }
+      // var startTime, endTime
+      // if (this.form.data1 === '' && this.form.data2 === '') {
+      //   startTime = null
+      //   endTime = null
+      // } else {
+      //   startTime = this.form.data1.toString().length>0?moment(this.form.data1).format('YYYY-MM-DD'):''
+      //   endTime = this.form.data2.toString().length>0?moment(this.form.data2).format('YYYY-MM-DD'):''
+      // }
+      this.loading2 = true
       // 根据用户选择不同状态进行数据的筛选
       var radio = this.checkList.toString()
       request
@@ -403,6 +475,7 @@ export default {
           }
         })
     },
+    // 通过点击城市查询
     handleClick (e) {
       this.currentPage = 1
       var elems = siblings(e.target)
@@ -413,8 +486,15 @@ export default {
       /**
        * 根据不同的加盟城市，来展示不同的数据
        * */
+      // 清空查询信息,
+       this.form.data1 = ''
+       this.form.data2 = ''
+       this.form.radio = ''
+       this.checkList = []
+       this.terminalNumber = ''
+
+      // var radio = this.checkList.toString()
       
-      var radio = this.checkList.toString()
   
       this.loading2 = true
       request
@@ -426,10 +506,14 @@ export default {
         .send({
           'type': 0,
           'cityCode': $('.citys span.active').attr('myId'),
-          'startOnlineTime': this.form.data1 === ''?'':moment(this.form.data1).format('YYYY-MM-DD'),
-          'endOnlineTime': this.form.data2 === ''?'':moment(this.form.data2).format('YYYY-MM-DD'),
-          'bikeState': radio,
-          'keyName': this.terminalNumber,
+          // 'startOnlineTime': this.form.data1 === ''?'':moment(this.form.data1).format('YYYY-MM-DD'),
+          // 'endOnlineTime': this.form.data2 === ''?'':moment(this.form.data2).format('YYYY-MM-DD'),
+          // 'bikeState': radio,
+          // 'keyName': this.terminalNumber,
+          'startOnlineTime': '',
+          'endOnlineTime':'',
+          'bikeState': '',
+          'keyName': '',
         })
         .end((error, res) => {
           if (error) {

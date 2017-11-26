@@ -1464,6 +1464,7 @@ export default {
               type: 'warning',
               message: '结束日期不能为空'
             })
+            return
           } else {
             if(_endTime<_startTime){
               this.$message({
@@ -1483,6 +1484,7 @@ export default {
           type: "warning",
           message: "查询条件不能为空！"
         });
+        return 
       } else {
         request
           .post(host + "beepartner/admin/cityPartner/findCityPartner")
