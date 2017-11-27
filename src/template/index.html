@@ -139,12 +139,21 @@
    <script src="./static/lib/js/jquery.pagination.js"></script>-->
 </head>
 
-<body>
+<body onbeforeunload="return myFunction()">
   <div id="app"></div>
   <!-- built files will be auto injected -->
 </body>
 <script>
+        function myFunction(){
+            if (event.clientX > document.body.clientWidth && event.clientY < 0 || event.altKey) {
+                window.localStorage.clear()
+            } else {
+               //
+            }
+          
+        }
+       
 
-</script>
+    </script>
 
 </html>

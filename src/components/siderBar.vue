@@ -132,7 +132,7 @@ div.el-submenu__title li i.el-icon-menu {
             } 
         },
         handlerUserInfo () {
-          this.userInfo = sessionStorage.getItem('authList')
+          this.userInfo = localStorage.getItem('authList')
           this.authList = JSON.parse(this.userInfo)
         },
         checkSlideBar () {
