@@ -33,7 +33,7 @@
                   </div>
                 </el-form>
               </div>
-              <el-dialog class="forgetPsd" id="find_back"" style="width: 50%; margin: 0 auto;" title="找回密码" :visible.sync="dialogFormVisible">
+              <el-dialog class="forgetPsd" id="find_back"" style=" margin: 0 auto;" title="找回密码" :visible.sync="dialogFormVisible">
                 <el-form :model="findForm" :rules="findFormRule" ref="findPsd">
                   <el-form-item label="手机号" prop="tel" :label-width="formLabelWidth">
                     <el-input v-model="findForm.tel" auto-complete="off"></el-input>
@@ -668,5 +668,6 @@ div.el-dialog__wrapper.forgetPsd .el-dialog__footer{padding-bottom: 23px;padding
       text-indent: .8em;
       outline: none;
 }
+
 </style>
 

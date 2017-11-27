@@ -1,6 +1,6 @@
 <template>
   <div style="margin-right:20px;overflow:auto">
-    <div style="background-color:#faebd7;">
+    <div style="background-color:#faebd7;padding-top:15px">
       <div style="background-color:#faebd7;font-size:14px;color:#555;margin-bottom:5px" class="partner_new">
         <address class="joinArea joinMode">加盟模式</address>
         <span id="joinMode">
@@ -10,7 +10,7 @@
         </span>
       </div>
       <div style="background-color:#faebd7;font-size:14px;padding-bottom:10px;color:#555" class="partner_new">
-        <address class="joinArea" style="margin-top:5px;margin-right:15px">加盟区域</address>
+        <address class="joinArea" style="margin-top:5px;margin-right:15px;height:25px">加盟区域</address>
         <div id="joinArea">
           <span myId="0" class="active" @click="handleClick">
               全部地区
@@ -20,7 +20,7 @@
           </span>
         </div>
       </div>
-      <div style="padding-top:10px">
+      <div style="">
         <div id="partner_header"  style="background-color:#faebd7;font-size:14px;margin-left:13px;margin-right:-20px">
           <label>
             <span style="color:#555;margin-right:-15px;margin-left:15px">关键字</span>
@@ -298,7 +298,7 @@
 
 <style scoped>
 .partner_new {
-  padding-top:21px;
+  padding-top:10px;
 }
 .partner_new span {
   padding:5px;
@@ -311,7 +311,6 @@ address.joinArea {
     margin-left: 34px;
     margin-right: 10px;
     float: left;
-    height: 40px;
 }
 #joinArea span {
   line-height:30px;
@@ -391,7 +390,7 @@ div.menuIcon i.icon-jian {
 #partner_data_select {
     height: 55px;
     background: #fff;
-    margin-left: 473px;
+    margin-left: 475px;
     /* border: 1px solid #e7ecf1; */
     border-top: none;
 }

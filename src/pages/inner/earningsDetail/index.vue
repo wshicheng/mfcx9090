@@ -195,7 +195,7 @@
       background:#faebd7;
       border: 1px solid #e7ecf1;
       overflow: hidden;
-      padding-bottom: 17px;
+      padding-bottom: 10px;
       padding-top: 3px;
     }
 
@@ -203,7 +203,7 @@
       display:block;
       float:left;
       margin-right: 8px;
-      margin-top: 8px;
+      margin-top: 5px;
       padding-left: 15px;
     }
 
