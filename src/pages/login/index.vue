@@ -309,11 +309,11 @@ export default {
                   this.$router.addRoutes(this.menuitems)
                   this.loadRoutes()
                 }
-                window.sessionStorage.setItem('authList',JSON.stringify(this.authList))   
-                window.sessionStorage.setItem('permission',JSON.stringify(this.menuitems))
-					    	window.sessionStorage.setItem('headImg',JSON.parse(res.text).adminUser.adminUserIconUrl)
-                window.sessionStorage.setItem('userName',JSON.parse(res.text).adminUser.userName)
-                window.sessionStorage.setItem('name',JSON.parse(res.text).adminUser.name)
+                window.localStorage.setItem('authList',JSON.stringify(this.authList))   
+                window.localStorage.setItem('permission',JSON.stringify(this.menuitems))
+					    	window.localStorage.setItem('headImg',JSON.parse(res.text).adminUser.adminUserIconUrl)
+                window.localStorage.setItem('userName',JSON.parse(res.text).adminUser.userName)
+                window.localStorage.setItem('name',JSON.parse(res.text).adminUser.name)
                 if(data.length>0){
                    var path = this.menuitems[0].children[0].path
                    if (path === '/system/office') {

@@ -440,7 +440,7 @@ export default {
 						this.$store.state.users.phone = JSON.parse(res.text).data.phoneNo === null?'':JSON.parse(res.text).data.phoneNo	
 											
 						this.imageUrl = JSON.parse(res.text).data.adminUserIconUrl
-						window.sessionStorage.setItem('headImg',JSON.parse(res.text).data.adminUserIconUrl)
+						window.localStorage.setItem('headImg',JSON.parse(res.text).data.adminUserIconUrl)
 						/**
 						 * 一旦上传成功，就讲store里面的标识改为true
 						 */
