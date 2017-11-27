@@ -98,11 +98,11 @@
           <div class="am_search">
             <label>
               <span style="margin-right:13px;margin-left:15px">关键字</span>
-              <input type="text" v-model="accountOrUsername" placeholder="姓名/用户名" @blur="initQuery" class="account_my_input">
+              <input type="text" v-model="accountOrUsername" placeholder="账号/姓名" @blur="initQuery" class="account_my_input">
             </label>
             <label>
               <span>联系方式</span>
-              <input type="text" v-model="telOrMail" placeholder="邮箱/手机号" @blur="initQuery" class="account_my_input">
+              <input type="text" v-model="telOrMail" placeholder="手机号/邮箱" @blur="initQuery" class="account_my_input">
             </label>
             <el-button id="accountSearchBtn2" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
           </div>

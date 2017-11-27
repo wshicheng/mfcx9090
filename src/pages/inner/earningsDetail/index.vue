@@ -567,8 +567,8 @@ export default {
               .query({
                 'type': that.$route.query.type,
                 'cityId': $('.citys span.active').attr('myId'),
-                'startTime': startTime,
-                'endTime': endTime
+                'startTime': startTime||'',
+                'endTime': endTime||''
               })
               // .send({
               //   'type': that.$route.query.type,
@@ -582,20 +582,22 @@ export default {
                 } else {
                   this.checkLogin(res)
                   // 数据处理
-                  var list = JSON.parse(res.text).data
-                  var newList = that.tableDataDel(list)
-                  if (list.length === 0) {
-                    that.$message.error('当前查询没有信息，无法导出哦~');
-                   that.$loading({customClass: 'loading_class'}).close()
-                  } else {
-                    const data = that.formatJson(filterVal, newList)
-                    export_json_to_excel(tHeader, data, that.cityName + '_订单明细excel')
+                  // var list = JSON.parse(res.text).data
+                  // var newList = that.tableDataDel(list)
+                  // if (list.length === 0) {
+                  //   that.$message.error('当前查询没有信息，无法导出哦~');
+                  //  that.$loading({customClass: 'loading_class'}).close()
+                  // } else {
+                  //   const data = that.formatJson(filterVal, newList)
+                  //   export_json_to_excel(tHeader, data, that.cityName + '_订单明细excel')
                     that.$loading({customClass: 'loading_class'}).close()
-                    that.$message({
-                      type: 'success',
-                      message: '导出成功'
-                    })
-                  }
+                  //   that.$message({
+                  //     type: 'success',
+                  //     message: '导出成功'
+                  //   })
+                  // }
+                  console.log(res)
+                  window.open(res.body.data)
 
                 }
               })
