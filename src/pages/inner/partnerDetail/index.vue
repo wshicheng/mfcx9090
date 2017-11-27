@@ -390,6 +390,19 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
+          if(res.resultCode!==1){
+             this.relationDatas = {
+               subscriptionNum:0,
+               subscriptionMoney:0,
+                licenseFeeRate:0,
+                joinMode:1,
+                settleDays:20,
+                manageFee:3,
+                wType:1,
+                divisionPercent:1
+             }
+            return;
+          }
           for(var i = 0; i < res.areaList.length; i++){
             if(res.areaList[i].cityId==this.cityId){
               this.relationDatas = res.areaList[i]
@@ -569,8 +582,8 @@ export default {
     }
   },
     created() {
+      console.log(this.$route.params)
       var cityPartnerId = this.$route.params.id.split('&')[1]
-      console.log(this.cityPartnerId)
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findCity')
     .withCredentials()
@@ -585,8 +598,13 @@ export default {
         console.log(error)
       }else{
         var result = JSON.parse(res.text).data
-        console.log(result)
-
+        if(Object.prototype.toString.call(result) !== '[object Array]'){
+          return;
+        }
+        if(result.length==0){
+          this.options = [];
+          return;
+        }
         
 
         this.options = result.map((item)=>{
