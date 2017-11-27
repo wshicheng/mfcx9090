@@ -147,7 +147,7 @@
                     </el-form-item>
                     <el-form-item label="所属加盟商" prop="alliance">
                         <el-select v-model="editAccount.alliance" placeholder="请选择加盟商" v-on:input='recode'>
-                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.joinTarget=='1'?item.companyName:item.conName" :value="item.cityPartnerId.toString()" style="padding:10px">
+                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()" style="padding:10px">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -749,7 +749,7 @@ export default {
     },
     getAllianceList () {
         request
-            .post(host + 'beepartner/admin/cityPartner/findCityPartner')
+            .post(host + 'beepartner/admin/cityPartner/queryEffectCityPartnerList')
             .withCredentials()
             .set({
                 'content-type': 'application/x-www-form-urlencoded'

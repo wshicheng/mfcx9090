@@ -390,19 +390,19 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
-          if(res.resultCode!==1){
-             this.relationDatas = {
-               subscriptionNum:0,
-               subscriptionMoney:0,
-                licenseFeeRate:0,
-                joinMode:1,
-                settleDays:20,
-                manageFee:3,
-                wType:1,
-                divisionPercent:1
-             }
-            return;
-          }
+          // if(res.resultCode!=1){
+          //    this.relationDatas = {
+          //      subscriptionNum:0,
+          //      subscriptionMoney:0,
+          //       licenseFeeRate:0,
+          //       joinMode:1,
+          //       settleDays:"1",
+          //       manageFee:3,
+          //       wType:1,
+          //       divisionPercent:1
+          //    }
+          //   return;
+          // }
           for(var i = 0; i < res.areaList.length; i++){
             if(res.areaList[i].cityId==this.cityId){
               this.relationDatas = res.areaList[i]
