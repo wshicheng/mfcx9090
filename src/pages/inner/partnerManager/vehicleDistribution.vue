@@ -21,7 +21,7 @@
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
-                  style="position:relative;z-index:1000">
+                  style="position:relative;z-index:100001">
                 </el-option>
               </el-select></td>
               
@@ -57,7 +57,7 @@
         </div>
 
         <div class='table'>
-          <el-table @select="handleSelectChange" @select-all="handleSelectionAll" v-loading="loading2" element-loading-text="拼命加载中" ref="multipleTable" :data="tableData_distribution" border tooltip-effect="dark" style="width: 100%; font-size: 13px;">
+          <el-table @select="handleSelectChange" @select-all="handleSelectionAll" v-loading="loading2" element-loading-text="拼命加载中" ref="multipleTable" :data="tableData_distribution" border tooltip-effect="dark" style="width: 100%; font-size: 13px;" class="this_loading">
             <el-table-column type="selection" min-width="55">
             </el-table-column>
             <el-table-column prop="code" label="车牌号" min-width="80">
@@ -405,6 +405,9 @@ table.franchiseeDetail tr td span {
 
 .distribution_btn:hover {
   opacity: 0.8;
+}
+.this_loading .el-loading-mask {
+  z-index:3
 }
 </style>
 

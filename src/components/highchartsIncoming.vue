@@ -5,7 +5,7 @@
         <img src="../assets/img/2.png" />
         <p>暂无数据</p>
       </div>
-      <div v-loading="loading" id="container2" style="height:400px" v-show="!noData"></div>
+      <div v-loading="loading" id="container2" style="height:250px" v-show="!noData"></div>
   </div>
 </template>
 <script>
@@ -143,7 +143,6 @@ import $ from 'jquery'
               console.log('err:' + err)
             } else {
                this.loading = false
-               this.$emit('isLoading')
                this.checkLogin(res)
               var data = JSON.parse(res.text).data || []
               var newCity = []

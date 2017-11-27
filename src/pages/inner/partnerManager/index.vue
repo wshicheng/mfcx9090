@@ -31,9 +31,6 @@
               <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
           </label>
         </div>
-        <div style="clear:both"></div>
-      </div>
-      <div>
         <div id="partner_data_select"  style="background-color:#faebd7;font-size:14px">
           <label>
             <span style="color:#555;margin-right:7px;margin-left:5px">加盟日期</span>
@@ -54,6 +51,10 @@
 
           <button class="my_btn" @click="queryInfo">查询</button>
         </div>
+        <div style="clear:both"></div>
+      </div>
+      <div>
+        
       </div>
     </div>
     <div id="partner_table">
@@ -365,10 +366,9 @@ div.menuIcon i.icon-jian {
   border-bottom: none;
   float:left;
   padding-left:20px;
-  width:700px;
 }
 #partner_header .partner_my_input1 {
-    width: 192px;
+    width: 133px;
     height: 34px;
     outline: none;
     margin-left: 25px;
@@ -379,7 +379,7 @@ div.menuIcon i.icon-jian {
 }
 
 #partner_header .partner_my_input2 {
-    width: 191px;
+    width: 133px;
     border-radius: 4px;
     height: 34px;
     outline: none;
@@ -391,7 +391,7 @@ div.menuIcon i.icon-jian {
 #partner_data_select {
     height: 55px;
     background: #fff;
-    margin-left: 33px;
+    margin-left: 473px;
     /* border: 1px solid #e7ecf1; */
     border-top: none;
 }
@@ -1202,7 +1202,7 @@ export default {
     checkAuth() {
       // 初始化调用查询可加盟城市的接口,动态渲染数据
       request
-        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+        .post(host + "beepartner/admin/city/checkNotUsedCityNum")
         .withCredentials()
         .set({
           "content-type": "application/x-www-form-urlencoded"
@@ -1214,9 +1214,9 @@ export default {
           if (error) {
             console.log(error);
           } else {
-            var result = JSON.parse(res.text);
+            // var result = JSON.parse(res.text);
            
-            if (result.length == 0) {
+            if (res<= 0) {
               this.$message({
                 type: "error",
                 message: "对不起，暂时无可加盟地区"
