@@ -22,7 +22,7 @@
                     </el-radio-group> -->
 
                     <el-select v-model="ruleForm.alliance" placeholder="选择加盟商" v-on:input='remoteMethod'>
-                        <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.joinTarget=='1'?item.companyName:item.conName" :value="item.cityPartnerId.toString()">
+                        <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()">
                         </el-option>
                         <!--<el-option label="管理员" value="管理员"></el-option>-->
                         <!-- <el-option label="加盟商" value="加盟商"></el-option> -->
@@ -307,7 +307,7 @@ export default {
     methods: {
         getAllianceList () {
             request
-                .post(host + 'beepartner/admin/cityPartner/findCityPartner')
+                .post(host + 'beepartner/admin/cityPartner/queryEffectCityPartnerList')
                 .withCredentials()
                 .set({
                     'content-type': 'application/x-www-form-urlencoded'

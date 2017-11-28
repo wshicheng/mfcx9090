@@ -1,11 +1,11 @@
 <template>
   <div style="position: relative;">
       <div v-title>报表管理-消费数据-统计图</div>
-      <div class="my_noDate"  v-show="noData">
-        <img src="../assets/img/2.png" />
+      <div class="my_noDate" v-show="noData">
+        <img src="../assets/img/2.png" style="margin-top:100px"/>
         <p>暂无数据</p>
       </div>
-      <div v-loading="loading" id="container2" style="height:400px"></div>
+      <div v-loading="loading" id="container2" style="height:400px" v-show="!noData"></div>
   </div>
 </template>
 <script>
@@ -143,7 +143,6 @@ import $ from 'jquery'
               console.log('err:' + err)
             } else {
                this.loading = false
-               this.$emit('isLoading')
                this.checkLogin(res)
               var data = JSON.parse(res.text).data || []
               var newCity = []

@@ -98,11 +98,11 @@
           <div class="am_search">
             <label>
               <span style="margin-right:13px;margin-left:15px">关键字</span>
-              <input type="text" v-model="accountOrUsername" placeholder="姓名/用户名" @blur="initQuery" class="account_my_input">
+              <input type="text" v-model="accountOrUsername" placeholder="账号/姓名" @blur="initQuery" class="account_my_input">
             </label>
             <label>
               <span>联系方式</span>
-              <input type="text" v-model="telOrMail" placeholder="邮箱/手机号" @blur="initQuery" class="account_my_input">
+              <input type="text" v-model="telOrMail" placeholder="手机号/邮箱" @blur="initQuery" class="account_my_input">
             </label>
             <el-button id="accountSearchBtn2" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
           </div>
@@ -147,7 +147,7 @@
                     </el-form-item>
                     <el-form-item label="所属加盟商" prop="alliance">
                         <el-select v-model="editAccount.alliance" placeholder="请选择加盟商" v-on:input='recode'>
-                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.joinTarget=='1'?item.companyName:item.conName" :value="item.cityPartnerId.toString()" style="padding:10px">
+                            <el-option v-for="item in allianceList" :key="item.cityPartnerId" :label="item.companyName" :value="item.cityPartnerId.toString()" style="padding:10px">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -749,7 +749,7 @@ export default {
     },
     getAllianceList () {
         request
-            .post(host + 'beepartner/admin/cityPartner/findCityPartner')
+            .post(host + 'beepartner/admin/cityPartner/queryEffectCityPartnerList')
             .withCredentials()
             .set({
                 'content-type': 'application/x-www-form-urlencoded'

@@ -2,10 +2,10 @@
   <div style="width:98%;height:400px; position: relative;">
       <div v-title>报表管理-消费数据-走势图</div>
       <div class="my_noDate" style="position: absolute; min-height:40px; height: 40px;" v-show="noData">
-        <img src="../assets/img/2.png" />
+        <img src="../assets/img/2.png"/>
         <p>暂无数据</p>
       </div>
-      <div id="container" style="position: relative;"></div>
+      <div id="container" style="position: relative;" v-loading="loading"></div>
   </div>
 </template>
 <script>
@@ -22,6 +22,7 @@ import $ from 'jquery'
         noData: false,
         chartData: [],
         cityId:'',
+        loading:true
       }
     },
     mounted () {
@@ -260,9 +261,11 @@ import $ from 'jquery'
           })
           .end((err, res) => {
             if (err) {
+              this.loading = false              
               this.noData = true
               console.log('err:' + err)
             } else {
+              this.loading = false
               this.checkLogin(res)
               var arr = JSON.parse(res.text).data || []
               var newChartData = []

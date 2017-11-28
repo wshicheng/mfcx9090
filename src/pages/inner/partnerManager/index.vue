@@ -1,6 +1,6 @@
 <template>
   <div style="margin-right:20px;overflow:auto">
-    <div style="background-color:#faebd7;">
+    <div style="background-color:#faebd7;padding-top:15px">
       <div style="background-color:#faebd7;font-size:14px;color:#555;margin-bottom:5px" class="partner_new">
         <address class="joinArea joinMode">加盟模式</address>
         <span id="joinMode">
@@ -10,7 +10,7 @@
         </span>
       </div>
       <div style="background-color:#faebd7;font-size:14px;padding-bottom:10px;color:#555" class="partner_new">
-        <address class="joinArea" style="margin-top:5px;margin-right:15px">加盟区域</address>
+        <address class="joinArea" style="margin-top:5px;margin-right:15px;height:25px">加盟区域</address>
         <div id="joinArea">
           <span myId="0" class="active" @click="handleClick">
               全部地区
@@ -20,7 +20,7 @@
           </span>
         </div>
       </div>
-      <div style="padding-top:10px">
+      <div style="">
         <div id="partner_header"  style="background-color:#faebd7;font-size:14px;margin-left:13px;margin-right:-20px">
           <label>
             <span style="color:#555;margin-right:-15px;margin-left:15px">关键字</span>
@@ -31,9 +31,6 @@
               <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
           </label>
         </div>
-        <div style="clear:both"></div>
-      </div>
-      <div>
         <div id="partner_data_select"  style="background-color:#faebd7;font-size:14px">
           <label>
             <span style="color:#555;margin-right:7px;margin-left:5px">加盟日期</span>
@@ -54,6 +51,10 @@
 
           <button class="my_btn" @click="queryInfo">查询</button>
         </div>
+        <div style="clear:both"></div>
+      </div>
+      <div>
+        
       </div>
     </div>
     <div id="partner_table">
@@ -297,7 +298,7 @@
 
 <style scoped>
 .partner_new {
-  padding-top:21px;
+  padding-top:10px;
 }
 .partner_new span {
   padding:5px;
@@ -310,7 +311,6 @@ address.joinArea {
     margin-left: 34px;
     margin-right: 10px;
     float: left;
-    height: 40px;
 }
 #joinArea span {
   line-height:30px;
@@ -365,10 +365,9 @@ div.menuIcon i.icon-jian {
   border-bottom: none;
   float:left;
   padding-left:20px;
-  width:700px;
 }
 #partner_header .partner_my_input1 {
-    width: 192px;
+    width: 133px;
     height: 34px;
     outline: none;
     margin-left: 25px;
@@ -379,7 +378,7 @@ div.menuIcon i.icon-jian {
 }
 
 #partner_header .partner_my_input2 {
-    width: 191px;
+    width: 133px;
     border-radius: 4px;
     height: 34px;
     outline: none;
@@ -391,7 +390,7 @@ div.menuIcon i.icon-jian {
 #partner_data_select {
     height: 55px;
     background: #fff;
-    margin-left: 33px;
+    margin-left: 475px;
     /* border: 1px solid #e7ecf1; */
     border-top: none;
 }
@@ -1202,7 +1201,7 @@ export default {
     checkAuth() {
       // 初始化调用查询可加盟城市的接口,动态渲染数据
       request
-        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+        .post(host + "beepartner/admin/city/checkNotUsedCityNum")
         .withCredentials()
         .set({
           "content-type": "application/x-www-form-urlencoded"
@@ -1214,9 +1213,9 @@ export default {
           if (error) {
             console.log(error);
           } else {
-            var result = JSON.parse(res.text);
+            // var result = JSON.parse(res.text);
            
-            if (result.length == 0) {
+            if (res<= 0) {
               this.$message({
                 type: "error",
                 message: "对不起，暂时无可加盟地区"
@@ -1464,6 +1463,7 @@ export default {
               type: 'warning',
               message: '结束日期不能为空'
             })
+            return
           } else {
             if(_endTime<_startTime){
               this.$message({
@@ -1483,6 +1483,7 @@ export default {
           type: "warning",
           message: "查询条件不能为空！"
         });
+        return 
       } else {
         request
           .post(host + "beepartner/admin/cityPartner/findCityPartner")
