@@ -76,7 +76,7 @@
           prop="cityPartnerId"
           label="加盟商编号"
           min-width="70">
-          <template scope="scope">
+          <template slot-scope="scope">
             <!-- $router.push('/index/partnerDetail/' +  scope.row.id + '&' + scope.row.cityPartnerId) -->
                 <router-link style="color:rgb(118, 103, 233); text-decoration: none; cursor: pointer;" target='_blank' v-bind:to="{
                   path: '/index/partnerDetail/' + scope.row.id + '&' + scope.row.cityPartnerId + '&' + scope.row.joinTarget
@@ -86,7 +86,7 @@
         <el-table-column
           label="企业名称/个人姓名"
           min-width="100">
-          <template scope="scope">
+          <template slot-scope="scope">
             {{scope.row.joinTarget=='1'?scope.row.companyName:scope.row.conName}}
           </template>
         </el-table-column>
@@ -108,7 +108,7 @@
         <el-table-column
           label="认购车辆数"
           min-width="100">
-          <template scope="scope">
+          <template slot-scope="scope">
               <span>{{scope.row.subscriptionNumStr}}</span>
              <!-- @click='handleRowHandle(scope.row.subscription_id)'  -->
             <!-- <span><a  class="alliance_table_allocation">分配车辆</a></span> -->
@@ -121,7 +121,7 @@
           label="操作"
           prop="del"
           max-width="80">
-          <template scope="scope">
+          <template slot-scope="scope">
             <!-- <a style="color:#444; margin-right:10px; cursor: pointer;" @click="goDetail(scope)" title="查看">
               <i class="el-icon-document"></i>
             </a> -->

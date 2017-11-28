@@ -33,13 +33,13 @@
             <el-table-column prop="roleName" label="角色" min-width="120">
             </el-table-column>
             <el-table-column label="状态" min-width="120" style="font-size:12px;">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-switch v-on:change="changeState(scope)" v-model="scope.row.status" on-text="启用" off-text="冻结" on-color="#13ce66" off-color="#ff4949">
                 </el-switch>
               </template>
             </el-table-column>
             <el-table-column prop="del" label="操作">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <a href="javascript:;"></a>
                 <i class="el-icon-edit" @click="openEdit(scope)" title="修改" style="margin-right:10px;"></i>
                 </a>
@@ -119,19 +119,19 @@
             <el-table-column prop="email" label="邮箱" min-width="15%"></el-table-column>
             <el-table-column prop="name" label="姓名" min-width="10%"></el-table-column>
             <el-table-column label="所属加盟商"  min-width="15%">
-              <template scope="scope">
+              <template slot-scope="scope">
                 {{scope.row.joinTarget=='1'?scope.row.companyName:scope.row.conName}}
               </template>
             </el-table-column>
             <el-table-column label="加盟区域" prop="cityName" min-width="20%"></el-table-column>
             <el-table-column label="状态" min-width="10%" style="font-size:12px;">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <el-switch v-on:change="changeState(scope)" v-model="scope.row.status" on-text="启用" off-text="冻结" on-color="#13ce66" off-color="#ff4949">
                 </el-switch>
               </template>
             </el-table-column>
             <el-table-column label="操作" min-width="10%">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <a href="javascript:;"></a>
                 <i class="el-icon-edit" @click="openEdit(scope)" title="修改" style="cursor:pointer;margin-right:10px;"></i>
                 </a>

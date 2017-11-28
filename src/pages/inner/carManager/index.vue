@@ -56,7 +56,7 @@
                     min-width="60"
                     label="车辆号"
                     prop='code'>
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <!-- <a>{{scope.row.bikeCode}}</a> -->
                          <router-link style="color:rgb(118, 103, 233); text-decoration: none;" target='_blank' v-bind:to="{path:'/carUseDetail', query: {code:scope.row.bikeCode}}">{{scope.row.bikeCode}}</router-link>   
                        <!-- <a style="color:rgb(118, 103, 233); text-decoration: none;" >{{scope.row.bikeCode}}</a>   -->
@@ -144,7 +144,7 @@
                   min-width="80"
                   label="车辆号"
                   prop='code'>
-                  <template scope="scope">
+                  <template slot-scope="scope">
                       <!-- <a>{{scope.row.bikeCode}}</a> -->
                         <router-link style="color:rgb(118, 103, 233); text-decoration: none;" target='_blank' v-bind:to="{path:'/carUseDetail', query: {code:scope.row.bikeCode}}">{{scope.row.bikeCode}}</router-link>   
                       <!-- <a style="color:rgb(118, 103, 233); text-decoration: none;" >{{scope.row.bikeCode}}</a>   -->
