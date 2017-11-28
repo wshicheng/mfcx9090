@@ -68,7 +68,8 @@
       <h1 class="form_table_h1">加盟与结算信息</h1>
         
         <!-- 选择加盟方式 -->
-      <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm" id="isEmpty">
+      <div id="isEmpty">
+      <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
         <div class="menuIcon">
           <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
           <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
@@ -234,6 +235,7 @@
           </el-form-item>
           <h1 class="form_table_h2" style="margin-top:-12px;margin-bottom:20px">加盟商的累计收益超过投入的加盟资金时，从下个结算周期开始，加盟商的收益采用分成模式</h1>
         </div>
+      </div>
       </div>
         
 
@@ -709,7 +711,6 @@ export default {
     // 因为element-ui的表单验证数据无法嵌套三级结构，需手动书写
     isEmpty(){
       $("#isEmpty").on("blur","input",function(){
-        debugger
         if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
 
           $(this).parents(".is-required").addClass("is-error")
@@ -724,7 +725,9 @@ export default {
           if($(this).attr("placeholder")=="请输入车辆数(单位：/辆)"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
           }
+          debugger
            if($(this).attr("placeholder")=="请输入加盟资金(元)"){
+             console.log("hhhhhhhhhhhhhhhhhhhhhhhh")
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入加盟资金</div>')
           }
            if($(this).attr("placeholder")=="请输入授权费率"){
