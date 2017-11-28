@@ -314,7 +314,7 @@ address.joinArea {
     float: left;
 }
 #joinArea span {
-  line-height:30px;
+  /* line-height:30px; */
   display: inline-block;
  
 }

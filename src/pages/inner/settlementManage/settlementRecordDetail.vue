@@ -92,7 +92,7 @@
                  <div class="item third">
                    <div class="list subtitle">用户缴纳押金支付第三方支付平台服务费</div>
                    <div class="list">
-                     <div class="cell" title="缴纳押金/次">缴纳押金/次</div>
+                     <div class="cell" title="缴纳押金/次">缴纳次数</div>
                      <div class="cell" title="押金金额">押金金额</div>
                      <div class="cell" title="服务费率">服务费率</div>
                      <div class="cell" title="支付金额">支付金额</div>
@@ -887,7 +887,7 @@ import {thousandFormat} from '../../../util/util.js'
                   border-bottom:none;
                   box-sizing:border-box;
                   div.list{display: block;
-                    div.cell{float:left;width:25%;box-sizing:border-box;border-right:$tableBorderColor;height:40px;line-height:20px;}
+                    div.cell{float:left;width:25%;box-sizing:border-box;border-right:$tableBorderColor;height:40px;line-height:40px;}
                     div.cell{
                       &:nth-last-child(1){border-right:none;text-align: center;}
                     }
