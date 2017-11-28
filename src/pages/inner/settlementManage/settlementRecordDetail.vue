@@ -488,7 +488,7 @@
             <td data-v-3b262524="" class="activeCost" style="text-align:center">
                 
                 <div data-v-3b262524="" class="grid">
-                    <span data-v-3b262524="">{{new Number(sumData.SumTotalDiscount).thousandFormat()}}</span>
+                    <span data-v-3b262524="">{{new Number(sumData.sumTotalDiscount).thousandFormat()}}</span>
                     <span data-v-3b262524="">{{new Number(sumData.sumgrant).thousandFormat()}}</span>
                 </div>
             </td>

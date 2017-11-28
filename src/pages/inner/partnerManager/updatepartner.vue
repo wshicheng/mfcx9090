@@ -64,7 +64,7 @@
                   
                   <span v-show="(index+1)<=recodeCityList">{{list.joinMode=="1"?'独家':'非独家'}}</span>
 
-                  <el-radio-group v-model="list.joinMode" @change="checkJoinMode" v-show="(index+1)>recodeCityList">
+                  <el-radio-group v-model="list.joinMode" @change="checkJoinMode(list.joinMode,index)" v-show="(index+1)>recodeCityList">
                     <el-radio label="1" :disabled="joinTarget=='2'" value="1">独家</el-radio>
                     <el-radio label="2" value="2">非独家</el-radio>
                   </el-radio-group>
@@ -156,7 +156,7 @@
                         <span v-show="(index+1)<=recodeCityList">{{list.cityName}}</span>
                         <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
                             <el-option
-                            v-for="item in ruleForm.options"
+                            v-for="item in ruleForm.options1"
                             :key="item.value"
                             :label="item.label"
                             :value="item">
@@ -218,6 +218,7 @@
                       ]">
                     <el-input v-model.number="list.divisionPercent" placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
                   </el-form-item>
+                  <h1 class="form_table_h2">加盟商的累计收益超过投入的加盟资金时，从下个结算周期开始，加盟商的收益采用分成模式</h1>
                 </div>
              </div>
           
@@ -587,6 +588,8 @@ export default {
         file: "",
         options: [
         ],
+        options1: [
+        ],
         value: "",
         alipayAccount:"",
         settleBank:"",
@@ -665,12 +668,22 @@ export default {
         console.log(error)
       }else{
         var result = JSON.parse(res.text)
-        this.ruleForm.options = result.map((item)=>{
+        if(this.joinMode=='1'){
+         this.ruleForm.options = result.map((item)=>{
           return {
             value:item.code,
             label:item.name
           }
         })
+       }else{
+         this.ruleForm.options1 = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+      }
+       
       }
     })
     // 初始化调用查询加盟商是否生成结算单，若已生成，则第一次结算周期 input 不可编辑
@@ -807,6 +820,7 @@ export default {
     // 判断加盟与结算信息部分是否为空
     isEmpty(){
       $("#isEmpty").on("blur","input",function(){
+        console.log("--------------------")
         if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
           $(this).parents(".is-required").addClass("is-error")
 
@@ -842,7 +856,7 @@ export default {
       
     },
     // 改变加盟模式
-    checkJoinMode(val){
+    checkJoinMode(val,index){
       // 清空中间部分验证不通过的信息
      setTimeout(function(){
           if($("#isEmpty .is-required.is-error")){
@@ -858,6 +872,11 @@ export default {
             $("#isEmpty div.el-form-item.is-error").removeClass("is-error")
           }
         },200)
+        // 清空中间部分的值
+          $('#cityId'+ index).find("input").val(" ")
+          $('#subscriptionNum'+ index).find("input").val(" ")
+          $('#subscriptionMoney'+ index).find("input").val(" ")
+        // 查询加盟地区
         this.joinMode = val
         request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
         .withCredentials()
@@ -873,14 +892,26 @@ export default {
             console.log(error)
           }else{
             var result = JSON.parse(res.text)
-            this.ruleForm.options = result.map((item)=>{
-              return {
-                value:item.code,
-                label:item.name
-              }
-            })
+            
+        if(this.joinMode=='1'){
+         this.ruleForm.options = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
           }
         })
+       }else{
+         this.ruleForm.options1 = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+      }
+
+          }
+        })
+
     },
 
     checkSettleType(val){
@@ -900,14 +931,8 @@ export default {
       this.ruleForm.cityName = data.join();
     },
     addMutiCity(){
-      // 点击加号
-       if(this.joinTarget=='1'){
-       this.newFormObject.joinMode='1'
-      }else{
-        this.newFormObject.joinMode='2'
-      }
        request
-        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+        .post(host + "beepartner/admin/city/checkNotUsedCityNum")
         .withCredentials()
         .set({
           "content-type": "application/x-www-form-urlencoded"
@@ -919,18 +944,67 @@ export default {
           if (error) {
             console.log(error);
           } else {
-            var result = JSON.parse(res.text);
-          
-            if (result.length == 0) {
+            // var result = JSON.parse(res.text);
+           
+            if (res<= 0) {
               this.$message({
                 type: "error",
                 message: "对不起，暂时无可加盟地区"
               });
             } else {
-               this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+
+             if(this.joinTarget == '1'){
+               this.newFormObject.joinMode = '1'
+             }else{
+               this.newFormObject.joinMode = '2'  
+             }
+             this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+
+
+        request
+        .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
+        .withCredentials()
+        .set({
+          "content-type": "application/x-www-form-urlencoded"
+        })
+        .send({
+          unUsed: 1,
+          joinMode:this.joinMode
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log(error);
+          } else {
+            var result = JSON.parse(res.text);
+          
+            if (result.length == 0) {
+              this.ruleForm.options = []
+            } else {
+        if(this.joinMode=='1'){
+         this.ruleForm.options = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+       }else{
+         this.ruleForm.options1 = result.map((item)=>{
+          return {
+            value:item.code,
+            label:item.name
+          }
+        })
+      }
+              //  this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
             }
           }
         });
+
+
+            }
+          }
+        });
+    
     
     },
     removeMutiCity(index, list) {

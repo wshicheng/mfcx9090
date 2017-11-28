@@ -79,7 +79,7 @@
             ]"
             :id="'joinMode'+index"
           >
-          <el-radio-group v-model="list.joinMode" @change="checkJoinMode" id="only">
+          <el-radio-group v-model="list.joinMode" @change="checkJoinMode(list.joinMode,index)">
             <!-- 此处修改，判断是个人时，独家除了禁用，且不被选中 -->
             <el-radio :label="radio=='1'?'1':''" :disabled="radio=='2'" value="1">独家</el-radio>
             <el-radio label="2" value="2">非独家</el-radio>
@@ -98,7 +98,9 @@
         
           -->
         <div v-if="list.joinMode=='1' || (radio=='2'||list.joinMode=='2'?false:true)">
-          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" >
+          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" :rules="[
+                { required: true, message: '请选择加盟地区', trigger: 'blur' },
+                ]">
             <el-select v-model="list.cityId" placeholder="请选择">
               <el-option
                 v-for="item in ruleForm.options"
@@ -169,7 +171,7 @@
           <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" >
               <el-select v-model="list.cityId" placeholder="请选择">
                 <el-option
-                  v-for="item in ruleForm.options"
+                  v-for="item in ruleForm.options1"
                   :key="item.value"
                   :label="item.label"
                   :value="item">
@@ -610,6 +612,8 @@ export default {
         file: "",
         options: [
         ],
+        options1: [
+        ],
         value: "",
         alipayAccount:"",
         settleBank:"",
@@ -704,6 +708,7 @@ export default {
     // 因为element-ui的表单验证数据无法嵌套三级结构，需手动书写
     isEmpty(){
       $("#isEmpty").on("blur","input",function(){
+        
         if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
 
           $(this).parents(".is-required").addClass("is-error")
@@ -786,6 +791,8 @@ export default {
         file: "",
         options: [
         ],
+        options1: [
+        ],
         value: "",
         alipayAccount:"",
         settleBank:"",
@@ -804,9 +811,10 @@ export default {
     
     },
     // 改变加盟模式 独家、非独家
-    checkJoinMode(joinMode){
+    checkJoinMode(val,index){
      // 清空中间部分验证不通过的信息
-     this.joinMode = joinMode;
+     this.joinMode = val;
+     console.log(val)
      this.getJoinAreaList();
      setTimeout(function(){
           if($("#isEmpty .is-required.is-error")){
@@ -821,7 +829,12 @@ export default {
           if($("#isEmpty div.el-form-item.is-error")){
             $("#isEmpty div.el-form-item.is-error").removeClass("is-error")
           }
+          
         },200)
+      // 清空中间部分的值
+          $('#cityId'+ index).find("input").val(" ")
+          $('#subscriptionNum'+ index).find("input").val(" ")
+          $('#subscriptionMoney'+ index).find("input").val(" ")
       
     
     },    
@@ -835,7 +848,7 @@ export default {
         })
         .send({
           unUsed: 1,
-          joinMode:this.radio=='1'?'1':'2',
+          joinMode:this.joinMode,
         })
         .end((error, res) => {
           if (error) {
@@ -848,7 +861,22 @@ export default {
                 message: "对不起，暂时无可加盟地区"
               });
             } else {
-                
+              
+              if(this.joinMode=='1'){
+                this.ruleForm.options = result.map((item)=>{
+                  return {
+                    value:item.code,
+                    label:item.name
+                  }
+                })
+              }else{
+                this.ruleForm.options1 = result.map((item)=>{
+                  return {
+                    value:item.code,
+                    label:item.name
+                  }
+                })
+              }
                this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
               // -------------当是个人加盟，且需要添加加盟信息时，需要判断radio=="2"时，
               // 将个人加盟时的加盟方式限定为非独家-------------------
@@ -922,12 +950,22 @@ export default {
           console.log(error)
         }else{
           var result = JSON.parse(res.text)
-          this.ruleForm.options = result.map((item)=>{
-            return {
-              value:item.code,
-              label:item.name
-            }
-          })
+          if(this.joinMode=='1'){
+            this.ruleForm.options = result.map((item)=>{
+              return {
+                value:item.code,
+                label:item.name
+              }
+            })
+          }else{
+            this.ruleForm.options1 = result.map((item)=>{
+              return {
+                value:item.code,
+                label:item.name
+              }
+            })
+          }
+          
         }
       })
     },

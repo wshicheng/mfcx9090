@@ -200,7 +200,7 @@ export default {
       lists: [],
       pageTotal: '',
       noDate: false,
-      loading2: false,
+      loading2: true,
       currentPage: 1,
       pageShow: false,
       totalItems: 1,
