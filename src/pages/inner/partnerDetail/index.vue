@@ -38,7 +38,7 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{relationDatas.subscriptionNum}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousand()}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousand()}} </span>辆)</td>
             </tr>
             <!-- 独家 -->
             <tr v-if="relationDatas.joinMode=='1'">
@@ -50,7 +50,7 @@
             </tr>
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">授权费率：</span>{{new Number(relationDatas.licenseFeeRate).thousand()+"%"}}</td>
+                <span class="prex">授权费率：</span>{{new Number(relationDatas.licenseFeeRate).thousand().toFixed(1)+"%"}}</td>
               <td>
                 <span class="prex">首次结算日期：</span>{{relationFirstDealDate}}</td>
             </tr>
@@ -392,19 +392,19 @@ export default {
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
           // 如果后台请求出错，设置基础默认值
-          if(res.resultCode!=1){
-             this.relationDatas = {
-               subscriptionNum:0,
-               subscriptionMoney:0,
-                licenseFeeRate:0,
-                joinMode:this.joinTarget=='1'?'1':'2',
-                settleDays:"",
-                manageFee:0,
-                wType:1,
-                divisionPercent:0
-             }
-            return;
-          }
+          // if(res.resultCode!=1){
+          //    this.relationDatas = {
+          //      subscriptionNum:0,
+          //      subscriptionMoney:0,
+          //       licenseFeeRate:0,
+          //       joinMode:this.joinTarget=='1'?'1':'2',
+          //       settleDays:"",
+          //       manageFee:0,
+          //       wType:1,
+          //       divisionPercent:0
+          //    }
+          //   return;
+          // }
           for(var i = 0; i < res.areaList.length; i++){
             if(res.areaList[i].cityId==this.cityId){
               this.relationDatas = res.areaList[i]

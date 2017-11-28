@@ -149,6 +149,7 @@
     margin-left: 5px;
     color: #bbb;
     font-weight: normal;
+    font-size:12px;
   }
 
   div.status_title span.arrow,
@@ -229,7 +230,7 @@
   }
 
   div.selectPlace {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding-left: 10px;
   }
 

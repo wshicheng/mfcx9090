@@ -234,6 +234,7 @@
               ]">
             <el-input v-model.number="list.divisionPercent" placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
           </el-form-item>
+          <h1 class="form_table_h2">加盟商的累计收益超过投入的加盟资金时，从下个结算周期开始，加盟商的收益采用分成模式</h1>
         </div>
       </div>
         
@@ -838,7 +839,7 @@ export default {
         })
         .send({
           unUsed: 1,
-          joinTarget:this.radio,
+          joinMode:this.radio=='1'?'1':'2',
         })
         .end((error, res) => {
           if (error) {
@@ -851,7 +852,7 @@ export default {
                 message: "对不起，暂时无可加盟地区"
               });
             } else {
-              
+                
                this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
               // -------------当是个人加盟，且需要添加加盟信息时，需要判断radio=="2"时，
               // 将个人加盟时的加盟方式限定为非独家-------------------
