@@ -709,7 +709,7 @@ export default {
     // 因为element-ui的表单验证数据无法嵌套三级结构，需手动书写
     isEmpty(){
       $("#isEmpty").on("blur","input",function(){
-        
+        debugger
         if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
 
           $(this).parents(".is-required").addClass("is-error")
@@ -720,6 +720,7 @@ export default {
           if($(this).parents(".is-required").find(".error-list")){
             $(this).parents(".is-required").find(".error-list").remove()
           }
+          
           if($(this).attr("placeholder")=="请输入车辆数(单位：/辆)"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
           }

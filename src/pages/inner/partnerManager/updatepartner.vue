@@ -969,7 +969,7 @@ export default {
         })
         .send({
           unUsed: 1,
-          joinMode:this.joinMode
+          joinMode:this.newFormObject.joinMode
         })
         .end((error, res) => {
           if (error) {
@@ -980,7 +980,7 @@ export default {
             if (result.length == 0) {
               this.ruleForm.options = []
             } else {
-        if(this.joinMode=='1'){
+        if(this.newFormObject.joinMode=='1'){
          this.ruleForm.options = result.map((item)=>{
           return {
             value:item.code,
