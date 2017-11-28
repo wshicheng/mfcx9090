@@ -714,6 +714,9 @@ export default {
 
           $(this).parents(".is-required").addClass("is-error")
 
+          if($(this).parents(".el-form-item").find(".error-list")){
+            $(this).parents(".el-form-item").find(".error-list").remove()
+          }
           if($(this).parents(".is-required").find(".error-list")){
             $(this).parents(".is-required").find(".error-list").remove()
           }
