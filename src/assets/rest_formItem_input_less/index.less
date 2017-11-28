@@ -170,6 +170,13 @@ div#settle_input input{
     div.el-radio-group .customInput div.error-list{margin-left:0!important}
     #settle_input .el-dialog__body{padding-left:100px} 
     #settle_input #com  .el-form-item__label{width:170px!important;margin-left:-50px!important} 
+    div.joinPlace label.el-form-item__label{
+      &:before{
+        content: '*';
+        color: #ff4949;
+        margin-right: 4px;
+      }
+    }
     div.forgetPsd div.el-dialog.el-dialog--small{width:100%;}
     #err_form div.el-dialog--small {width:62%}
     #pt_form div.el-dialog--small {width:62%}

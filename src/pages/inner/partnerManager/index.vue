@@ -303,6 +303,7 @@
 .partner_new span {
   padding:5px;
   cursor:pointer;
+  border:1px solid transparent;
 }
 address.joinArea {
     font-style: normal;
@@ -314,6 +315,8 @@ address.joinArea {
 }
 #joinArea span {
   line-height:30px;
+  display: inline-block;
+ 
 }
 span.active {
     border: 1px solid orange;
@@ -914,7 +917,6 @@ export default {
                 this.phone = ''
                 this.startTime = ''
                 this.endTime = ''
-                console.log("---------------------------------")
               }else{
 
                 var _startTime = new Date(this.startTime).getTime()
@@ -983,7 +985,6 @@ export default {
                       this.checkLogin(res);
                       this.loading = false;
                       var newArr = JSON.parse(res.text).data || [];
-                      console.log(newArr)
                       var result = newArr.map(item => {
                         return Object.assign({}, item, {
                           joinTime: moment(item.joinTime).format("YYYY-MM-DD")
@@ -995,7 +996,6 @@ export default {
                       var pageNumber = Number(JSON.parse(res.text).totalPage);
                       this.totalItems = Number(JSON.parse(res.text).totalItems);
                       this.tableData = result;
-                      console.log(this.tableData)
                       if (pageNumber > 1) {
                         this.pageShow = true;
                       } else {
@@ -1020,7 +1020,6 @@ export default {
           } else {
             this.allcityList = res.body
             // this.checkLogin(res)
-            console.log("所有城市",res)
           }
         })
     },
@@ -1272,7 +1271,6 @@ export default {
                 that.$store.commit("keepParnterAccount", item);
               });
               this.tableData = that.$store.state.users.keepParnterAccount;
-              console.log("this.tableData",this.tableData)
               if (pageNumber > 1) {
                 that.pageShow = true;
               } else {
@@ -1514,7 +1512,6 @@ export default {
               this.checkLogin(res);
               this.loading = false;
               var newArr = JSON.parse(res.text).data || [];
-              console.log(newArr)
               var result = newArr.map(item => {
                 return Object.assign({}, item, {
                   joinTime: moment(item.joinTime).format("YYYY-MM-DD")
@@ -1526,7 +1523,6 @@ export default {
               var pageNumber = Number(JSON.parse(res.text).totalPage);
               this.totalItems = Number(JSON.parse(res.text).totalItems);
               this.tableData = result;
-              console.log(this.tableData)
               if (pageNumber > 1) {
                 this.pageShow = true;
               } else {

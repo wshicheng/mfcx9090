@@ -582,7 +582,7 @@ export default {
                 } else {
                   this.checkLogin(res)
                   // 数据处理
-                  // var list = JSON.parse(res.text).data
+                  var list = JSON.parse(res.text).data
                   // var newList = that.tableDataDel(list)
                   if (list.length === 0) {
                     that.$message.error('当前查询没有信息，无法导出哦~');
