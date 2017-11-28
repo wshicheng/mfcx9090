@@ -694,8 +694,8 @@ import {thousandFormat} from '../../../util/util.js'
  }
  .managefee .fee span {
    width: calc(100% / 3);
-    height: 40px;
-    line-height: 40px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
     float: left;
     box-sizing: border-box;
@@ -866,8 +866,8 @@ import {thousandFormat} from '../../../util/util.js'
               div.grid{
                 span{
                   width:calc(100% / 2);
-                   height: 40px;
-                  line-height: 40px;
+                   height: 60px;
+                  line-height: 60px;
                   text-align: center;
                   float:left;
                  
@@ -883,11 +883,11 @@ import {thousandFormat} from '../../../util/util.js'
                 div.item{
                   border-right:$tableBorderColor;
                   float:left;
-                  height:40px;
+                  height:60px;
                   border-bottom:none;
                   box-sizing:border-box;
                   div.list{display: block;
-                    div.cell{float:left;width:25%;box-sizing:border-box;border-right:$tableBorderColor;height:20px;line-height:20px;}
+                    div.cell{float:left;width:25%;box-sizing:border-box;border-right:$tableBorderColor;height:40px;line-height:20px;}
                     div.cell{
                       &:nth-last-child(1){border-right:none;text-align: center;}
                     }
@@ -924,7 +924,7 @@ import {thousandFormat} from '../../../util/util.js'
             }
             th.count{
               background:#ffff24;
-              div.grid{height:40px;line-height:40px;}
+              div.grid{height:60px;line-height:60px;}
             }
             th.out{background:#ebf1dc;}
             th.dateTime{background:yellow}
