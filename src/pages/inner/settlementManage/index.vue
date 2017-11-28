@@ -28,34 +28,34 @@
                 element-loading-text="拼命加载中"
                 style="width: 100% font-size:13px; color: #6c6c6c;">
             <el-table-column prop="applyTimeStr" label="结算周期" min-width="200">
-               <template scope="scope">
+               <template slot-scope="scope">
                 <router-link target="_blank" style="color:#0202ff;text-decoration:none;" v-bind:to="{path:'/index/settlementRecord/detail', query: {month:scope.row.applyTimeStr,id:scope.row.cityPartnerId,'wType':scope.row.wType,cityId:scope.row.cityId,cityName:scope.row.cityName}}"> {{scope.row.applyTimeStr}}</router-link>
               </template>
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
-                <template scope="scope">
+                <template slot-scope="scope">
                   {{scope.row.applyMoney}}
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="160">
-              <template scope="scope">
+              <template slot-scope="scope">
                   {{scope.row.cityName}}
               </template>
             </el-table-column>
             <el-table-column prop="companyName" label="所属加盟商" min-width="150">
             </el-table-column>
             <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
-              <template scope="scope">
+              <template slot-scope="scope">
                   {{scope.row.applyUserName}}
               </template>
             </el-table-column>
             <el-table-column prop="confirmTimeStr" label="结算确认日期" min-width="140">
-              <template scope="scope">
+              <template slot-scope="scope">
                   {{scope.row.confirmTimeStr}}
               </template>
             </el-table-column>
             <el-table-column label="操作" prop="del">
-              <template scope="scope">
+              <template slot-scope="scope">
                
                 <a v-if="scope.row.status == 3" href="javascript:;" prop="cityPartnerId" id='openId' @click="openEdit(scope.row, scope.$index)" style="color:#ccc; margin-right:10px; cursor:not-allowed;" title="已结算">
                   <!-- <i class="el-icon-document"></i> -->结算  <!-- 已结算 -->

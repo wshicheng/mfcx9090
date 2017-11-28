@@ -40,7 +40,7 @@
         <el-table-column prop="roleName" label="角色名称" min-width="160"></el-table-column>
         <el-table-column prop="description" label="备注" min-width="160"></el-table-column>
         <el-table-column label="包含用户" min-width="170">
-          <template scope="scope">
+          <template slot-scope="scope">
             <ul class="roleList">
               <el-tag v-for="name in scope.row.adminUserList" :key="name" type="gray">
                 {{name}}
@@ -50,7 +50,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="del" label="操作">
-          <template scope="scope">
+          <template slot-scope="scope">
             <i class="el-icon-edit" style="margin-right:10px;" @click="openEditRole(scope)" title="修改"></i>
             <i class="el-icon-close" title="删除" @click="handleDeleteRole(scope)"></i>
           </template>

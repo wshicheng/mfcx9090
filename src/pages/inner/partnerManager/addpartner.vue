@@ -98,9 +98,7 @@
         
           -->
         <div v-if="list.joinMode=='1' || (radio=='2'||list.joinMode=='2'?false:true)">
-          <el-form-item label="加盟地区" :id="'cityId'+ index" :rules="[
-                { required: true, message: '请选择加盟地区', trigger: 'blur' },
-              ]">
+          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" >
             <el-select v-model="list.cityId" placeholder="请选择">
               <el-option
                 v-for="item in ruleForm.options"
@@ -497,7 +495,9 @@ div.menuIcon i.icon-jian{right:-36px;}
 .avatar img {
   width: 100%;
 }
-
+div.joinPlace label.el-form-item__label{
+  border:1px solid red;
+}
 </style>
           
 <script>

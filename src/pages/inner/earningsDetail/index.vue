@@ -58,7 +58,7 @@
           min-width="65"
           label="车辆号"
           prop='bikeCode'>
-          <template scope="scope">
+          <template slot-scope="scope">
               <!-- <a>{{scope.row.bikeCode}}</a> -->
                 <router-link style="color:rgb(118, 103, 233); text-decoration: none;" target='_blank' v-bind:to="{path:'/carUseDetail', query: {code:scope.row.bikeCode}}">{{scope.row.bikeCode}}</router-link>   
               <!-- <a style="color:rgb(118, 103, 233); text-decoration: none;" >{{scope.row.bikeCode}}</a>   -->
@@ -81,7 +81,7 @@
           label="骑行时间(分钟)"
           min-width="90"
         >
-          <template scope="scope">
+          <template slot-scope="scope">
             {{(scope.row.rideTime).thousand()}}
           </template>
         </el-table-column>
@@ -90,7 +90,7 @@
           label="骑行里程(米)"
           min-width="85"
           >
-          <template scope="scope">
+          <template slot-scope="scope">
             {{(scope.row.rideMileage).thousand()}}
           </template>
         </el-table-column>
@@ -99,7 +99,7 @@
           label="订单费用(元)"
           min-width="60"
           >
-           <template scope="scope">
+           <template slot-scope="scope">
             {{(scope.row.orderMoney).thousandFormat()}}
           </template>
         </el-table-column>
@@ -108,7 +108,7 @@
           label="优惠券支付(元)"
           min-width="60"
         >
-            <template scope="scope">
+            <template slot-scope="scope">
             {{(scope.row.couponAmount).thousandFormat()}}
           </template>
         </el-table-column>
@@ -117,7 +117,7 @@
           label="赠送金额支付(元)"
           min-width="60"
         >
-            <template scope="scope">
+            <template slot-scope="scope">
             {{(scope.row.grantAmount).thousandFormat()}}
           </template>
         </el-table-column>
@@ -126,7 +126,7 @@
           label="实际收益"
           :render-header="rendHeader"
         >
-          <template scope="scope">
+          <template slot-scope="scope">
             {{(scope.row.balanceAmount).thousandFormat()}}
           </template>
         </el-table-column>
