@@ -597,7 +597,8 @@ export default {
                   //   })
                   // }
                   console.log(res)
-                  window.open(res.body.data)
+                  // window.open(res.body.data)
+                  window.location.href = (res.body.data)
 
                 }
               })
