@@ -137,7 +137,7 @@
                 </a>
                 <i class="el-icon-close" style="cursor:pointer;" title="删除" @click="openDelete(scope)"></i>
                 <!--dialog 弹窗开始 编辑加盟商-->
-                <el-dialog id="err_form" title="编辑加盟商账号信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
+                <el-dialog id="err_form" class="edit_join" title="编辑加盟商账号信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
                   <el-form :model="editAccount" :rules="editAccountRule">
                     <el-form-item label="用户名" prop='userName' :label-width="formLabelWidth">
                       <el-input v-model="editAccount.userName" auto-complete="off"></el-input>

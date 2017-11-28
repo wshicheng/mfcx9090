@@ -11,7 +11,7 @@
       </div>
       <div style="background-color:#faebd7;font-size:14px;padding-bottom:10px;color:#555" class="partner_new">
         <address class="joinArea" style="margin-top:5px;margin-right:15px;height:25px">加盟区域</address>
-        <div id="joinArea">
+        <div id="joinArea" style="padding-left:105px">
           <span myId="0" class="active" @click="handleClick">
               全部地区
           </span>
