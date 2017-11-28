@@ -98,9 +98,7 @@
         
           -->
         <div v-if="list.joinMode=='1' || (radio=='2'||list.joinMode=='2'?false:true)">
-          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" :rules="[
-                { required: true, message: '请选择加盟地区', trigger: 'blur' },
-                ]">
+          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" >
             <el-select v-model="list.cityId" placeholder="请选择">
               <el-option
                 v-for="item in ruleForm.options"
@@ -168,7 +166,7 @@
 
         <!-- 个人或者非独家时 -->
         <div v-if="list.joinMode=='2'|| radio=='2'">
-          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" >
+          <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index">
               <el-select v-model="list.cityId" placeholder="请选择">
                 <el-option
                   v-for="item in ruleForm.options1"
@@ -729,7 +727,7 @@ export default {
              $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入授权费率</div>')
           }
            if($(this).attr("placeholder")=="请选择"){
-           $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+           $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
           }
            if($(this).attr("placeholder")=="请输入运营管理费"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入运营管理费</div>')
@@ -1083,7 +1081,6 @@ export default {
               $('#wType'+index).addClass('is-error')
               $('#wType'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 150px;position:absolute;">请选择结算周期</div>')
           }
-         
          // 验证加盟地区
           if(!item.cityId==''){
             setTimeout(()=>{

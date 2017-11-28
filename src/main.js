@@ -23,8 +23,8 @@ Vue.directive('title', {
 
 Vue.use(Element)
 
-let authList = window.localStorage.getItem('authList') 
-let permission = window.localStorage.getItem('permission')
+let authList = window.localStorage.getItem('admin_authList') 
+let permission = window.localStorage.getItem('admin_permission')
 // let name = window.localStorage.getItem('name').length>0? window.localStorage.getItem('name'):window.localStorage.getItem('userName')
 
 if (authList) {
@@ -35,11 +35,11 @@ if (authList) {
 
 router.beforeEach((route, redirect, next) => {  
   if(route.path === '/login'){
-    window.localStorage.removeItem('permission')
-    window.localStorage.removeItem('authList')
+    window.localStorage.removeItem('admin_permission')
+    window.localStorage.removeItem('admin_authList')
     store.commit(types.ADD_MENU, []) 
   }
-  let authList = window.localStorage.getItem('authList')
+  let authList = window.localStorage.getItem('admin_authList')
   if (!authList && route.path !== '/login') {  
     next({ path: '/login' })
   } else {
