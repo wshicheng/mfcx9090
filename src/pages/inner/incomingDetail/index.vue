@@ -227,7 +227,7 @@ import $ from 'jquery'
 import request from 'superagent'
 import moment from 'moment'
 // require('../../../assets/lib/js/exportExcel.js')
-require('../../../assets/lib/js/Blob.js')
+//require('../../../assets/lib/js/Blob.js')
 import { host } from '../../../config/index.js'
 export default {
   data () {

@@ -328,7 +328,7 @@ import moment from 'moment'
 import { siblings } from '../../../../utils/index.js'
 import {thousand,thousandFormat} from '../../../util/util.js'
 // require('../../../assets/lib/js/exportExcel.js')
-require('../../../assets/lib/js/Blob.js')
+//require('../../../assets/lib/js/Blob.js')
 import { host } from '../../../config/index.js'
 export default {
   data () {
