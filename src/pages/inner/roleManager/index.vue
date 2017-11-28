@@ -56,7 +56,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog v-loading="loading2" title="修改角色" :visible.sync="dialogEditVisible" :modal-append-to-body="false" :modal="true">
+
+      <el-dialog id="err_form" class="edit_role" v-loading="loading2" title="修改角色" :visible.sync="dialogEditVisible" :modal-append-to-body="false" :modal="true">
         <el-form v-model="editForm">
           <el-form-item label="角色名称" class="rolename" :label-width="formLabelWidth">
             <el-input v-model="editForm.roleName" placeholder="请输入角色名称"></el-input>
@@ -944,7 +945,7 @@ button#roleSearchBtn:hover {
 
 div.editfooter {
   text-align: left;
-  padding-left: 120px;
+  padding-left: 210px;
   margin-top: -43px;
 }
 

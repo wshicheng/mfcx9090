@@ -62,10 +62,10 @@
     @media screen and (min-width:1367px) {
         #addaccount_form {
             /*  适配好的样式 */
-            height: 60%;
+            /* height: 60%; */
             /*overflow-y: scroll; 
         overflow-x: hidden;*/
-            overflow-y: scroll; 
+            /* overflow-y: scroll;  */
             width: 50%;
             box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
             position: fixed;

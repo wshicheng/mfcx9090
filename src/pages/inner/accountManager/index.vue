@@ -7,11 +7,11 @@
         <div class="am_search">
           <label>
             <span>关键字</span>
-            <input type="text" placeholder="账号/姓名" v-on:blur="initQuery" v-model="accountOrUsername" class="account_my_input">
+            <input type="text" placeholder="账号\姓名" v-on:blur="initQuery" v-model="accountOrUsername" class="account_my_input">
           </label>
           <label>
             <span>联系方式</span>
-            <input type="text" placeholder="手机号/邮箱" v-on:blur="initQuery" v-model="telOrMail" class="account_my_input">
+            <input type="text" placeholder="手机号\邮箱" v-on:blur="initQuery" v-model="telOrMail" class="account_my_input">
           </label>
           <el-button id="accountSearchBtn" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
         </div>
@@ -45,7 +45,7 @@
                 </a>
                 <i class="el-icon-close" title="删除" @click="openDelete(scope)"></i>
                 <!--dialog 弹窗开始 编辑平台账号-->
-                <el-dialog title="编辑平台账号信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
+                <el-dialog id="pt_form" title="编辑平台账号信息" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
                   <el-form class="editAccount" :model="editAccount" :rules="editAccountRule" ref="editRuleForm">
                     <el-form-item label="用户名" prop="userName" :label-width="formLabelWidth">
                       <el-input v-model="editAccount.userName"  @change="handlechange" auto-complete="off"></el-input>
@@ -98,11 +98,11 @@
           <div class="am_search">
             <label>
               <span style="margin-right:13px;margin-left:15px">关键字</span>
-              <input type="text" v-model="accountOrUsername" placeholder="账号/姓名" @blur="initQuery" class="account_my_input">
+              <input type="text" v-model="accountOrUsername" placeholder="账号\姓名" @blur="initQuery" class="account_my_input">
             </label>
             <label>
               <span>联系方式</span>
-              <input type="text" v-model="telOrMail" placeholder="手机号/邮箱" @blur="initQuery" class="account_my_input">
+              <input type="text" v-model="telOrMail" placeholder="手机号\邮箱" @blur="initQuery" class="account_my_input">
             </label>
             <el-button id="accountSearchBtn2" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
           </div>

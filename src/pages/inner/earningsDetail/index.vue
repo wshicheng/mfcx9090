@@ -584,10 +584,10 @@ export default {
                   // 数据处理
                   // var list = JSON.parse(res.text).data
                   // var newList = that.tableDataDel(list)
-                  // if (list.length === 0) {
-                  //   that.$message.error('当前查询没有信息，无法导出哦~');
-                  //  that.$loading({customClass: 'loading_class'}).close()
-                  // } else {
+                  if (list.length === 0) {
+                    that.$message.error('当前查询没有信息，无法导出哦~');
+                   that.$loading({customClass: 'loading_class'}).close()
+                  } else {
                   //   const data = that.formatJson(filterVal, newList)
                   //   export_json_to_excel(tHeader, data, that.cityName + '_订单明细excel')
                     that.$loading({customClass: 'loading_class'}).close()
@@ -597,8 +597,9 @@ export default {
                   //   })
                   // }
                   console.log(res)
-                  window.open(res.body.data)
-
+                  // window.open(res.body.data)
+                  window.location.href = (res.body.data)
+                  }
                 }
               })
           // }, 1000)

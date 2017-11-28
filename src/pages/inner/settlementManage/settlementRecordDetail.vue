@@ -129,7 +129,7 @@
           <tr v-for="list of items" :key="list.id">
            <td class="dateTime">{{list.statisticId}}</td>
             <td class="userTotalPayment">
-              {{new Number(list.totalBill).thousandFormat()}}
+              {{new Number(list.totalBill).thousand()}}
             </td>
             <td class="userTotalPayment">
               {{new Number(list.totalMoney).thousandFormat()}}
@@ -320,7 +320,7 @@
           <tr v-for="list of items" :key="list.id">
            <td class="dateTime">{{list.statisticId}}</td>
             <td class="userTotalPayment">
-              {{new Number(list.totalBill).thousandFormat()}}
+              {{new Number(list.totalBill).thousand()}}
             </td>
             <td class="userTotalPayment">
               {{new Number(list.totalMoney).thousandFormat()}}
@@ -448,7 +448,7 @@
           <tr v-for="list of items" :key="list.id">
            <td class="dateTime">{{list.statisticId}}</td>
             <td class="userTotalPayment">
-              {{new Number(list.totalBill).thousandFormat()}}
+              {{new Number(list.totalBill).thousand()}}
             </td>
             <td class="userTotalPayment">
               {{new Number(list.totalMoney).thousandFormat()}}
