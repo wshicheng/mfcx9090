@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
                 <template slot-scope="scope">
-                  {{new Number (scope.row.applyMoney).thousandFormat()}}
+                  {{(scope.row.applyMoney).thousandFormat()}}
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="160">
@@ -122,6 +122,7 @@ import request from 'superagent'
 import moment from 'moment'
 import $ from 'jquery'
 import { siblings } from '../../../../utils/index.js'
+import { thousand,thousandFormat } from '../../../util/util.js'
 import { host } from '../../../config/index.js'
 export default {
   data: function () {
