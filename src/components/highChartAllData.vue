@@ -78,18 +78,20 @@ import $ from 'jquery'
       // }, 60000)
     },
     methods: {
-      randomColor() {
-        var rgb = '255,255,255'
-        var r = Math.floor(Math.random() * 255) + 1
-        var g = Math.floor(Math.random() * 255) + 1
-        var b = Math.floor(Math.random() * 255) + 1
-        var color = 'rgba(' + r + ',' + g + ',' + b + ',0.7)'
-        return color
-      },
+      // randomColor() {
+      //   var rgb = '255,255,255'
+      //   var r = Math.floor(Math.random() * 255) + 1
+      //   var g = Math.floor(Math.random() * 255) + 1
+      //   var b = Math.floor(Math.random() * 255) + 1
+      //   var color = 'rgba(' + r + ',' + g + ',' + b + ',0.7)'
+      //   return color
+      // },
       initChart () {
         // 创建图表
         Highcharts.chart('container', {
           /** Highcharts 配置 */
+          colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00',
+                 '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
           lang: {
             printChart: '打印图表',
             contextButtonTitle: '图表导出菜单',
@@ -126,6 +128,18 @@ import $ from 'jquery'
               color: '#808080'
             }]
           },
+           plotOptions: {
+            bar: {
+              dataLabels: {
+                enabled: true,
+                allowOverlap: true,
+                formatter: function() { 
+                    return   Highcharts.numberFormat(this.y, 2, ".", ",");
+                },
+                mixPoinitWidth: 30
+              }
+            }
+          },
           legend: {
             layout: 'vertical',
             align: 'left',
@@ -139,6 +153,8 @@ import $ from 'jquery'
             {
               name: ' ',
               color: '#74f7af',
+              data:this.chartData,
+              colorByPoint:true,
               // data: [
               //   {
               //     color: 'red',
@@ -241,7 +257,7 @@ import $ from 'jquery'
               //     y: this.chartData[24]
               //   }
               // ],
-              data:this.chartData.map((item)=>{return {color:this.randomColor(),y:item}}) ,
+              // data:this.chartData.map((item)=>{return {color:this.randomColor(),y:item}}) ,
               tooltip: {
                 valueSuffix: '单',
                 useHTML: true,

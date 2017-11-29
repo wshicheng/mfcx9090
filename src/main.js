@@ -56,7 +56,7 @@ router.beforeEach((route, redirect, next) => {
             }
         }
     } else {  
-      next({ path: '/nofound' })  
+      next({ path: '/system/office?cityId=0' })  
     }  
   }  
 })

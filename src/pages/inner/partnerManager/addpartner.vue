@@ -724,7 +724,7 @@ export default {
           if($(this).attr("placeholder")=="请输入车辆数(单位：/辆)"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
           }
-          debugger
+        
            if($(this).attr("placeholder")=="请输入加盟资金(元)"){
              console.log("hhhhhhhhhhhhhhhhhhhhhhhh")
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入加盟资金</div>')
