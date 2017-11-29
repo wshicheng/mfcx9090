@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
                 <template slot-scope="scope">
-                  {{(scope.row.applyMoney).thousandFormat()}}
+                  {{new Number (scope.row.applyMoney).thousandFormat()}}
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="160">
@@ -122,7 +122,6 @@ import request from 'superagent'
 import moment from 'moment'
 import $ from 'jquery'
 import { siblings } from '../../../../utils/index.js'
-import { thousand,thousandFormat } from '../../../util/util.js'
 import { host } from '../../../config/index.js'
 export default {
   data: function () {
@@ -159,27 +158,6 @@ export default {
     $('.sign[name="60"]').addClass('is-active')
     this.getCityList()
     this.getDateByTabName('2')
-     // 发起websocket
-      // var ws = new WebSocket("ws://localhost:3000");
-      // ws.onopen = function(){
-      //   console.log('open')
-      //   //用于叫消息发送到服务端
-      //   ws.send('game1')
-      // }
-      // ws.onmessage = function(event){
-      //   //当客户端收到服务端发来的消息时，会触发onmessage事件，参数evt.data中包含server传输过来的数据
-      //   console.log(event.data)
-      // }
-      // ws.onclose = function(event){
-      //   //当客户端收到服务端发送的关闭连接的请求时，触发onclose事件
-      //   console.log('websocketClosed')
-      // }
-      // ws.onerror = function(event){
-      //   //如果出现连接，处理，接收，发送数据失败的时候就会触发onerror事件
-
-      //   // 我们可以看出所有的操作都是采用事件的方式触发的，这样就不会阻塞UI，使得UI有更快的响应时间，得到更好的用户体验。
-      //   console.log('websocketError')
-      // }
   },
   methods: {
     handleCurrentChange(val) {
@@ -405,7 +383,6 @@ export default {
                 type: 'success',
                 message: '加盟商将收到你的结算信息'
               })
-             
             } else {
               this.$message('结算失败')
             }
