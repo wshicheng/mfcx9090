@@ -376,7 +376,7 @@ div.menuIcon i.icon-jian {
     margin-left: 25px;
     border-radius: 4px;
     border: 1px solid #ddd;
-    text-indent: 10px;
+    text-indent: 8px;
     display: inline-block;
     font-size:inherit
 }

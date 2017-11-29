@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="topHeader"><h1>蜜蜂出行加盟商管理平台<span>平台端</span></h1></div>
+    <!-- <div class="topHeader"><h1>蜜蜂出行加盟商管理平台<span>平台端</span></h1></div> -->
     <div id="login" :style="{backgroundImage: 'url(' +bg + ')'}">
       <div id="cover">
         <div v-title>蜜蜂出行加盟商管理平台</div>
@@ -13,7 +13,7 @@
                 <div class="signIn">
                   登录
                 </div>
-                <el-form label-width="60px" :model="formLabelAlign" ref="formLabelAlign">
+                <el-form label-width="46px" :model="formLabelAlign" ref="formLabelAlign">
                   <el-form-item class="userClass" prop="userName" label="">
                     <input class="my_input" v-model="formLabelAlign.userName" placeholder="请输入用户名" v-on:change="checkUserName" autofocus="autofocus" tabindex="1">
                     <div class="el-form-item__error" v-show="showUserNameError">请输入用户名</div>
@@ -69,9 +69,7 @@
             </div>
       </div>
     </div>
-    <div class="footer">
-      <h4>北京蜜蜂出行科技有限公司版权所有©2017</h4>
-    </div>
+   
   </div>
 </template>
 <script>
@@ -462,7 +460,7 @@ button.login {
     background: rgba(241, 194, 52, 1);
     color: #fff !important;
     cursor: pointer;
-    margin-left: 60px;
+    margin-left: 44px;
 }
 
 button.login:hover {
@@ -477,11 +475,11 @@ button.login:active {
 
 div.signIn {
     font-size: 24px;
-    padding-left: 60px;
+    padding-left: 44px;
     border-radius: 4px;
     color: #000;
     font-weight: 400;
-    margin-top: 38px;
+    margin-top: 20px;
 }
 
 div.topHeader h1 {
@@ -522,14 +520,16 @@ div#login {
     position: absolute;
     left: 0;
     right: 0;
-    top: 90px;
-    bottom: 90px;
+    top: 0;
+    bottom: 0;
     background-size: cover;
 }
 
 #cover {
     position: relative;
     height: 100%;
+    width:1200px;
+    margin:0 auto;
 }
 
 div#login div.content {
@@ -556,17 +556,17 @@ div#login div.content header p {
 
 div#login div.content div.loginForm {
     border-radius: 4px;
-    width: 390px;
+    width: 360px;
     /* margin: 0 auto; */
     float: right;
     color: #fff;
     background: #fff;
-    height: 334px;
+    height: 282px;
     margin-right: 80px;
-    right:20px;
-    top:50%;
-    margin-top:-167px;
-    position: absolute
+    right: 20px;
+    top: 50%;
+    margin-top: -167px;
+    position: absolute;
 }
 
 div#login div.content div.loginForm form.el-form {
@@ -606,12 +606,11 @@ div#login div.content div.loginForm form.el-form input {
 }
 
 button.forget_psd {
-    margin-right: 20px;
     border-radius: 0;
     border: none;
     margin-top: 10px;
     float: right;
-    margin-right: 42px;
+    margin-right: 26px;
     background: #fff;
     color: #000;
     cursor: pointer;

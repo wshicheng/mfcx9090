@@ -34,7 +34,7 @@
             </el-table-column>
             <el-table-column prop="applyMoney" label="结算金额(￥)" min-width="160">
                 <template slot-scope="scope">
-                  {{(scope.row.applyMoney).thousandFormat()}}
+                  {{new Number (scope.row.applyMoney).thousandFormat()}}
                 </template>
             </el-table-column>
             <el-table-column prop="cityName" label="加盟区域" min-width="160">

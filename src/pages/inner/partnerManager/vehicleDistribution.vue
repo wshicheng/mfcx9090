@@ -478,7 +478,7 @@ export default {
   methods: {
     // 通过加盟城市获取相关信息
       getRelationDataByCitId(){
-        this.$refs.val = ""
+        this.$refs.val.value = ""
         this.choseBikes = ""
        var cityPartnerId = this.$route.params.id.split('&')[1]
       request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')

@@ -1526,6 +1526,9 @@ body {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
+::-webkit-input-placeholder{
+  font-size: 14px;
+}
 
 
 /*#account_router_cover {
@@ -1607,19 +1610,22 @@ div.account>h1 button:hover {
   width: 100%;
   height: 70px;
   background: #faebd7;
+  padding-top:3px;
   padding-bottom:5px
+  
   /* border: 1px solid #e7ecf1; */
 }
 
 .account_my_input {
   width: 140px;
-  height: 30px;
+  height: 36px;
   outline: none;
   margin-top: 4px;
   border-radius: 4px;
   border: 1px solid #ddd;
   display: inline-block;
   text-indent: 8px;
+  font-size:inherit
 }
 
 .am_search label {

@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-      <div v-title>收益排行-统计图</div>
+      <div v-title>报表管理-收益排行-统计图</div>
       <div class="my_noDate" v-show="noData">
         <img src="../assets/img/2.png" style="margin-top:100px"/>
         <p>暂无数据</p>
@@ -125,6 +125,7 @@ import $ from 'jquery'
               color: '#74f7af',
               data:this.chartData ,
               colorByPoint:true,
+              maxPointWidth: 20
               
             }
           ]

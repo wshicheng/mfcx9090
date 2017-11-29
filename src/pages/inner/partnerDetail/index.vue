@@ -237,6 +237,18 @@
             <el-table-column prop="description" label="财务备注">
             </el-table-column>
           </el-table>
+          <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" :total="totalItems" v-show="pageShow">
+          </el-pagination>
+          <!-- <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page.sync="currentPage0"
+            :page-size="10"
+            layout="prev, pager, next, jumper"
+            :total="totalItems0"
+            v-show="pageShow0"
+            >
+          </el-pagination> -->
         </el-tab-pane>
         <el-tab-pane label="联系人" name="联系人" class="recodeTable">
           <ul class='contact_ul'>
@@ -291,10 +303,14 @@ export default {
       router: this.$route.query.carNum,
       car_infor_data: [],
       activeName: '车辆明细',
-      joinTarget:this.$route.params.id.split('&')[2]
+      joinTarget:this.$route.params.id.split('&')[2],
+      currentPage0:1,
+      totalItems0:'',
+      pageShow0:false
     }
   },
   methods: {
+
     getWithdrawals(){
        var id = this.$route.params.id.split('&')[0]
       var cityPartnerId = this.$route.params.id.split('&')[1]
@@ -458,7 +474,7 @@ export default {
       } else if (this.activeName === '结算记录') {
         this.loading2 = true
         this.activeName = '结算记录'
-        request.post(host + 'beepartner/admin/cityPartner/getWithdrawals')
+        request.post(host + 'beepartner/admin/withDraw/getWithdrawals')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'

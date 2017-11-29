@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <div v-title>收益排行-统计图</div>
+    <div v-title>报表管理-收益排行-统计图</div>
     <div class="my_noDate" style="position: absolute; min-height:40px; height: 40px;" v-show="noData">
       <img src="../assets/img/2.png" />
       <p>暂无数据</p>
@@ -153,11 +153,13 @@ export default {
             color: '#058DC7',
             data: this.orderNumber,
             pointPadding: 0.3,
-            pointPlacement: -0.2
+            pointPlacement: -0.2,
+            maxPointWidth: 20
           }, {
             name: '实际收益',
             color: '#50B432',
             data: this.consumeMoney,
+            maxPointWidth: 20,
             tooltip: {
               valuePrefix: '￥',
               valueSuffix: ' 元',

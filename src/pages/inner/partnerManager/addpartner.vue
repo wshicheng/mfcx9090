@@ -228,7 +228,7 @@
               </el-date-picker>           
           </el-form-item>
           <h1 class="form_table_h2" style="margin-top:-10px;margin-bottom:20px">生成结算单后，此日期不允许修改</h1>
-          <el-form-item label="后期分成比例" class="divisionPercent" :id="'divisionPercent'+ index" :rules="[
+           <el-form-item label="后期分成比例" class="divisionPercent" :id="'divisionPercent'+ index" :rules="[
                 { required: true, message: '请输入后期分成比例', trigger: 'blur' }
               ]">
             <el-input v-model.number="list.divisionPercent" placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
@@ -732,26 +732,26 @@ export default {
            if($(this).attr("placeholder")=="请输入授权费率"){
              $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入授权费率</div>')
           }
-           if($(this).attr("placeholder")=="请选择"){
-              $(this).parents(".el-form-item").addClass('is-error')
-           $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
-          }
            if($(this).attr("placeholder")=="请输入运营管理费"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入运营管理费</div>')
           }
            if($(this).attr("placeholder")=="请输入后期分成比例"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入后期分成比例</div>')
           }
+           if($(this).attr("placeholder")=="请选择"){
+              $(this).parents(".el-form-item").addClass('is-error')
+           $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+          }
+          
         }else{
           $(this).parents(".is-required").removeClass("is-error")
           $(this).parents(".is-required").find(".error-list").remove()
         }
       })
+      
     },
     // 改变加盟对象 企业、个人
     clickChange(){
-    
-    //  this.isEmpty()
 
       if(this.radio=='1'){
         this.joinMode = "1"

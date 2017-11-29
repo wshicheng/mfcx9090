@@ -5,7 +5,7 @@
                 <h2>
                     <img src="../assets/header/logo.jpg">
                 </h2>
-                <h3>蜜蜂出行加盟商管理平台<span>平台端</span></h3>
+                <h3>加盟商管理平台<span>平台端</span></h3>
                 <div class="admin">
                     <img class="headImg" v-if="imageUrl" :src="imageUrl">
                     <i v-else class="icon iconfont icon-touxiang"></i>
