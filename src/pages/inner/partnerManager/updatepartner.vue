@@ -50,103 +50,30 @@
             <!-- 加盟与结算信息部分 -->
   
               <h1 class="form_table_h1">加盟与结算信息</h1>
-              <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm" id="isEmpty">
-                <div class="menuIcon">
-                  <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
-                  <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index,list)" class="iconfont icon-jian"></i>
-                </div>
-                <el-form-item label="加盟模式" 
-                  :rules="[
-                      { required: true, message: '请选择加盟模式', trigger: 'blur' },
-                    ]"
-                  :id="'joinMode'+index"
-                  >
-                  
-                  <span v-show="(index+1)<=recodeCityList">{{list.joinMode=="1"?'独家':'非独家'}}</span>
-
-                  <el-radio-group v-model="list.joinMode" @change="checkJoinMode(list.joinMode,index)" v-show="(index+1)>recodeCityList">
-                    <el-radio label="1" :disabled="joinTarget=='2'" value="1">独家</el-radio>
-                    <el-radio label="2" value="2">非独家</el-radio>
-                  </el-radio-group>
-                  <span style="font-size:12px;color:#ccc;display:block;line-height:1.5">加盟模式是独家时，一个地区只允许一个企业加盟；非独家时，一个地区允许多个个人(或企业)加盟</span>
-                </el-form-item>
-                <!-- 独家 -->
-                <div v-if="list.joinMode=='1'">
-                  <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
-
+              <div id='isEmpty'>
+                <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
+                  <div class="menuIcon">
+                    <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
+                    <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index,list)" class="iconfont icon-jian"></i>
+                  </div>
+                  <el-form-item label="加盟模式" 
                     :rules="[
-                        { required: true, message: '请输入加盟地区', trigger: 'blur' },
+                        { required: true, message: '请选择加盟模式', trigger: 'blur' },
                       ]"
-                              >
-                                
-                      <span v-show="(index+1)<=recodeCityList">{{list.cityName}}</span>
-                      <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
-                          <el-option
-                          v-for="item in ruleForm.options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item">
-                          </el-option>
-                      </el-select>
-                  </el-form-item>   
-                  <el-form-item label="加盟日期" :id="'joinTime'+ index" :rules="[
-                          { required: true, message: ' ', trigger: 'blur' },
-                        ]">
-                    <el-date-picker
-                      v-model="list.joinTime"
-                      placeholder="选择日期">
-                    </el-date-picker>            
-                  </el-form-item>
-                  <el-form-item label="认购车辆" :id="'subscriptionNum'+ index" :rules="[
-                          { required: true, message: ' ', trigger: 'blur' },
-                        ]">
-                    <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
-                  </el-form-item>
-                  <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                    <el-input v-model="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
-                  </el-form-item>
-                  <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
-                    <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
-                  </el-form-item>	
-                  <el-form-item label="授权费率" :id="'licenseFeeRate'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                    <el-input max="100" min="0" v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
-                  </el-form-item>
-                  <el-form-item label="结算周期" :id="'wType'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                    <el-radio-group v-model="list.wType" @change="checkSettleType">
-                      <el-radio label="自然月" value='0'></el-radio>
-                      <el-radio label="自然周(周一到周日)" value='1'></el-radio>
-                      <el-radio label="自定义" value='2'></el-radio>
-                      <div id="customInputId" v-show="list.wType=='自定义'">
-                        <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
-                          v-model="list.circleDays"
-                          placeholder="请输入正整数（天）">
-                        </el-input>  
-                        <span>天</span>
-                      </div>
-                    </el-radio-group>
-                  </el-form-item>
-                  <h1 class="form_table_h2" style="margin-top:-20px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-                  <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index" :rules="[
-                          { required: true, message: ' ', trigger: 'blur' },
-                        ]">
-                        <el-date-picker
-                          :readonly="isHaveSettleOrders"
-                          v-model="list.firstDealDate"
-                          placeholder="选择日期">
-                        </el-date-picker>           
-                  </el-form-item>
-                  <h1 class="form_table_h2" style="margin-top:-10px;margin-bottom:20px">生成结算单后，此日期不允许修改</h1>
-                </div>
+                    :id="'joinMode'+index"
+                    >
+                    
+                    <span v-show="(index+1)<=recodeCityList">{{list.joinMode=="1"?'独家':'非独家'}}</span>
 
-              <!-- 非独家 -->
-                <div v-if="list.joinMode=='2'|| joinTarget=='2'">
-                  <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
+                    <el-radio-group v-model="list.joinMode" @change="checkJoinMode(list.joinMode,index)" v-show="(index+1)>recodeCityList">
+                      <el-radio label="1" :disabled="joinTarget=='2'" value="1">独家</el-radio>
+                      <el-radio label="2" value="2">非独家</el-radio>
+                    </el-radio-group>
+                    <span style="font-size:12px;color:#ccc;display:block;line-height:1.5">加盟模式是独家时，一个地区只允许一个企业加盟；非独家时，一个地区允许多个个人(或企业)加盟</span>
+                  </el-form-item>
+                  <!-- 独家 -->
+                  <div v-if="list.joinMode=='1'">
+                    <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
 
                       :rules="[
                           { required: true, message: '请输入加盟地区', trigger: 'blur' },
@@ -156,71 +83,146 @@
                         <span v-show="(index+1)<=recodeCityList">{{list.cityName}}</span>
                         <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
                             <el-option
-                            v-for="item in ruleForm.options1"
+                            v-for="item in ruleForm.options"
                             :key="item.value"
                             :label="item.label"
                             :value="item">
                             </el-option>
                         </el-select>
-                  </el-form-item>   
-                  <el-form-item label="加盟日期" :id="'joinTime'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
+                    </el-form-item>   
+                    <el-form-item label="加盟日期" :id="'joinTime'+ index" :rules="[
+                            { required: true, message: ' ', trigger: 'blur' },
+                          ]">
                       <el-date-picker
                         v-model="list.joinTime"
                         placeholder="选择日期">
-                      </el-date-picker> 
-                                
-                  </el-form-item>
-                  <el-form-item label="认购车辆" :id="'subscriptionNum'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                     <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
-                  </el-form-item>
-                  <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                    <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
-                  </el-form-item>
-                  <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
-                    <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
-                  </el-form-item>
-                  <el-form-item label="运营管理费" :id="'manageFee'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]" style="width:550px">
-                     <el-input v-model.number="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;">元/车.天</span>
-                  </el-form-item>
-                  <el-form-item label="结算日"
-                    :id="'settleDays'+index"
-                    :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]"
-                     >
-                
-                    <el-checkbox-group v-model="list.dayList"  @change="checkSettleDays">
-                      <el-checkbox label="1">每月1号</el-checkbox>
-                      <el-checkbox label="16">每月16号</el-checkbox>
-                    </el-checkbox-group>
-                  </el-form-item>
-                  <h1 class="form_table_h2" style="margin-top:-20px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-                  <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                      <el-date-picker
-                        :readonly="isHaveSettleOrders"
-                        v-model="list.firstDealDate"
-                        placeholder="选择日期">
-                      </el-date-picker>           
-                  </el-form-item>
-                  <h1 class="form_table_h2" style="margin-top:-12px;margin-bottom:20px">生成结算单后，此日期不允许修改</h1>
-                  <el-form-item label="后期分成比例" class="divisionPercent" :id="'divisionPercent'+ index" :rules="[
-                        { required: true, message: ' ', trigger: 'blur' },
-                      ]">
-                    <el-input v-model.number="list.divisionPercent" placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
-                  </el-form-item>
-                  <h1 class="form_table_h2" style="margin-top:-12px;margin-bottom:20px">加盟商的累计收益超过投入的加盟资金时，从下个结算周期开始，加盟商的收益采用分成模式</h1>
+                      </el-date-picker>            
+                    </el-form-item>
+                    <el-form-item label="认购车辆" :id="'subscriptionNum'+ index" :rules="[
+                            { required: true, message: ' ', trigger: 'blur' },
+                          ]">
+                      <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
+                    </el-form-item>
+                    <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                      <el-input v-model="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
+                    </el-form-item>
+                    <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
+                      <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
+                    </el-form-item>	
+                    <el-form-item label="授权费率" :id="'licenseFeeRate'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                      <el-input max="100" min="0" v-model="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
+                    </el-form-item>
+                    <el-form-item label="结算周期" :id="'wType'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                      <el-radio-group v-model="list.wType" @change="checkSettleType">
+                        <el-radio label="自然月" value='0'></el-radio>
+                        <el-radio label="自然周(周一到周日)" value='1'></el-radio>
+                        <el-radio label="自定义" value='2'></el-radio>
+                        <div id="customInputId" v-show="list.wType=='自定义'">
+                          <el-input :id="'circleDays'+ index" class="customInput" style="display:inline;width:200px;" v-show="list.wType=='自定义'"
+                            v-model="list.circleDays"
+                            placeholder="请输入正整数（天）">
+                          </el-input>  
+                          <span>天</span>
+                        </div>
+                      </el-radio-group>
+                    </el-form-item>
+                    <h1 class="form_table_h2" style="margin-top:-20px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
+                    <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index" :rules="[
+                            { required: true, message: ' ', trigger: 'blur' },
+                          ]">
+                          <el-date-picker
+                            :readonly="isHaveSettleOrders"
+                            v-model="list.firstDealDate"
+                            placeholder="选择日期">
+                          </el-date-picker>           
+                    </el-form-item>
+                    <h1 class="form_table_h2" style="margin-top:-10px;margin-bottom:20px">生成结算单后，此日期不允许修改</h1>
+                  </div>
+
+                <!-- 非独家 -->
+                  <div v-if="list.joinMode=='2'|| joinTarget=='2'">
+                    <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
+
+                        :rules="[
+                            { required: true, message: '请输入加盟地区', trigger: 'blur' },
+                          ]"
+                                  >
+                                    
+                          <span v-show="(index+1)<=recodeCityList">{{list.cityName}}</span>
+                          <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
+                              <el-option
+                              v-for="item in ruleForm.options1"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item">
+                              </el-option>
+                          </el-select>
+                    </el-form-item>   
+                    <el-form-item label="加盟日期" :id="'joinTime'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                        <el-date-picker
+                          v-model="list.joinTime"
+                          placeholder="选择日期">
+                        </el-date-picker> 
+                                  
+                    </el-form-item>
+                    <el-form-item label="认购车辆" :id="'subscriptionNum'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                      <el-input v-model="list.subscriptionNum" placeholder='请输入车辆数(单位：/辆)'></el-input><span style="margin-left:5px;">辆</span>
+                    </el-form-item>
+                    <el-form-item label="加盟资金" :id="'subscriptionMoney'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                      <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金（元）'></el-input><span style="margin-left:5px;">元</span>
+                    </el-form-item>
+                    <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
+                      <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
+                    </el-form-item>
+                    <el-form-item label="运营管理费" :id="'manageFee'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]" style="width:550px">
+                      <el-input v-model.number="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;">元/车.天</span>
+                    </el-form-item>
+                    <el-form-item label="结算日"
+                      :id="'settleDays'+index"
+                      :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]"
+                      >
+                  
+                      <el-checkbox-group v-model="list.dayList"  @change="checkSettleDays">
+                        <el-checkbox label="1">每月1号</el-checkbox>
+                        <el-checkbox label="16">每月16号</el-checkbox>
+                      </el-checkbox-group>
+                    </el-form-item>
+                    <h1 class="form_table_h2" style="margin-top:-20px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
+                    <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                        <el-date-picker
+                          :readonly="isHaveSettleOrders"
+                          v-model="list.firstDealDate"
+                          placeholder="选择日期">
+                        </el-date-picker>           
+                    </el-form-item>
+                    <h1 class="form_table_h2" style="margin-top:-12px;margin-bottom:20px">生成结算单后，此日期不允许修改</h1>
+                    <el-form-item label="后期分成比例" class="divisionPercent" :id="'divisionPercent'+ index" :rules="[
+                          { required: true, message: ' ', trigger: 'blur' },
+                        ]">
+                      <el-input v-model.number="list.divisionPercent" placeholder='请输入后期分成比例'></el-input><span style="margin-left:5px;">%</span>
+                    </el-form-item>
+                    <h1 class="form_table_h2" style="margin-top:-12px;margin-bottom:20px">加盟商的累计收益超过投入的加盟资金时，从下个结算周期开始，加盟商的收益采用分成模式</h1>
+                  </div>
                 </div>
-             </div>
+              </div>
           
             <!-- 添加加盟商尾部 -->
           <div>
@@ -818,7 +820,7 @@ export default {
   },
   methods: {
     // 判断加盟与结算信息部分是否为空
-    isEmpty(){
+    isEmpty(index){
       $("#isEmpty").on("blur","input",function(){
         console.log("--------------------")
         if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
@@ -831,7 +833,7 @@ export default {
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入认购车辆</div>')
           }
            if($(this).attr("placeholder")=="请输入加盟资金(元)"){
-           $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入加盟资金</div>')
+             $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入加盟资金</div>')
           }
            if($(this).attr("placeholder")=="请输入授权费率"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入授权费率</div>')
@@ -969,7 +971,7 @@ export default {
         })
         .send({
           unUsed: 1,
-          joinMode:this.joinMode
+          joinMode:this.newFormObject.joinMode
         })
         .end((error, res) => {
           if (error) {
@@ -980,7 +982,7 @@ export default {
             if (result.length == 0) {
               this.ruleForm.options = []
             } else {
-        if(this.joinMode=='1'){
+        if(this.newFormObject.joinMode=='1'){
          this.ruleForm.options = result.map((item)=>{
           return {
             value:item.code,

@@ -383,6 +383,9 @@ export default {
                 type: 'success',
                 message: '加盟商将收到你的结算信息'
               })
+
+              
+
             } else {
               this.$message('结算失败')
             }
