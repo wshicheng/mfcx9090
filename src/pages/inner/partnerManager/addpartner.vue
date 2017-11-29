@@ -127,7 +127,7 @@
               ]">
             <el-input v-model="list.subscriptionMoney" placeholder='请输入加盟资金(元)'></el-input><span style="margin-left:5px;">元</span>
           </el-form-item>
-          <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
+          <el-form-item style="position: relative; top: -22px; margin-bottom: 0px;">
             <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
           </el-form-item>	
           <el-form-item label="授权费率" :id="'licenseFeeRate'+ index" :rules="[
@@ -135,7 +135,7 @@
               ]">
             <el-input max="100" min="0" v-model.number="list.licenseFeeRate" placeholder='请输入授权费率'></el-input><span style="margin-left:5px;">%</span>
           </el-form-item>
-          <el-form-item label="结算周期" :id="'wType'+ index" :rules="[
+          <el-form-item class="zhouqi" label="结算周期" :id="'wType'+ index" :rules="[
                 { required: true, message: '请选择结算周期', trigger: 'blur' },
               ]">
             <el-radio-group v-model="list.wType" @change="checkSettleType">
@@ -152,8 +152,8 @@
               </div>
             </el-radio-group>
           </el-form-item>
-          <h1 class="form_table_h2" style="margin-top:-20px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-          <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
+          <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
+          <el-form-item class="first_day" label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
                   { required: true, message: '请选择首次结算开始日期', trigger: 'blur' },
                 ]">
                 <el-date-picker
@@ -196,7 +196,7 @@
               ]">
             <el-input v-model.number="list.subscriptionMoney" placeholder='请输入加盟资金(元)'></el-input><span style="margin-left:5px;">元</span>
           </el-form-item>
-          <el-form-item style="position: relative; top: -22px; margin-bottom: 7px;">
+          <el-form-item style="position: relative; top: -22px; margin-bottom: 0px;">
             <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
           </el-form-item>
           <el-form-item label="运营管理费" :id="'manageFee'+ index"  :rules="[
@@ -204,7 +204,7 @@
               ]" style="width:600px">
               <el-input v-model.number="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;">元/车.天</span>
           </el-form-item>
-          <el-form-item label="结算日"
+          <el-form-item class="zhouqi" label="结算日"
             :id="'settleDays'+index"
             :rules="[
                 { required: true, message: '请选择结算日', trigger: 'blur' },
@@ -216,8 +216,8 @@
               <el-checkbox label="16">每月16号</el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <h1 class="form_table_h2" style="margin-top:-20px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-          <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
+          <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:12px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
+          <el-form-item  label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
                 { required: true, message: '请选择结算日期', trigger: 'blur' },
                 
               ]">
@@ -840,10 +840,18 @@ export default {
           
         },200)
       // 清空中间部分的值
-          $('#cityId'+ index).find("input").val(" ")
-          $('#subscriptionNum'+ index).find("input").val(" ")
-          $('#subscriptionMoney'+ index).find("input").val(" ")
-      
+      // this.ruleForm.multiForm[index] = {id:"",cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',manageFee:"",settleDays:'',divisionPercent:"",dayList:[],joinMode:val}
+          this.ruleForm.multiForm[index].subscriptionNum = ""
+          this.ruleForm.multiForm[index].subscriptionMoney = ""
+          this.ruleForm.multiForm[index].cityId = ""
+          this.ruleForm.multiForm[index].manageFee = ""
+          this.ruleForm.multiForm[index].licenseFeeRate = ""
+          this.ruleForm.multiForm[index].dayList = []
+          this.ruleForm.multiForm[index].settleDays = ""
+          this.ruleForm.multiForm[index].divisionPercent = ""
+          this.ruleForm.multiForm[index].wType = ""
+          this.ruleForm.multiForm[index].circleDays = ""
+     
     
     },    
     // 添加多个加盟区域
@@ -1077,7 +1085,7 @@ export default {
                 $('#circleDays'+index).find('.el-input__inner').css({
                     borderColor:'red'
                  })
-                $('#circleDays'+index).append('<div class="error-list-circle" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
+                $('#circleDays'+index).append('<div class="error-list-circle" style="font-size: 12px;color: red;margin-left: 0px;margin-top:17px;width:399px;position:absolute;">请输入正整数天</div>')
              }
             setTimeout(()=>{
               $('#wType'+index).find('.error-list').remove()
@@ -1336,7 +1344,7 @@ export default {
                     $('#circleDays'+index).find('.el-input__inner').css({
                       borderColor:'red'
                     })
-                    $('#circleDays'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
+                    $('#circleDays'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 0px;margin-top:17px;width:399px;position:absolute;">请输入正整数天</div>')
                   }else{
                     var reg=/^[1-9]\d*$/;
                     var res = reg.test(val)
@@ -1347,7 +1355,7 @@ export default {
                     $('#circleDays'+index).find('.el-input__inner').css({
                       borderColor:'red'
                     })
-                    $('#circleDays'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 314px;width:399px;position:absolute;">请输入正整数天</div>')
+                    $('#circleDays'+index).append('<div class="error-list" style="font-size: 12px;color: red;margin-left: 0px;margin-top:17px;width:399px;position:absolute;">请输入正整数天</div>')
                     }
                   }
                 })

@@ -128,18 +128,6 @@ import $ from 'jquery'
               color: '#808080'
             }]
           },
-           plotOptions: {
-            bar: {
-              dataLabels: {
-                enabled: true,
-                allowOverlap: true,
-                formatter: function() { 
-                    return   Highcharts.numberFormat(this.y, 2, ".", ",");
-                },
-                mixPoinitWidth: 30
-              }
-            }
-          },
           legend: {
             layout: 'vertical',
             align: 'left',
@@ -263,7 +251,7 @@ import $ from 'jquery'
                 useHTML: true,
                 headerFormat: '<span style="font-size: 12px">时间 {point.key}</span><br/>',
                 pointFormatter: function () {
-                  return '<span style="color:{' + this.series.color + '}"></span>单数: <b>' + this.y + '</b>'
+                  return '<span style="color:{' + this.series.color + '}"></span>单数: <b>' +  Highcharts.numberFormat(this.y, 2, ".", ",") + '</b>'
                 }
               }
             }

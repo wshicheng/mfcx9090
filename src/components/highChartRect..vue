@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative;">
-    <div v-title>报表管理-消费数据-统计图</div>
+    <div v-title>收益排行-统计图</div>
     <div class="my_noDate" style="position: absolute; min-height:40px; height: 40px;" v-show="noData">
       <img src="../assets/img/2.png" />
       <p>暂无数据</p>
@@ -131,7 +131,14 @@ export default {
             shadow: false
           },
           tooltip: {
-            shared: true
+            formatter: function() {
+              if(this.point.series.name==='单数'){
+                  return this.point.series.name + ":" + Highcharts.numberFormat(this.point.y, 0, "", ",") + '单'
+              }else{
+                return this.point.series.name + ":" + Highcharts.numberFormat(this.point.y, 2, ".", ",") + '元'
+              }
+              
+            }
           },
           plotOptions: {
             column: {
@@ -153,7 +160,8 @@ export default {
             data: this.consumeMoney,
             tooltip: {
               valuePrefix: '￥',
-              valueSuffix: ' 元'
+              valueSuffix: ' 元',
+              
             },
             pointPadding: 0.3,
             pointPlacement: 0.2,

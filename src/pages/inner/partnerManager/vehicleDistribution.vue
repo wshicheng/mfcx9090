@@ -29,9 +29,9 @@
           </tr>
           <tr>
             <td>
-              <span>认购车辆：</span>{{relationSubscriptionNum}}</td>
+              <span>认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}</td>
             <td>
-              <span>拥有车辆：</span>{{relationBikeNum}}</td>
+              <span>拥有车辆：</span>{{new Number(relationBikeNum).thousand()}}</td>
            
           </tr>
         </tbody>
@@ -478,6 +478,8 @@ export default {
   methods: {
     // 通过加盟城市获取相关信息
       getRelationDataByCitId(){
+        this.$refs.val = ""
+        this.choseBikes = ""
        var cityPartnerId = this.$route.params.id.split('&')[1]
       request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
       .withCredentials()

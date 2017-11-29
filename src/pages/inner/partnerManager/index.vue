@@ -378,6 +378,7 @@ div.menuIcon i.icon-jian {
     border: 1px solid #ddd;
     text-indent: 10px;
     display: inline-block;
+    font-size:inherit
 }
 
 #partner_header .partner_my_input2 {
@@ -389,6 +390,7 @@ div.menuIcon i.icon-jian {
     text-indent: 10px;
     border: 1px solid #ddd;
     display: inline-block;
+    font-size:inherit
 } 
 #partner_data_select {
     height: 55px;

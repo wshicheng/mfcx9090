@@ -480,7 +480,7 @@ export default {
     }
   },
   mounted () {
-    document.title = '蜜蜂平台管理——收益排行列表'
+    document.title = '报表管理-收益排行'
     setTimeout(()=>{
       this.getDateMount()
     },500)

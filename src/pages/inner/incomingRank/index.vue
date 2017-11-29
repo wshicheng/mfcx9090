@@ -191,7 +191,7 @@ export default {
     this.$router.push('/index/incomingRank?type=daily')
     $(".sign").removeClass('is-active')
     $('.sign[name="51"]').addClass('is-active')
-    document.title = '收益排行'
+    document.title = '报表管理-收益排行'
   },
   watch: {
     '$route': 'routeChange',

@@ -180,6 +180,14 @@ export default {
   methods: {
     ...mapActions(['addMenu','loadRoutes','setName']),
     getVerCode(val) {
+      console.log(val)
+      // 验证是否输入号码等
+      if(val==''){
+        this.$message({
+          type: 'error',
+          message: '手机号为空'
+        })
+      }
       var that = this
       var $btn = $('button.getVerCode')
       var text = $btn.text()
