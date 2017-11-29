@@ -240,7 +240,7 @@
                 </el-form-item>
                 <el-form-item label="证件类别" prop="cardType">
                   <el-select v-model="editAccount.cardType" placeholder="请选择证件类别">
-                    <el-option label="居民身份证" value="居民身份证"></el-option>
+                    <el-option label="身份证" value="身份证"></el-option>
                     <el-option label="护照" value="护照"></el-option>
                   </el-select>
                 </el-form-item>
@@ -1167,7 +1167,7 @@ export default {
                     { id: this.userIDID },
                     this.editAccount,
                     { cityList: JSON.stringify(newMultForm) },
-                    { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+                    { cardType: this.editAccount.cardType === "身份证" ? 0 : 1 }
                   );
                   request
                     .post(
@@ -1744,7 +1744,7 @@ export default {
             this.editAccount.businessLicense = row.businessLicense;
             this.editAccount.address = row.address;
             this.editAccount.userName = row.userName;
-            this.editAccount.cardType = row.cardType == 0 ? "居民身份证" : "护照";
+            this.editAccount.cardType = row.cardType == 0 ? "身份证" : "护照";
             this.editAccount.phone = row.phone;
             this.editAccount.email = row.email;
             this.editAccount.userId = row.userId;
@@ -1796,7 +1796,7 @@ export default {
         {},
         this.editAccount,
         { cityList: JSON.stringify(newMultForm) },
-        { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+        { cardType: this.editAccount.cardType === "身份证" ? 0 : 1 }
       );
       request
         .post(host + "beepartner/admin/cityPartner/updateCityPartner")
@@ -1869,7 +1869,7 @@ export default {
             { id: this.userIDID },
             this.editAccount,
             { cityList: JSON.stringify(newMultForm) },
-            { cardType: this.editAccount.cardType === "居民身份证" ? 0 : 1 }
+            { cardType: this.editAccount.cardType === "身份证" ? 0 : 1 }
           );
           that.dialogVisible = false;
 

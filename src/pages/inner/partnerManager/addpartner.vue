@@ -46,7 +46,7 @@
 
         <el-form-item label="证件类别">
           <el-select v-model="ruleForm.conCardType" placeholder="请选择证件类别">
-            <el-option label="居民身份证" value="居民身份证"></el-option>
+            <el-option label="身份证" value="身份证"></el-option>
             <el-option label="护照" value="护照"></el-option>
           </el-select>
         </el-form-item>
@@ -263,7 +263,7 @@
         </el-form-item>
         <el-form-item label="证件类别">
           <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
-            <el-option label="居民身份证" value="居民身份证"></el-option>
+            <el-option label="身份证" value="身份证"></el-option>
             <el-option label="护照" value="护照"></el-option>
           </el-select>
         </el-form-item>
@@ -606,7 +606,7 @@ export default {
         businessLicense: "",
         address: "",
         userName:"",
-        cardType: "居民身份证",
+        cardType: "身份证",
         idCard: "",
         phone: "",
         email: "",
@@ -625,7 +625,7 @@ export default {
         depositBank:"",
         conName:"",
         conIdCard:"",
-        conCardType:"居民身份证",
+        conCardType:"身份证",
         conPhone:"",
         conEmail:""
       },
@@ -790,7 +790,7 @@ export default {
         businessLicense: "",
         address: "",
         userName: "",
-        cardType: "居民身份证",
+        cardType: "身份证",
         idCard: "",
         phone: "",
         email: "",
@@ -809,7 +809,7 @@ export default {
         depositBank:"",
         conName:"",
         conIdCard:"",
-        conCardType:"居民身份证",
+        conCardType:"身份证",
         conPhone:"",
         conEmail:""
       }
@@ -1156,8 +1156,8 @@ export default {
             { unUsed:1},
             this.ruleForm,
             {cityList:JSON.stringify(newMultForm)},
-            {cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 },
-            {conCardType: this.ruleForm.conCardType === "居民身份证" ? 0 : 1 },
+            {cardType: this.ruleForm.cardType === "身份证" ? 0 : 1 },
+            {conCardType: this.ruleForm.conCardType === "身份证" ? 0 : 1 },
             {joinTarget:this.radio}
           );
 

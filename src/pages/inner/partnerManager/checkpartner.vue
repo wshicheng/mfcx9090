@@ -20,7 +20,7 @@
 			  </el-form-item>
 			  <el-form-item label="证件类别">
 			    <el-select v-model="form.IDtype" disabled placeholder="请选择证件类型">
-			      <el-option label="居民身份证" value="居民身份证"></el-option>
+			      <el-option label="身份证" value="身份证"></el-option>
 			      <el-option label="护照" value="护照"></el-option>
 			    </el-select>
 			  </el-form-item>
@@ -131,7 +131,7 @@ export default {
       form: {
         name: '胡经华',
         sex: '女',
-        IDtype: '居名身份证',
+        IDtype: '身份证',
         IDcard: '34324342424334888',
         tel: '13227892222',
         car: '186',

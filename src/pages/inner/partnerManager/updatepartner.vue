@@ -29,7 +29,7 @@
             </el-form-item>
             <el-form-item label="证件类别">
               <el-select v-model="ruleForm.conCardType" placeholder="请选择证件类别">
-                <el-option label="居民身份证" value="居民身份证"></el-option>
+                <el-option label="身份证" value="身份证"></el-option>
                 <el-option label="护照" value="护照"></el-option>
               </el-select>
             </el-form-item>
@@ -247,7 +247,7 @@
             </el-form-item>
             <el-form-item label="证件类别">
               <el-select v-model="ruleForm.cardType" placeholder="请选择证件类别">
-                <el-option label="居民身份证" value="居民身份证"></el-option>
+                <el-option label="身份证" value="身份证"></el-option>
                 <el-option label="护照" value="护照"></el-option>
               </el-select>
             </el-form-item>
@@ -602,7 +602,7 @@ export default {
         depositBank:"",
         conName:"",
         conIdCard:"",
-        conCardType:"居民身份证",
+        conCardType:"身份证",
         conPhone:"",
         conEmail:""
       },
@@ -783,7 +783,7 @@ export default {
             this.ruleForm.businessLicense = this.row.businessLicense;
             this.ruleForm.address = this.row.address;
             this.ruleForm.userName = this.row.userName;
-            this.ruleForm.cardType = this.row.cardType == 0 ? "居民身份证" : "护照";
+            this.ruleForm.cardType = this.row.cardType == 0 ? "身份证" : "护照";
             this.ruleForm.phone = this.row.phone;
             this.ruleForm.email = this.row.email;
             this.ruleForm.idCard = this.row.idCard;
@@ -798,7 +798,7 @@ export default {
             this.ruleForm.password = this.row.password;
             this.ruleForm.conName = this.row.conName;
             this.ruleForm.conIdCard = this.row.conIdCard;
-            this.ruleForm.conCardType = this.row.conCardType == 0 ? "居民身份证" : "护照";
+            this.ruleForm.conCardType = this.row.conCardType == 0 ? "身份证" : "护照";
             this.ruleForm.conPhone = this.row.conPhone;
             this.ruleForm.conEmail = this.row.conEmail;
 
@@ -1252,8 +1252,8 @@ export default {
             { id: this.userIDID },
             this.ruleForm,
             { cityList: JSON.stringify(newMultForm) },
-            { cardType: this.ruleForm.cardType === "居民身份证" ? 0 : 1 },
-            {conCardType: this.ruleForm.conCardType === "居民身份证" ? 0 : 1 },
+            { cardType: this.ruleForm.cardType === "身份证" ? 0 : 1 },
+            {conCardType: this.ruleForm.conCardType === "身份证" ? 0 : 1 },
           );
  
            // 判断是否有未填写的表单项，若有则阻止添加请求
