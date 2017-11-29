@@ -126,7 +126,6 @@ import $ from 'jquery'
               data:this.chartData ,
               colorByPoint:true,
               maxPointWidth: 20
-              
             }
           ]
 

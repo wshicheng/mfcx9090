@@ -38,12 +38,12 @@
               <td>
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配：<span class="num">{{new Number(relationBikeNum).thousand()}} </span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配 :<span class="num">{{new Number(relationBikeNum).thousand()}}</span>辆)</td>
             </tr>
             <!-- 独家 -->
             <tr v-if="relationDatas.joinMode=='1'">
               <td>
-                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}</td>
+                <span class="prex">加盟资金：</span>{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}</td>
               <td>
                 <span class="prex">结算周期：</span>{{relationDatas.wType=='0'?"每月":(relationDatas.wType=='1'?"每周":relationDatas.circleDays+'天')}}
               </td>
@@ -63,7 +63,7 @@
             <tr v-if="relationDatas.joinMode=='2'">
             <td>
               <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
-              <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
+              <span class="prex">加盟资金：</span>{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
             </td>
             <td>
               <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>2?("每月"+ relationDatas.settleDays.split(",")[0]+"号、"+relationDatas.settleDays.split(",")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
@@ -136,12 +136,12 @@
                 <span class="prex">加盟日期：</span>{{relationJoinTime}}</td>
               <td>
                 <!-- <span class="prex">认购车辆：</span>{{new Number(relationSubscriptionNum).thousand()}}辆(已分配： <span class="num">{{franchiseeDetail.bikeNum}}</span>辆)</td> -->
-                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配： <span class="num">{{new Number(relationBikeNum).thousand()}}</span>辆)</td>
+                <span class="prex">认购车辆：</span>{{new Number(relationDatas.subscriptionNum).thousand()}}辆(已分配:<span class="num">{{new Number(relationBikeNum).thousand()}}</span>辆)</td>
             </tr>
             <tr>
               <td>
                 <!-- <span class="prex">加盟资金：</span>￥{{new Number(relationSubscriptionMoney).thousandFormat() + '元'}} -->
-                <span class="prex">加盟资金：</span>￥{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
+                <span class="prex">加盟资金：</span>{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
               </td>
               <td>
                 <span class="prex">结算周期：</span>{{relationDatas.settleDays.length > 2 ? ("每月" + relationDatas.settleDays.split(",")[0] + "号、" + relationDatas.settleDays.split(",")[1] + "号"):("每月"+ relationDatas.settleDays + "号")}}
@@ -672,7 +672,7 @@ export default {
 <style scoped>
 .num {
   color:orange;
-  margin-right:10px;
+  padding:5px;
 }
 .total {
   width: 100%;

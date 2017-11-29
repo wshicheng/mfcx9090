@@ -37,7 +37,7 @@
                   {{new Number (scope.row.applyMoney).thousandFormat()}}
                 </template>
             </el-table-column>
-            <el-table-column prop="cityName" label="加盟区域" min-width="160">
+            <el-table-column prop="cityName" label="加盟区域" min-width="100">
               <template slot-scope="scope">
                   {{scope.row.cityName}}
               </template>
@@ -49,7 +49,7 @@
                   {{scope.row.applyUserName}}
               </template>
             </el-table-column>
-            <el-table-column prop="confirmTimeStr" label="结算确认日期" min-width="140">
+            <el-table-column prop="confirmTimeStr" label="结算确认日期" min-width="180">
               <template slot-scope="scope">
                   {{scope.row.confirmTimeStr}}
               </template>

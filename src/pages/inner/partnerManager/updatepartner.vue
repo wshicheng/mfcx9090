@@ -147,14 +147,16 @@
 
                 <!-- 非独家 -->
                   <div v-if="list.joinMode=='2'|| joinTarget=='2'">
-                    <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
+                    
 
+                    <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
                         :rules="[
                             { required: true, message: '请输入加盟地区', trigger: 'blur' },
                           ]"
-                                  >
+                          >
                                     
-                          <span v-show="(index+1)<=recodeCityList">{{list.cityName}}</span>
+
+                          <span v-show="(index+1)<=recodeCityList">{{list.cityName}} </span>
                           <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
                               <el-option
                               v-for="item in ruleForm.options1"
