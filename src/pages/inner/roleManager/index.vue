@@ -782,6 +782,7 @@ div.account>h1 button:hover {
 }
 
 #am_search {
+  paddint-top:5px;
   width: 100%;
   height: 70px;
   background: #faebd7;

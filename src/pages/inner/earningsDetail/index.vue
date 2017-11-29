@@ -195,8 +195,8 @@
       background:#faebd7;
       border: 1px solid #e7ecf1;
       overflow: hidden;
-      padding-bottom: 10px;
-      padding-top: 3px;
+      padding-bottom: 15px;
+      padding-top: 5px;
     }
 
     #earD_header div.time_earning {

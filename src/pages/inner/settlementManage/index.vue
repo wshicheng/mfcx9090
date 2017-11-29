@@ -122,7 +122,7 @@ import request from 'superagent'
 import moment from 'moment'
 import $ from 'jquery'
 import { siblings } from '../../../../utils/index.js'
-import { thousand,thousandFormat } from '../../../util/util.js'
+import { toThousand,thousandFormat } from '../../../util/util.js'
 import { host } from '../../../config/index.js'
 export default {
   data: function () {
@@ -379,13 +379,46 @@ export default {
             this.checkLogin(res)
             if (JSON.parse(res.text).resultCode === 1) {
               this.tableData.splice(index, 1)
+
               this.loading2 = false
               this.$message({
                 type: 'success',
                 message: '加盟商将收到你的结算信息'
               })
-
-              
+        // 结算成功更新状态
+        request
+        .post(host + 'beepartner/admin/withDraw/findWithDraw')
+        .withCredentials()
+        .set({
+          'content-type': 'application/x-www-form-urlencoded'
+        })
+        .send({
+          'status': $('.citys span.active')[1].getAttribute('myStatus'),
+          'cityId': $('.citys span.active').attr('myId')
+        })
+        .end((error, res) => {
+          if (error) {
+            console.log('error:', error)
+          } else {
+            this.checkLogin(res)
+            var data = JSON.parse(res.text).data
+            var code = JSON.parse(res.text).resultCode
+            var messsage = JSON.parse(res.text).message
+            if(code==-1){
+                this.$message.error(message)
+            }
+            this.totalItems = Number(JSON.parse(res.text).totalItems)
+            var totalPage = Number(JSON.parse(res.text).totalPage)
+            if (totalPage > 1) {
+              this.pageShow = true
+            } else {
+              this.pageShow = false
+            }
+            var newData = this.tableDataDel(data)
+            this.loading2 = false
+            this.tableData = newData
+          }
+        })
 
             } else {
               this.$message('结算失败')

@@ -1,6 +1,6 @@
 <template>
   <div style="margin-right:20px;overflow:auto">
-    <div style="background-color:#faebd7;padding-top:15px">
+    <div style="background-color:#faebd7;padding-top:20px;padding-bottom:5px">
       <div style="background-color:#faebd7;font-size:14px;color:#555;margin-bottom:5px" class="partner_new">
         <address class="joinArea joinMode">加盟模式</address>
         <span id="joinMode">
@@ -633,6 +633,7 @@ import moment from "moment";
 import { host } from "../../../config/index";
 import { isCardNo, isPassportNo } from "../../../../utils/index.js";
 import {siblings} from '../../../../utils/index.js'
+import {toThousands} from '../../../util/util.js'
 export default {
   data() {
     var checkTime = (rule, value, callback) => {

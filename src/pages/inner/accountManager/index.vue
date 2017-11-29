@@ -1607,6 +1607,7 @@ div.account>h1 button:hover {
   width: 100%;
   height: 70px;
   background: #faebd7;
+  padding-bottom:5px
   /* border: 1px solid #e7ecf1; */
 }
 
@@ -1810,7 +1811,7 @@ div.el-pagination {
   width: 100%;
   min-height: 40px;
   /* border: 1px solid #e7ecf1; */
-  padding: 15px 10px 0px 30px;
+  padding: 23px 10px 0px 30px;
   box-sizing: border-box;
   background-color: #faebd7;
 }

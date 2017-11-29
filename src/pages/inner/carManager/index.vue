@@ -811,7 +811,7 @@ export default {
 
   .carManager_content {
     background: #faebd7;
-    padding: 10px 30px 5px 20px;
+    padding: 16px 30px 12px 20px;
     margin-bottom: 20px;
     /* border: 1px solid #e7ecf1; */
   }
