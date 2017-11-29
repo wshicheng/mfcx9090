@@ -304,7 +304,7 @@
 @media screen and (min-width: 1367px) {
   #addpartner_form {
     /*  适配好的样式 */
-    height: 50%;
+    height: 60%;
     overflow-y: scroll;
     overflow-x: hidden;
     width: 57%;

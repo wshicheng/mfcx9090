@@ -25,7 +25,7 @@ Vue.use(Element)
 
 let authList = window.localStorage.getItem('admin_authList') 
 let permission = window.localStorage.getItem('admin_permission')
-// let name = window.localStorage.getItem('name').length>0? window.localStorage.getItem('name'):window.localStorage.getItem('userName')
+// let name = window.localStorage.getItem('admin_name').length>0? window.localStorage.getItem('admin_name'):window.localStorage.getItem('admin_userName')
 
 if (authList) {
   store.commit(types.ADD_MENU, JSON.parse(authList) )

@@ -321,7 +321,7 @@
 @media screen and (min-width: 1367px) {
   #addpartner_form {
     /*  适配好的样式 */
-    height: 50%;
+    height: 60%;
     overflow-y: scroll;
     overflow-x: hidden;
     width: 57%;
@@ -695,7 +695,6 @@ export default {
         this.add = false;
       }
 
-      
       // 结算与加盟信息部分表单非空验证
       this.isEmpty()
 
@@ -711,7 +710,7 @@ export default {
     // 因为element-ui的表单验证数据无法嵌套三级结构，需手动书写
     isEmpty(){
       $("#isEmpty").on("blur","input",function(){
-        if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
+        if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))||$(this).val()==''){
 
           $(this).parents(".is-required").addClass("is-error")
 

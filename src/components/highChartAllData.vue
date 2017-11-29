@@ -78,6 +78,14 @@ import $ from 'jquery'
       // }, 60000)
     },
     methods: {
+      randomColor() {
+        var rgb = '255,255,255'
+        var r = Math.floor(Math.random() * 255) + 1
+        var g = Math.floor(Math.random() * 255) + 1
+        var b = Math.floor(Math.random() * 255) + 1
+        var color = 'rgba(' + r + ',' + g + ',' + b + ',0.7)'
+        return color
+      },
       initChart () {
         // 创建图表
         Highcharts.chart('container', {
@@ -131,108 +139,109 @@ import $ from 'jquery'
             {
               name: ' ',
               color: '#74f7af',
-              data: [
-                {
-                  color: 'red',
-                  y: this.chartData[0]
-                },
-                {
-                  color: 'green',
-                  y: this.chartData[1]
-                },
-                {
-                  color: 'blue',
-                  y: this.chartData[2]
-                },
-                {
-                  color: 'orange',
-                  y: this.chartData[3]
-                },
-                {
-                  color: 'brown',
-                  y: this.chartData[4]
-                },
-                {
-                  color: 'gray',
-                  y: this.chartData[5]
-                },
-                {
-                  color: 'pink',
-                  y: this.chartData[6]
-                },
-                {
-                  color: 'red',
-                  y: this.chartData[7]
-                },
-                {
-                  color: 'green',
-                  y: this.chartData[8]
-                },
-                {
-                  color: 'blue',
-                  y: this.chartData[9]
-                },
-                {
-                  color: 'orange',
-                  y: this.chartData[10]
-                },
-                {
-                  color: 'brown',
-                  y: this.chartData[11]
-                },
-                {
-                  color: 'gray',
-                  y: this.chartData[12]
-                },
-                {
-                  color: 'pink',
-                  y: this.chartData[13]
-                },
-                {
-                  color: 'red',
-                  y: this.chartData[14]
-                },
-                {
-                  color: 'green',
-                  y: this.chartData[15]
-                },
-                {
-                  color: 'blue',
-                  y: this.chartData[16]
-                },
-                {
-                  color: 'orange',
-                  y: this.chartData[17]
-                },
-                {
-                  color: 'brown',
-                  y: this.chartData[18]
-                },
-                {
-                  color: 'gray',
-                  y: this.chartData[19]
-                },
-                {
-                  color: 'pink',
-                  y: this.chartData[20]
-                },
-                {
-                  color: 'red',
-                  y: this.chartData[21]
-                },
-                {
-                  color: 'green',
-                  y: this.chartData[22]
-                },
-                {
-                  color: 'blue',
-                  y: this.chartData[23]
-                },
-                {
-                  color: 'orange',
-                  y: this.chartData[24]
-                }
-              ],
+              // data: [
+              //   {
+              //     color: 'red',
+              //     y: this.chartData[0]
+              //   },
+              //   {
+              //     color: 'green',
+              //     y: this.chartData[1]
+              //   },
+              //   {
+              //     color: 'blue',
+              //     y: this.chartData[2]
+              //   },
+              //   {
+              //     color: 'orange',
+              //     y: this.chartData[3]
+              //   },
+              //   {
+              //     color: 'brown',
+              //     y: this.chartData[4]
+              //   },
+              //   {
+              //     color: 'gray',
+              //     y: this.chartData[5]
+              //   },
+              //   {
+              //     color: 'pink',
+              //     y: this.chartData[6]
+              //   },
+              //   {
+              //     color: 'red',
+              //     y: this.chartData[7]
+              //   },
+              //   {
+              //     color: 'green',
+              //     y: this.chartData[8]
+              //   },
+              //   {
+              //     color: 'blue',
+              //     y: this.chartData[9]
+              //   },
+              //   {
+              //     color: 'orange',
+              //     y: this.chartData[10]
+              //   },
+              //   {
+              //     color: 'brown',
+              //     y: this.chartData[11]
+              //   },
+              //   {
+              //     color: 'gray',
+              //     y: this.chartData[12]
+              //   },
+              //   {
+              //     color: 'pink',
+              //     y: this.chartData[13]
+              //   },
+              //   {
+              //     color: 'red',
+              //     y: this.chartData[14]
+              //   },
+              //   {
+              //     color: 'green',
+              //     y: this.chartData[15]
+              //   },
+              //   {
+              //     color: 'blue',
+              //     y: this.chartData[16]
+              //   },
+              //   {
+              //     color: 'orange',
+              //     y: this.chartData[17]
+              //   },
+              //   {
+              //     color: 'brown',
+              //     y: this.chartData[18]
+              //   },
+              //   {
+              //     color: 'gray',
+              //     y: this.chartData[19]
+              //   },
+              //   {
+              //     color: 'pink',
+              //     y: this.chartData[20]
+              //   },
+              //   {
+              //     color: 'red',
+              //     y: this.chartData[21]
+              //   },
+              //   {
+              //     color: 'green',
+              //     y: this.chartData[22]
+              //   },
+              //   {
+              //     color: 'blue',
+              //     y: this.chartData[23]
+              //   },
+              //   {
+              //     color: 'orange',
+              //     y: this.chartData[24]
+              //   }
+              // ],
+              data:this.chartData.map((item)=>{return {color:this.randomColor(),y:item}}) ,
               tooltip: {
                 valueSuffix: '单',
                 useHTML: true,

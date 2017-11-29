@@ -300,7 +300,7 @@ export default {
     $('.sign[name="90"]').addClass('is-active')
     document.title = '角色管理'
     this.loadRole()
-    var roleList = window.localStorage.admin_authList
+    var roleList = window.localStorage.getItem("admin_authList")
   },
   methods: {
     setCheckedKeys(){

@@ -163,7 +163,7 @@ export default {
   methods: {
     handleCurrentChange(val) {
      
-     
+     this.currentPage = val
       this.loading2 = true
       request
         .post(host + 'beepartner/admin/withDraw/findWithDraw')
@@ -394,7 +394,9 @@ export default {
         })
         .send({
           'status': $('.citys span.active')[1].getAttribute('myStatus'),
-          'cityId': $('.citys span.active').attr('myId')
+          'cityId': $('.citys span.active').attr('myId'),
+          'currentPage':this.currentPage
+          
         })
         .end((error, res) => {
           if (error) {
