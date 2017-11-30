@@ -1,6 +1,7 @@
 <template>
   <div class="queryCharts">
     <el-row class="watchLists">
+      <p class="queryLists_info">*收益排行数据每10分钟自动统计</p>
       <button class="btn_list" @click="handleClick">查看列表</button>
     </el-row>
     <el-row class="watchButton">
@@ -19,6 +20,13 @@
   </div>
 </template>
 <style scoped>
+ .queryLists_info {
+    float: left;
+    color: #ddd;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 50px;
+ }
 div.queryCharts {
   width: 100%;
   box-sizing: border-box;

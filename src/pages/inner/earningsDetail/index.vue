@@ -123,7 +123,7 @@
         </el-table-column>
         <el-table-column
           prop="balanceAmount"
-          label="实际收益"
+          label="实际收益(元)"
           :render-header="rendHeader"
         >
           <template slot-scope="scope">
@@ -729,13 +729,13 @@ export default {
       }
     },
     mouseLeaveHandler() {
-      $('div.el-notification').animate({ right: '-330px' }, 500, function() {
+      $('div.el-notification').stop().animate({ right: '-330px' }, 500, function() {
         this.notice = false
       })
     },
     mouseEnterHandler() {
       this.notice = true
-      $('div.el-notification').animate({ right: '1px' }, 500)
+      $('div.el-notification').stop().animate({ right: '1px' }, 500)
     },
     rendHeader(h, { column, $index }) {
       return h('div', {

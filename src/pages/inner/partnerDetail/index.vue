@@ -167,8 +167,9 @@
     </el-row> 
     
     <el-row class="record">
-      <span class="export" v-show="activeName=='车辆明细'" @click="export_excel">导出到Excel</span>
-      <el-tabs v-model="activeName" @tab-click="handleTabClick">
+      <span class="export" style="cursor:pointer" v-show="activeName=='车辆明细'" @click="export_excel">导出到Excel</span>
+      
+      <el-tabs v-model="activeName" @tab-click="handleTabClick">        
         <el-tab-pane class="incomeRecord recodeTable" label="车辆明细" name="车辆明细">
           
           <el-table :data="carDetail" style="width: 100%" v-loading="loading2" element-loading-text="拼命加载中">
@@ -314,8 +315,53 @@ export default {
     }
   },
   methods: {
-    export_excel(){
+    export_excel () {
+       var id = this.$route.params.id.split('&')[0]
+       var cityPartnerId = this.$route.params.id.split('&')[1]
+      this.$confirm('确认导出吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+      .then(() => {
+        require.ensure([], () => {
+          var that = this
+            request
+              .get(host + 'beepartner/admin/Bike/exportBikeDetail')
+              .withCredentials()
+              .set({
+                'content-type': 'application/x-www-form-urlencoded'
+              })
+              .query({
+                id:id,
+                cityId:this.cityId,
+                cityPartnerId:cityPartnerId
+              })
+              .end((err, res) => {
+                if (err) {
+                  console.log('err:' + err)
+                } else {
+                  this.checkLogin(res)
+                  // 数据处理
+                  var list = JSON.parse(res.text).data
+                  if (list.length === 0) {
+                    that.$message.error('当前查询没有信息，无法导出哦~');
+                   that.$loading({customClass: 'loading_class'}).close()
+                  } else {
+                    that.$loading({customClass: 'loading_class'}).close()
 
+                  console.log(res)
+                  window.location.href = (res.body.data)
+                  }
+                }
+              })
+        })
+      }).catch(() => {
+        // this.$message({
+        //   type: 'info',
+        //   message: '已取消'
+        // })
+      })
     },
     getWithdrawals(){
        var id = this.$route.params.id.split('&')[0]
@@ -680,12 +726,15 @@ export default {
 </script>
 <style scoped>
 .export {
-  float: right;
-    margin-top: 20px;
+     margin-top: 20px;
     color: #ff9900;
     font-size: 12px;
     font-weight: 700;
-    cursor:pointer;
+    cursor: pointer;
+    position: relative;
+    left: 1120px;
+    top: 40px;
+    z-index: 2000;
 }
 .num {
   color:orange;

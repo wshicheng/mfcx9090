@@ -251,7 +251,7 @@ import $ from 'jquery'
                 useHTML: true,
                 headerFormat: '<span style="font-size: 12px">时间 {point.key}</span><br/>',
                 pointFormatter: function () {
-                  return '<span style="color:{' + this.series.color + '}"></span>单数: <b>' +  Highcharts.numberFormat(this.y, 2, ".", ",") + '</b>'
+                  return '<span style="color:{' + this.series.color + '}"></span>单数: <b>' +  this.y + '</b>'
                 }
               }
             }

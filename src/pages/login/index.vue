@@ -445,7 +445,7 @@ div.showErrorMsg{color: red;
     float: left;
     line-height: 34px;
     margin-top: 10px;
-    margin-left: 60px;
+    margin-left: 45px;
     font-size: 14px;}
 .getVerCode {
   color: #444;

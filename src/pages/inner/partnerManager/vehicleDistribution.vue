@@ -63,8 +63,8 @@
             <!-- <span>
               <i></i>
             </span> -->
-              <el-radio class="time" v-model="time" label="1">24小时有订单</el-radio>
-              <el-radio  class="time" v-model="time" label="2">48小时有订单</el-radio>
+              <el-radio class="time"  v-model="time" label="1" value="1">24小时有订单</el-radio>
+              <el-radio  class="time" v-model="time" label="2" value="2">48小时有订单</el-radio>
             
             <button @click="findBikeByInfo" class="distribution_btn">查询</button>
             <div style="clear:both"></div>
@@ -479,7 +479,6 @@ export default {
       options:[],
       selectCars: [],
       franchiseeDetail: {},
-      cityCode: '',
       currentPage3: 1,
       totalItems: 1,
       pageShow: false,
@@ -530,34 +529,37 @@ export default {
   },
   methods: {
     // 通过加盟城市获取相关信息
-      getRelationDataByCitId(){
+    getRelationDataByCitId(){
+      // 清空查询信息
         this.$refs.val.value = ""
         this.choseBikes = ""
+        this.checkList = []
+        this.time = ''
        var cityPartnerId = this.$route.params.id.split('&')[1]
-      request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
-      .withCredentials()
-      .set({
-        'content-type': 'application/x-www-form-urlencoded'
-      })
-      .send({
-        cityPartnerId,
-        cityId:this.cityId
-      })
-      .end((error,res)=>{
-        if(error){
-          console.log(error)
-        }else{
-          var res = JSON.parse(res.text).data
-          if(!isOwnEmpty(res)){
-            this.relationBikeNum = res.bikeNum
-            this.relationSubscriptionNum = res.subscriptionNum
+        request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
+        .withCredentials()
+        .set({
+          'content-type': 'application/x-www-form-urlencoded'
+        })
+        .send({
+          cityPartnerId,
+          cityId:this.cityId
+        })
+        .end((error,res)=>{
+          if(error){
+            console.log(error)
           }else{
-            this.relationBikeNum = ''
-            this.relationSubscriptionNum = ''
+            var res = JSON.parse(res.text).data
+            if(!isOwnEmpty(res)){
+              this.relationBikeNum = res.bikeNum
+              this.relationSubscriptionNum = res.subscriptionNum
+            }else{
+              this.relationBikeNum = ''
+              this.relationSubscriptionNum = ''
+            }
+            
           }
-          
-        }
-      })
+        })
     },
     toggleSelection(rows) {
       if (rows) {
@@ -622,7 +624,6 @@ export default {
                 })
                 .send({
                   'type': 1,
-                  'cityCode': this.cityCode,
                   cityId:this.cityId,
                   'choseBikes': this.choseBikes === '' ? 0 : this.choseBikes
                 })
@@ -710,7 +711,7 @@ export default {
           })
           .send({
             'type': 1,
-            'cityCode': this.cityCode,
+            // 'cityCode': this.cityCode,
             'currentPage': val,
             cityId:this.cityId
           })
@@ -742,7 +743,7 @@ export default {
           })
           .send({
             'currentPage': val,
-            'cityCode': this.cityCode,
+            // 'cityCode': this.cityCode,
              cityId:this.cityId,
             'limitNum': this.choseBikes === '' ? 0 : this.choseBikes
           })
@@ -801,7 +802,7 @@ export default {
           })
           .send({
             'type': 1,
-            'cityCode': this.cityCode,
+            // 'cityCode': this.cityCode,
             cityId:this.cityId,
             'keyName': this.$refs.val.value
           })
@@ -837,7 +838,7 @@ export default {
           })
           .send({
             'type': 1,
-            'cityCode': this.cityCode,
+            // 'cityCode': this.cityCode,
             cityId:this.cityId
           })
           .end((error, res) => {
@@ -861,13 +862,15 @@ export default {
       }
     },
     findBikeByInfo() {
+      // 车辆状态
+      var state = this.checkList.toString()
       this.currentPage3 = 1
-      if (this.choseBikes === '') {
-        this.$message({
-          message: '请输入要分配的车辆总数',
-          type: 'warning'
-        })
-      } else {
+      // if (this.choseBikes === '') {
+      //   this.$message({
+      //     message: '请输入要分配的车辆总数',
+      //     type: 'warning'
+      //   })
+      // } else {
         this.signForQuery = true
         this.loading2 = true
         request
@@ -877,9 +880,12 @@ export default {
             'content-type': 'application/x-www-form-urlencoded'
           })
           .send({
-            'cityCode': this.cityCode,
+            // 'cityCode': this.cityCode,
             cityId:this.cityId,
-            'limitNum': this.choseBikes === '' ? 0 : this.choseBikes
+            'limitNum': this.choseBikes === '' ? 0 : this.choseBikes,
+            bikeState:state,
+            keyName:this.$refs.val.value,
+            lastEndTime:this.time == ''? 0 : this.time
           })
           .end((error, res) => {
             if (error) {
@@ -902,7 +908,7 @@ export default {
               this.totalItems = Number(JSON.parse(res.text).totalItems)
             }
           })
-      }
+      // }
     },
     confimBikes() {
       if (this.countAllotCars.length === 0) {
@@ -1001,6 +1007,8 @@ export default {
       },
       deep:true,
     },
+    'checkList':'findBikeByInfo',
+    'time':'findBikeByInfo'
     // currentPage3:{
     //   handler:function(val,oldVal){
     //     if(this.cityCode.length>0){

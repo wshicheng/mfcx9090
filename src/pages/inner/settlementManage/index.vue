@@ -43,6 +43,9 @@
               </template>
             </el-table-column>
             <el-table-column prop="companyName" label="所属加盟商" min-width="150">
+              <template slot-scope="scope">
+                  {{scope.row.joinTarget=='1'?scope.row.companyName : scope.row.conName}}
+              </template>
             </el-table-column>
             <el-table-column prop="applyUserName" label="结算单确认用户" min-width="150">
               <template slot-scope="scope">
@@ -325,6 +328,8 @@ export default {
           obj.id = arr[i].id
           obj.description = arr[i].description
           obj.companyName = arr[i].companyName
+          obj.conName = arr[i].conName
+          obj.joinTarget = arr[i].joinTarget
           obj.status = arr[i].status
           obj.wType = arr[i].wType
           obj.cityId = arr[i].cityId
