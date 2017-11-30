@@ -45,7 +45,7 @@
 
 
         <el-form-item label="证件类别">
-          <el-select v-model="ruleForm.conCardType" placeholder="请选择证件类别">
+          <el-select v-model="ruleForm.conCardType" placeholder="请选择证件类别" prop="conCardType">
             <el-option label="身份证" value="身份证"></el-option>
             <el-option label="护照" value="护照"></el-option>
           </el-select>
@@ -153,7 +153,7 @@
             </el-radio-group>
           </el-form-item>
           <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-          <el-form-item class="first_day" label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
+          <el-form-item class="first_day first"  label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
                   { required: true, message: '请选择首次结算开始日期', trigger: 'blur' },
                 ]">
                 <el-date-picker
@@ -217,7 +217,7 @@
             </el-checkbox-group>
           </el-form-item>
           <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:12px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-          <el-form-item  label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
+          <el-form-item class="first" label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
                 { required: true, message: '请选择结算日期', trigger: 'blur' },
                 
               ]">
@@ -606,7 +606,7 @@ export default {
         businessLicense: "",
         address: "",
         userName:"",
-        cardType: "身份证",
+        cardType: "",
         idCard: "",
         phone: "",
         email: "",
@@ -639,10 +639,11 @@ export default {
         cityId:[{ required: true, message: "请选择加盟地区", trigger: "blur" }],
         joinTime:[{ required: true, message: "请选择加盟日期", trigger: "blur" }],
         address: [{ message: "请输入地址", trigger: "blur" }],
-        cardType: [{ required: true, message: "请选择证件类型", trigger: "change" }],
+        cardType: [{ required: false, message: "请选择证件类型", trigger: "change" }],
+        conCardType: [{ required: true, message: "请选择证件类型", trigger: "change" }],
         cardNum: [{ required: true, message: "请输入证件号码", trigger: "blur" }],
         userName: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        idCard: [{ validator: checkId, required: true, trigger: "blur" }],
+        idCard: [{ validator: checkId, required: false, trigger: "blur" }],
         conIdCard: [{ validator: checkId1, required: true, trigger: "blur" }],
         phone: [
           { validator: checkPhone1,required: true, trigger: "blur" },
@@ -738,15 +739,45 @@ export default {
            if($(this).attr("placeholder")=="请输入后期分成比例"){
            $(this).parents(".is-required").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请输入后期分成比例</div>')
           }
-           if($(this).attr("placeholder")=="请选择"){
-              $(this).parents(".el-form-item").addClass('is-error')
-           $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
-          }
+          //  if($(this).attr("placeholder")=="请选择"){
+          //     $(this).parents(".el-form-item").addClass('is-error')
+          //  $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+          // }
           
         }else{
           $(this).parents(".is-required").removeClass("is-error")
           $(this).parents(".is-required").find(".error-list").remove()
         }
+      })
+      // 解决重复点击相同加盟地区提示错误的问题
+      $(".joinPlace").on("change","input",function(){
+         $(this).parents(".is-required").addClass("is-error")
+
+          if($(this).parents(".el-form-item").find(".error-list")){
+            $(this).parents(".el-form-item").find(".error-list").remove()
+          }
+          if($(this).parents(".is-required").find(".error-list")){
+            $(this).parents(".is-required").find(".error-list").remove()
+          }
+          if($(this).val()==''){
+              $(this).parents(".el-form-item").addClass('is-error')
+              $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+          }
+      })
+      // 解决结算日需点空白处提示消息消失的问题
+      $(".zhouqi").on("change","input",function(){
+         $(this).parents(".is-required").addClass("is-error")
+
+          if($(this).parents(".el-form-item").find(".error-list")){
+            $(this).parents(".el-form-item").find(".error-list").remove()
+          }
+          if($(this).parents(".is-required").find(".error-list")){
+            $(this).parents(".is-required").find(".error-list").remove()
+          }
+          if($(this).val()==''){
+              $(this).parents(".el-form-item").addClass('is-error')
+              $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+          }
       })
       
     },
@@ -790,7 +821,7 @@ export default {
         businessLicense: "",
         address: "",
         userName: "",
-        cardType: "身份证",
+        cardType: "",
         idCard: "",
         phone: "",
         email: "",

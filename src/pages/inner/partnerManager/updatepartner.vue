@@ -28,7 +28,7 @@
               <el-input v-model="ruleForm.conName" placeholder='请输入姓名'></el-input>
             </el-form-item>
             <el-form-item label="证件类别">
-              <el-select v-model="ruleForm.conCardType" placeholder="请选择证件类别">
+              <el-select v-model="ruleForm.conCardType" placeholder="请选择证件类别" prop="conCardType">
                 <el-option label="身份证" value="身份证"></el-option>
                 <el-option label="护照" value="护照"></el-option>
               </el-select>
@@ -73,12 +73,7 @@
                   </el-form-item>
                   <!-- 独家 -->
                   <div v-if="list.joinMode=='1'">
-                    <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
-
-                      :rules="[
-                          { required: true, message: '请输入加盟地区', trigger: 'blur' },
-                        ]"
-                                >
+                    <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" style="width: 700px;">
                                   
                         <span v-show="(index+1)<=recodeCityList">{{list.cityName}}</span>
                         <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
@@ -149,13 +144,7 @@
                   <div v-if="list.joinMode=='2'|| joinTarget=='2'">
                     
 
-                    <el-form-item label="加盟地区" :id="'cityId'+ index" style="width: 700px;"
-                        :rules="[
-                            { required: true, message: '请输入加盟地区', trigger: 'blur' },
-                          ]"
-                          >
-                                    
-
+                    <el-form-item class="joinPlace" label="加盟地区" :id="'cityId'+ index" style="width: 700px;">
                           <span v-show="(index+1)<=recodeCityList">{{list.cityName}} </span>
                           <el-select v-show="(index+1)>recodeCityList" v-model="list.cityItem" placeholder="请选择">
                               <el-option
@@ -617,7 +606,7 @@ export default {
         conCardType: [{ required: true, message: "请选择证件类型", trigger: "blur" }],
         percent: [{ required: true, message: "请输入加盟比例", trigger: "blur" }],
         userName: [{required:true, message: "请输入姓名", trigger: "blur" }],
-        idCard: [{ validator: checkId, required: true, trigger: "blur" }],
+        idCard: [{ validator: checkId, required: false, trigger: "blur" }],
         conIdCard: [{ validator: checkId1, required: true, trigger: "blur" }],
         phone: [{ validator: checkPhone1, required:true,trigger: "blur" },],
         conPhone: [{  validator: checkPhone,required:true,trigger: "blur" },],
@@ -853,6 +842,36 @@ export default {
           $(this).parents(".is-required").removeClass("is-error")
           $(this).parents(".is-required").find(".error-list").remove()
         }
+         // 解决重复点击相同加盟地区提示错误的问题
+      $(".joinPlace").on("change","input",function(){
+         $(this).parents(".is-required").addClass("is-error")
+
+          if($(this).parents(".el-form-item").find(".error-list")){
+            $(this).parents(".el-form-item").find(".error-list").remove()
+          }
+          if($(this).parents(".is-required").find(".error-list")){
+            $(this).parents(".is-required").find(".error-list").remove()
+          }
+          if($(this).val()==''){
+              $(this).parents(".el-form-item").addClass('is-error')
+              $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+          }
+      })
+      // 解决结算日需点空白处提示消息消失的问题
+      $(".zhouqi").on("change","input",function(){
+         $(this).parents(".is-required").addClass("is-error")
+
+          if($(this).parents(".el-form-item").find(".error-list")){
+            $(this).parents(".el-form-item").find(".error-list").remove()
+          }
+          if($(this).parents(".is-required").find(".error-list")){
+            $(this).parents(".is-required").find(".error-list").remove()
+          }
+          if($(this).val()==''){
+              $(this).parents(".el-form-item").addClass('is-error')
+              $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+          }
+      })
       })
     },
      // 非独家时改变结算日

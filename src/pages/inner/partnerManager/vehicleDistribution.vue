@@ -42,18 +42,36 @@
       <div id='distribution_table'>
         <div class='distribution_table_search'>
           <h5>【{{cityName}}】待分配的车辆</h5>
+          <div id="bike_state">
+
+                <span class="labelAlign">车辆状态:</span>
+                <el-checkbox-group v-model="checkList">
+                    <el-checkbox label="4" style="color:#555">待出租</el-checkbox>
+                    <el-checkbox label="5" style="color:#555">已预订</el-checkbox>
+                    <el-checkbox label="6" style="color:#555">已出租</el-checkbox>
+                    <el-checkbox label="7" style="color:#555">维护中</el-checkbox>
+                </el-checkbox-group>
+                <div style="clear:both"></div>
+          </div>
           <!-- <input type="text" v-on:blur='inputBlurFun' ref="val" placeholder="车辆号\终端号" /> -->
-          <input type="text"  ref="val" placeholder="车辆号\终端号" />
-          <span>
-            <i class='el-icon-search'></i>
-          </span>
-
-          <input type="text" v-model="choseBikes" style="margin-left: 20px;" placeholder="需要分配的车辆数量" />
-          <span>
-            <i></i>
-          </span>
-
-          <button @click="findBikeByInfo" class="distribution_btn">查询</button>
+          <div id="search_tips">
+            <input type="text"  ref="val" placeholder="车辆号\终端号" />
+            <!-- <span>
+              <i class='el-icon-search'></i>
+            </span> -->
+            <input type="text" v-model="choseBikes" style="margin-left: 20px;" placeholder="需要分配的车辆数量" />
+            <!-- <span>
+              <i></i>
+            </span> -->
+              <el-radio class="time" v-model="time" label="1">24小时有订单</el-radio>
+              <el-radio  class="time" v-model="time" label="2">48小时有订单</el-radio>
+            
+            <button @click="findBikeByInfo" class="distribution_btn">查询</button>
+            <div style="clear:both"></div>
+          </div>
+          <div class="total_bike">共有记录 100 辆</div>
+          <!-- <span class="all_chose" @click="choseAllBike">全选</span> -->
+          
         </div>
 
         <div class='table'>
@@ -99,6 +117,39 @@
 </template>
 
 <style>
+#bike_state {
+  margin-left:5px
+}
+#bike_state span.labelAlign {
+  float:left;
+  margin-right:15px;
+  font-size:14px;
+  height: 24px;
+  line-height:24px;
+}
+#search_tips  {
+  margin-left:25px;
+}
+#search_tips .time {
+  float: left;
+  height: 43px;
+  line-height: 43px;
+  margin-left: 20px;
+}
+.total_bike {
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-top: 4px;
+    float:left;
+}
+.all_chose {
+  float: right;
+  font-size: 14px;
+  color: blue;
+  margin-top: 10px;
+  cursor:pointer;
+}
 .vehicleBikeAlone {
   background: #fff;
   margin: 0 auto;
@@ -229,20 +280,19 @@ div.allot {
   width: 200px;
   height: 30px;
   line-height: 30px;
-  float: left;
-  margin:15px;
+  /* float: left; */
+  margin-top:15px
 }
 
 .distribution_table_search input {
   width: 150px;
   height: 28px;
   display: block;
-  border-radius: 5px 0 0 5px;
+  border-radius: 5px;
   border: 1px solid #ddd;
   text-indent: 10px;
-  border-right: none;
   float: left;
-  margin-top: 14px;
+  margin-top: 8px;
   margin-left: -20px;
   outline: none;
 }
@@ -310,6 +360,7 @@ div.allot {
 #right_hasbeen_distribution h6 span:nth-of-type(2) {
   float: right;
   color: blue;
+  font-weight:400;
 }
 
 #right_hasbeen_distribution h6 span:nth-of-type(2):hover {
@@ -389,7 +440,7 @@ table.franchiseeDetail tr td span {
 
 .distribution_btn {
   width: 80px;
-  float: left;
+  float: right;
   height: 30px;
   line-height: 11px;
   color: #fff;
@@ -397,7 +448,7 @@ table.franchiseeDetail tr td span {
   outline: none;
   border: none;
   border-radius: 4px;
-  margin-top: 14px;
+  margin-top: 8px;
   margin-left: 20px;
   cursor: pointer;
   background: rgba(52, 52, 67, 0.8);
@@ -438,7 +489,9 @@ export default {
       tempcar:[],
       countAllotCars: [],
       choseBikes: '',
-      signForQuery: false
+      signForQuery: false,
+      checkList:[],
+      time:"",
     }
   },
    created() {
@@ -620,6 +673,7 @@ export default {
       //new Set(this.countAllotCars)
     },
     handleSelectionAll(selection) {
+      console.log(selection)
       this.multipleSelection = selection;
       this.tempcar = [...this.multipleSelection];
       if(this.countAllotCars.length>0){

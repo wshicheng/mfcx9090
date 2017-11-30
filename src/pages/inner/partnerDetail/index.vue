@@ -164,11 +164,13 @@
           </tbody>
         </table>
       </el-col>
-    </el-row>
-
+    </el-row> 
+    
     <el-row class="record">
+      <span class="export" v-show="activeName=='车辆明细'" @click="export_excel">导出到Excel</span>
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <el-tab-pane class="incomeRecord recodeTable" label="车辆明细" name="车辆明细">
+          
           <el-table :data="carDetail" style="width: 100%" v-loading="loading2" element-loading-text="拼命加载中">
             <el-table-column prop="code" label="车辆号">
             </el-table-column>
@@ -267,7 +269,9 @@
           </ul>
         </el-tab-pane>
       </el-tabs>
+      	
     </el-row>
+    
   </div>
 </template>
 <script>
@@ -310,7 +314,9 @@ export default {
     }
   },
   methods: {
+    export_excel(){
 
+    },
     getWithdrawals(){
        var id = this.$route.params.id.split('&')[0]
       var cityPartnerId = this.$route.params.id.split('&')[1]
@@ -421,13 +427,16 @@ export default {
           //    }
           //   return;
           // }
-          for(var i = 0; i < res.areaList.length; i++){
-            if(res.areaList[i].cityId==this.cityId){
-              this.relationDatas = res.areaList[i]
-              this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
-              this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
+        
+              for(var i = 0; i < res.areaList.length; i++){
+              if(res.areaList[i].cityId==this.cityId){
+                this.relationDatas = res.areaList[i]
+                this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
+                this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
+              }
             }
-          }
+          
+          
         }
       })
     },
@@ -670,6 +679,14 @@ export default {
 }
 </script>
 <style scoped>
+.export {
+  float: right;
+    margin-top: 20px;
+    color: #ff9900;
+    font-size: 12px;
+    font-weight: 700;
+    cursor:pointer;
+}
 .num {
   color:orange;
   padding:5px;
