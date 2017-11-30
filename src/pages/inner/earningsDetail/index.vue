@@ -31,7 +31,7 @@
           v-show="show"
           
           placeholder="选择时间范围"  
-          style="margin-top: 9px;"
+          style="margin-top: 6px;"
           align="right">
         </el-date-picker>
         <el-button v-show="show2" class="earning_btn" style="margin-top: 2px;" @click="searchByTimeLine">查询</el-button>        

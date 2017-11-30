@@ -55,7 +55,7 @@
                     </el-form-item>
                     <el-form-item label="所属角色" prop="roleName">
                       <el-select v-model="editAccount.roleName" placeholder="选择角色类型" @change="platChangeRole">
-                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value" style="padding:10px">
+                        <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value" style="padding:8px">
                         </el-option>
                       </el-select>
                     </el-form-item>
@@ -154,6 +154,7 @@
                     <el-form-item label="所属角色" style="margin-left: 12px;" prop="roleName">
                       <el-select v-model="recodeRoleName" placeholder="请选择">
                         <el-option
+                          style="padding:8px"
                           v-for="item in options"
                           :key="item.value"
                           :label="item.label"
@@ -553,6 +554,8 @@ export default {
         })
       } else {
         var that = this
+        this.accountOrUsername = ""
+        this.telOrMail = ""
         request
           .post(host + 'beepartner/admin/User/findFranchiseeUser')
           .withCredentials()
@@ -763,6 +766,9 @@ export default {
             })
     },
     handleClick(e) {
+      this.accountOrUsername = ""
+      this.telOrMail = ""
+
       var elems = siblings(e.target)
       for (var i = 0; i < elems.length; i++) {
         elems[i].setAttribute('class', '')
@@ -1252,7 +1258,7 @@ export default {
       } else {
         // 获取加盟商的列表
         this.getAllianceList()
-
+        
         this.loading = true
         this.currentPage = 1
         request
@@ -1455,6 +1461,7 @@ export default {
               }
             })
           } else {
+            
             request.post(host + 'beepartner/admin/User/findFranchiseeUser').
               send({
                 'queryName': this.isSearch === false?'':this.accountOrUsername,

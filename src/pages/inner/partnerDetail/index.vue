@@ -66,7 +66,7 @@
               <span class="prex">加盟资金：</span>{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
             </td>
             <td>
-              <span class="prex">结算周期：</span>{{relationDatas.settleDays.length>2?("每月"+ relationDatas.settleDays.split(",")[0]+"号、"+relationDatas.settleDays.split(",")[1]+"号"):("每月"+relationDatas.settleDays+"号")}}
+              <span class="prex">结算周期：</span>{{settleDaysData.length>2?("每月"+ settleDaysData.split(",")[0]+"号、"+settleDaysData.split(",")[1]+"号"):("每月"+settleDaysData+"号")}}
             </td>
 
           </tr>
@@ -144,7 +144,7 @@
                 <span class="prex">加盟资金：</span>{{new Number(relationDatas.subscriptionMoney).thousandFormat() + '元'}}
               </td>
               <td>
-                <span class="prex">结算周期：</span>{{relationDatas.settleDays.length > 2 ? ("每月" + relationDatas.settleDays.split(",")[0] + "号、" + relationDatas.settleDays.split(",")[1] + "号"):("每月"+ relationDatas.settleDays + "号")}}
+                <span class="prex">结算周期：</span>{{settleDaysData.length > 2 ? ("每月" + settleDaysData.split(",")[0] + "号、" + settleDaysData.split(",")[1] + "号"):("每月"+ settleDaysData + "号")}}
               </td>
 
             </tr>
@@ -258,7 +258,7 @@
             <li>
               <span>姓名：</span>{{franchiseeDetail.userName}}</li>
             <li>
-              <span>证件类别：</span>{{franchiseeDetail.cardType===0?'身份证':'护照'}}</li>
+              <span>证件类别：</span>{{franchiseeDetail.cardType===0?'身份证':(franchiseeDetail.cardType==1?'护照':"")}}</li>
             <li>
               <span>证件号码：</span>{{franchiseeDetail.idCard}}</li>
             <li>
@@ -311,7 +311,7 @@ export default {
       joinTarget:this.$route.params.id.split('&')[2],
       currentPage0:1,
       totalItems0:'',
-      pageShow0:false
+      settleDaysData:""
     }
   },
   methods: {
@@ -343,17 +343,16 @@ export default {
                 } else {
                   this.checkLogin(res)
                   // 数据处理
-                  var list = JSON.parse(res.text).data
-                  if (list.length === 0) {
-                    that.$message.error('当前查询没有信息，无法导出哦~');
-                   that.$loading({customClass: 'loading_class'}).close()
-                  } else {
-                    that.$loading({customClass: 'loading_class'}).close()
-
+                  // var list = JSON.parse(res.text).data || []
+                  // if (list.length === 0) {
+                  //   that.$message.error('当前查询没有信息，无法导出哦~');
+                  //  that.$loading({customClass: 'loading_class'}).close()
+                  // } else {
+                  //   that.$loading({customClass: 'loading_class'}).close()
                   console.log(res)
                   window.location.href = (res.body.data)
                   }
-                }
+                // }
               })
         })
       }).catch(() => {
@@ -403,6 +402,8 @@ export default {
     },
     getRelationDataByCitId(){
        var cityPartnerId = this.$route.params.id.split('&')[1]
+       this.currentPage3 = 1
+       this.activeName = "车辆明细"
       request.post(host + 'beepartner/admin/cityPartner/queryBikeNum')
       .withCredentials()
       .set({
@@ -459,7 +460,7 @@ export default {
           // this.franchiseeDetail = Object.assign({},res,{joinTime:moment(res.joinTime).format('YYYY年MM月DD号')})
           this.franchiseeDetail = res
           this.imgUrl = res.businessLicenseIconUrl
-          // 如果后台请求出错，设置基础默认值
+          // // 如果后台请求出错，设置基础默认值
           // if(res.resultCode!=1){
           //    this.relationDatas = {
           //      subscriptionNum:0,
@@ -473,14 +474,19 @@ export default {
           //    }
           //   return;
           // }
-        
-              for(var i = 0; i < res.areaList.length; i++){
+            for(var i = 0; i < res.areaList.length; i++){
               if(res.areaList[i].cityId==this.cityId){
                 this.relationDatas = res.areaList[i]
+                
+                if(res.areaList[i].settleDays){
+                  this.settleDaysData = res.areaList[i].settleDays
+                }
+
                 this.relationJoinTime = moment(this.relationDatas.joinTime).format('YYYY-MM-DD')
                 this.relationFirstDealDate = moment(this.relationDatas.firstDealDate).format('YYYY-MM-DD')
               }
             }
+
           
           
         }
@@ -657,6 +663,7 @@ export default {
     created() {
       console.log(this.$route.params)
       var cityPartnerId = this.$route.params.id.split('&')[1]
+      
       // 初始化调用查询可加盟城市的接口,动态渲染数据
     request.post(host + 'beepartner/admin/city/findCity')
     .withCredentials()
@@ -694,7 +701,7 @@ export default {
         })
       }
     })
-   
+    this.getBikeDetail()
   },
   mounted: function () {
     //this.loading = true
@@ -703,7 +710,7 @@ export default {
     /**
      * 获取车辆详情
      */
-    //this.getBikeDetail()
+    this.getBikeDetail()
   },
   watch:{
     'cityId':{
@@ -714,9 +721,10 @@ export default {
           }
         })
         this.loadData()
-        this.getBikeDetail()
+        
         this.getRelationDataByCitId()
-        this.getWithdrawals()
+        // this.getWithdrawals()
+        this.getBikeDetail()
       },
       deep:true,
     },

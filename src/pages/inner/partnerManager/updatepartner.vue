@@ -85,9 +85,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>   
-                    <el-form-item label="加盟日期" :id="'joinTime'+ index" :rules="[
-                            { required: true, message: ' ', trigger: 'blur' },
-                          ]">
+                    <el-form-item label="加盟日期" :id="'joinTime'+ index" class="joinPlace">
                       <el-date-picker
                         v-model="list.joinTime"
                         placeholder="选择日期">
@@ -128,15 +126,14 @@
                       </el-radio-group>
                     </el-form-item>
                     <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-                    <el-form-item class="first_day" label="首次结算开始日期" :id="'firstDealDate'+ index" :rules="[
-                            { required: true, message: ' ', trigger: 'blur' },
-                          ]">
+                    <el-form-item class="first_day joinPlace" label="首次结算开始日期"  :id="'firstDealDate'+ index" >
                           <el-date-picker
                             :readonly="isHaveSettleOrders"
                             v-model="list.firstDealDate"
                             placeholder="选择日期">
                           </el-date-picker>           
                     </el-form-item>
+                    
                     <h1 class="form_table_h2" style="margin-top:-10px;margin-bottom:10px">生成结算单后，此日期不允许修改</h1>
                   </div>
 
@@ -155,9 +152,7 @@
                               </el-option>
                           </el-select>
                     </el-form-item>   
-                    <el-form-item label="加盟日期" :id="'joinTime'+ index" :rules="[
-                          { required: true, message: ' ', trigger: 'blur' },
-                        ]">
+                    <el-form-item label="加盟日期" :id="'joinTime'+ index" class="joinPlace">
                         <el-date-picker
                           v-model="list.joinTime"
                           placeholder="选择日期">
@@ -195,9 +190,7 @@
                       </el-checkbox-group>
                     </el-form-item>
                     <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:12px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-                    <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index" :rules="[
-                          { required: true, message: ' ', trigger: 'blur' },
-                        ]">
+                    <el-form-item label="首次结算开始日期" :id="'firstDealDate'+ index" class="joinPlace">
                         <el-date-picker
                           :readonly="isHaveSettleOrders"
                           v-model="list.firstDealDate"
@@ -240,7 +233,7 @@
                 <el-option label="护照" value="护照"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="证件号码" prop="idCard">
+            <el-form-item label="证件号码">
               <el-input v-model="ruleForm.idCard" placeholder='请输入证件号码'></el-input>
             </el-form-item>
             <el-form-item label="手机号" prop="phone">
@@ -772,7 +765,7 @@ export default {
             this.ruleForm.businessLicense = this.row.businessLicense;
             this.ruleForm.address = this.row.address;
             this.ruleForm.userName = this.row.userName;
-            this.ruleForm.cardType = this.row.cardType == 0 ? "身份证" : "护照";
+            this.ruleForm.cardType = this.row.cardType == 0 ? "身份证":(this.row.cardType == 1?"护照":"");
             this.ruleForm.phone = this.row.phone;
             this.ruleForm.email = this.row.email;
             this.ruleForm.idCard = this.row.idCard;
@@ -787,7 +780,7 @@ export default {
             this.ruleForm.password = this.row.password;
             this.ruleForm.conName = this.row.conName;
             this.ruleForm.conIdCard = this.row.conIdCard;
-            this.ruleForm.conCardType = this.row.conCardType == 0 ? "身份证" : "护照";
+            this.ruleForm.conCardType = this.row.conCardType == 0 ? "身份证" : (this.row.conCardType == 1?"护照":"");
             this.ruleForm.conPhone = this.row.conPhone;
             this.ruleForm.conEmail = this.row.conEmail;
 

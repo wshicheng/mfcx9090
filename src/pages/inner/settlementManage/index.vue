@@ -70,7 +70,7 @@
                   <!-- <i class="el-icon-document"></i> -->结算<!-- 待确认 -->
                 </a>
                 <!--dialog 弹窗开始-->
-                 <el-dialog id="settle_input" title="结算确认" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
+                 <el-dialog id="settle_input" class="settle" title="结算确认" :visible.sync="dialogVisible" :modal="true" :modal-append-to-body="false">
                     <span id="tips">*当财务给加盟商线下打款后,才可以点击结算按钮，更改结算状态</span>
                     <el-form :model="editAccount">
                       <el-form-item label="结算周期:" :label-width="formLabelWidth" style="width: 300px;">
@@ -80,7 +80,9 @@
                         <el-input v-model="editAccount.cityPartnerId" style="border:none;"  :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item id="com" label="加盟企业名称/个人姓名:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px" readonly>
-                        <el-input v-model="editAccount.companyName" style="border:none;"  :readonly="true"></el-input>
+                        <el-input v-model="companyName" style="border:none;"  :readonly="true">
+            
+                        </el-input>
                       </el-form-item>
                       <el-form-item label="加盟地区:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
                         <el-input v-model="editAccount.cityName"  style="border:none;" auto-complete="off" :readonly="true"></el-input>
@@ -89,10 +91,10 @@
                         <el-input v-model="editAccount.applyUserName" style="border:none;"  auto-complete="off" :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="结算金额:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
-                        <el-input  style="border:none;" :value="editAccount.applyMoney"  auto-complete="off" :readonly="true" ></el-input>
+                        <el-input  style="border:none;" :value="new Number(editAccount.applyMoney).thousand()+'元'"  auto-complete="off" :readonly="true" ></el-input>
                       </el-form-item>
                       <el-form-item label="备注:" :label-width="formLabelWidth">
-                        <el-input type="textarea" v-model="editAccount.description" style="width: 400px;  margin-top: -10px"></el-input>
+                        <el-input type="textarea" v-model="editAccount.description" style="width: 400px;  margin-top: -10px ;margin-left:10px"></el-input>
                       </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
@@ -130,6 +132,7 @@ import { host } from '../../../config/index.js'
 export default {
   data: function () {
     return {
+      companyName:"",
       tableData: [],
       tableData2: [],
       dialogVisible: false,
@@ -353,10 +356,13 @@ export default {
         this.editAccount.applyTimeStr = row.applyTimeStr
         this.editAccount.cityPartnerId = row.cityPartnerId
         this.editAccount.companyName = row.companyName
+        this.editAccount.conName = row.conName
+        this.editAccount.joinTarget = row.joinTarget
         this.editAccount.cityName = row.cityName
         this.editAccount.applyUserName = row.applyUserName
         this.editAccount.applyMoney = row.applyMoney
         this.editAccount.id = row.id
+        this.companyName = this.editAccount.joinTarget=='1'?this.editAccount.companyName:this.editAccount.conName
         // this.editAccount.withdrawalCode = row.allianceId
       }
 
@@ -524,7 +530,7 @@ div.table table thead tr th span.sort {
   background: #f87e2b;
   border: none;
   color: #fff;
-  margin-left: 120px;
+  margin-left: 90px;
 }
 
 .partner_button:nth-of-type(1):hover {

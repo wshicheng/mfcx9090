@@ -69,7 +69,7 @@
             <button @click="findBikeByInfo" class="distribution_btn">查询</button>
             <div style="clear:both"></div>
           </div>
-          <div class="total_bike">共有记录 100 辆</div>
+          <div class="total_bike">共有记录 {{totalItems}} 辆</div>
           <!-- <span class="all_chose" @click="choseAllBike">全选</span> -->
           
         </div>
@@ -491,6 +491,7 @@ export default {
       signForQuery: false,
       checkList:[],
       time:"",
+      totalItems:""
     }
   },
    created() {
@@ -898,6 +899,7 @@ export default {
               // var newData = data.map((item)=>{
               //   return Object.assign({},item,{onlineTime:moment(item.onlineTime).format('YYYY-MM-DD')})
               // })
+              this.totalItems = JSON.parse(res.text).totalItems
               this.tableData_distribution = data
               var totalPage = Number(JSON.parse(res.text).totalPage)
               // if (totalPage > 1) {
@@ -988,25 +990,25 @@ export default {
       },
       deep:true
     },
-    'choseBikes': {
-      handler: function() {
-        if (this.choseBikes === '') {
-          this.loadDate()
-        }
-      }
-    },
-    'cityId':{
-      handler:function(n,o){
-        this.options.map((item)=>{
-          if(item.value=== n){
-            this.cityName = item.label
-          }
-        })
-         this.loadDate()
-         this.getRelationDataByCitId()
-      },
-      deep:true,
-    },
+    // 'choseBikes': {
+    //   handler: function() {
+    //     if (this.choseBikes === '') {
+    //       this.loadDate()
+    //     }
+    //   }
+    // },
+    // 'cityId':{
+    //   handler:function(n,o){
+    //     this.options.map((item)=>{
+    //       if(item.value=== n){
+    //         this.cityName = item.label
+    //       }
+    //     })
+    //      this.loadDate()
+    //      this.getRelationDataByCitId()
+    //   },
+    //   deep:true,
+    // },
     'checkList':'findBikeByInfo',
     'time':'findBikeByInfo'
     // currentPage3:{

@@ -109,9 +109,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="加盟日期" :id="'joinTime'+ index"  :rules="[
-                  { required: true, message: '请选择加盟日期', trigger: 'blur' },
-                ]">
+          <el-form-item class="joinPlace" label="加盟日期" :id="'joinTime'+ index">
             <el-date-picker
               v-model="list.joinTime"
               placeholder="选择日期">
@@ -153,9 +151,7 @@
             </el-radio-group>
           </el-form-item>
           <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:20px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-          <el-form-item class="first_day first"  label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
-                  { required: true, message: '请选择首次结算开始日期', trigger: 'blur' },
-                ]">
+          <el-form-item class="first_day date joinPlace"  label="首次结算开始日期" :id="'firstDealDate'+ index">
                 <el-date-picker
                   :readonly="isHaveSettleOrders"
                   v-model="list.firstDealDate"
@@ -177,9 +173,7 @@
                 </el-option>
               </el-select>
           </el-form-item>
-          <el-form-item label="加盟日期" :id="'joinTime'+ index"  :rules="[
-                { required: true, message: '请选择加盟日期', trigger: 'blur' },
-              ]">
+          <el-form-item label="加盟日期"  class="joinPlace"  :id="'joinTime'+ index" >
               <el-date-picker
                 v-model="list.joinTime"
                 placeholder="选择日期">
@@ -217,10 +211,7 @@
             </el-checkbox-group>
           </el-form-item>
           <h1 class="form_table_h2" style="margin-top:-13px;margin-bottom:12px">次周期结算上一个结算周期的收益，如果第一个周期不满一个结算周期也进行结算</h1>
-          <el-form-item class="first" label="首次结算开始日期" :id="'firstDealDate'+ index"  :rules="[
-                { required: true, message: '请选择结算日期', trigger: 'blur' },
-                
-              ]">
+          <el-form-item class="joinPlace" label="首次结算开始日期" :id="'firstDealDate'+ index">
               <el-date-picker
                 :readonly="isHaveSettleOrders"
                 v-model="list.firstDealDate"
@@ -267,7 +258,7 @@
             <el-option label="护照" value="护照"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="证件号码" prop="idCard">
+        <el-form-item label="证件号码">
           <el-input v-model="ruleForm.idCard" placeholder='请输入证件号码'></el-input>
         </el-form-item>
         <el-form-item label="手机号" prop="phone">
@@ -507,7 +498,7 @@ import $ from "jquery";
 import request from "superagent";
 import moment from "moment";
 import { host } from "../../../config/index";
-import { isCardNo, isPassportNo} from "../../../../utils/index.js";
+import { checkUserName, isCardNo, isPassportNo} from "../../../../utils/index.js";
 import { mapActions } from "vuex";
 import cityList from "../../../components/cityList.vue";
 export default {
@@ -518,45 +509,59 @@ export default {
       
       if (!value) {
         return callback(new Error("请输入证件号码"));
+      }else{
+         callback();
       }
-      setTimeout(() => {
-        if (this.ruleForm.cardType === "护照") {
-          if (isPassportNo(value) === false) {
-            callback(new Error("请输入正确的护照号"));
-          } else {
-            callback();
-          }
-        } else {
-          if (isCardNo(value) === false) {
-            callback(new Error("请输入正确的身份证号"));
-          } else {
-            callback();
-          }
-        }
-      }, 1000);
+      // setTimeout(() => {
+      //   if (this.ruleForm.cardType === "护照") {
+      //     if (isPassportNo(value) === false) {
+      //       callback(new Error("请输入正确的护照号"));
+      //     } else {
+      //       callback();
+      //     }
+      //   } else {
+      //     if (isCardNo(value) === false) {
+      //       callback(new Error("请输入正确的身份证号"));
+      //     } else {
+      //       callback();
+      //     }
+      //   }
+      // }, 1000);
     }
      var checkId1 = (rule, value, callback) => {
       
       if (!value) {
         return callback(new Error("请输入证件号码"));
+      }else{
+        callback();
       }
-      setTimeout(() => {
-        if (this.ruleForm.conCardType === "护照") {
-          if (isPassportNo(value) === false) {
-            callback(new Error("请输入正确的护照号"));
-          } else {
-            callback();
-          }
-        } else {
-          if (isCardNo(value) === false) {
-            callback(new Error("请输入正确的身份证号"));
-          } else {
-            callback();
-          }
-        }
-      }, 1000);
+      // setTimeout(() => {
+      //   if (this.ruleForm.conCardType === "护照") {
+      //     if (isPassportNo(value) === false) {
+      //       callback(new Error("请输入正确的护照号"));
+      //     } else {
+      //       callback();
+      //     }
+      //   } else {
+      //     if (isCardNo(value) === false) {
+      //       callback(new Error("请输入正确的身份证号"));
+      //     } else {
+      //       callback();
+      //     }
+      //   }
+      // }, 1000);
     }
     
+     var validateUserId = function (rule, value, callback) {
+      if (value == '') {
+        callback(new Error('请输入用户名'))
+      } else if (!checkUserName(value)) {
+        callback('用户名格式：必须为英文字母或数字的组合')
+      } else{
+        callback()
+      }
+     }
+
     var checkPhone = (rule,value,callback)=>{
       if (!value) {
         return callback(new Error("请输入手机号码"));
@@ -661,7 +666,7 @@ export default {
         manageFee:[{required: true,message: "请输入运营管理费", trigger: "blur" }],
         wType: [{ required: true, message: "请选择结算周期", trigger: "change" }],
         dayList: [{ required: true, message: "请选择结算日", trigger: "change" }],
-        userId: [{required:true, message: "请输入用户名", trigger: "blur" }],
+        userId: [{ validator:validateUserId,required: true,trigger: "blur" }],
         password: [
           { required:true,message: "请输入密码", trigger: "blur" },
           { min: 6, max: 19, message: "密码格式不正确", trigger: "blur" }
@@ -776,9 +781,12 @@ export default {
           }
           if($(this).val()==''){
               $(this).parents(".el-form-item").addClass('is-error')
-              $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择加盟地区</div>')
+              $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择结算周期</div>')
           }
       })
+
+    
+
       
     },
     // 改变加盟对象 企业、个人
@@ -1187,8 +1195,8 @@ export default {
             { unUsed:1},
             this.ruleForm,
             {cityList:JSON.stringify(newMultForm)},
-            {cardType: this.ruleForm.cardType === "身份证" ? 0 : 1 },
-            {conCardType: this.ruleForm.conCardType === "身份证" ? 0 : 1 },
+            {cardType: this.ruleForm.cardType === "身份证" ? 0 :(this.ruleForm.cardType==="护照"?1 :"") },
+            {conCardType: this.ruleForm.conCardType === "身份证" ? 0 :( this.ruleForm.conCardType ==="护照"?1:"") },
             {joinTarget:this.radio}
           );
 
