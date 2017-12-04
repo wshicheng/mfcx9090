@@ -397,7 +397,7 @@ export default {
       this.isSearch = true
 
       var that = this
-      if (this.roleName.trim().length !== 0) {
+      // if (this.roleName.trim().length !== 0) {
         this.isQuery = true
         that.loading = true
         request
@@ -433,13 +433,13 @@ export default {
               that.tableData = newArr
             }
           })
-      } else {
-        this.$message({
-          type: 'warning',
-          message: '查询条件不能为空'
-        })
-        return false
-      }
+      // } else {
+      //   this.$message({
+      //     type: 'warning',
+      //     message: '查询条件不能为空'
+      //   })
+      //   return false
+      // }
     },
     openAddRole() {
       this.dialogFormVisible = true

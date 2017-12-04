@@ -422,13 +422,13 @@ export default {
         queryNumber: this.telOrMail,
         cityId: $('.citys span.active').attr('name')
       }
-      if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0) {
-        this.$message({
-          type: 'error',
-          message: '查询条件并不能为空！'
-        })
-        return false
-      }
+      // if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0) {
+      //   this.$message({
+      //     type: 'error',
+      //     message: '查询条件并不能为空！'
+      //   })
+      //   return false
+      // }
       var that = this
       if (this.activeName === '平台') {
         that.loading = true

@@ -172,7 +172,7 @@
                     <el-form-item style="position: relative; top: -22px; margin-bottom: 0px;">
                       <div class="el-form-item__error" v-show="areaError">该地区已经存在加盟商，请重新选择</div>
                     </el-form-item>
-                    <el-form-item label="运营管理费" :id="'manageFee'+ index" :rules="[
+                    <el-form-item label="运营管理费" class="manageFee" :id="'manageFee'+ index" :rules="[
                           { required: true, message: ' ', trigger: 'blur' },
                         ]" style="width:550px">
                       <el-input v-model.number="list.manageFee" placeholder='请输入运营管理费'></el-input><span style="margin-left:5px;">元/车.天</span>
@@ -807,6 +807,14 @@ export default {
     isEmpty(index){
       $("#isEmpty").on("blur","input",function(){
         console.log("--------------------")
+         $(".divisionPercent").on("input","input",function(){
+          $(this).parents(".is-required").find(".error-list").remove()
+          $(this).parents(".is-required").removeClass("is-error")
+        })
+         $(".manageFee").on("input","input",function(){
+          $(this).parents(".is-required").find(".error-list").remove()
+          $(this).parents(".is-required").removeClass("is-error")
+        })
         if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))){
           $(this).parents(".is-required").addClass("is-error")
 

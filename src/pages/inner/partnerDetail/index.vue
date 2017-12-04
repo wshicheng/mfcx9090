@@ -118,6 +118,10 @@
               <td>
                 <span class="prex">邮箱：</span>{{franchiseeDetail.conEmail}}</td>
             </tr>
+             <tr>
+              <td>
+                <span class="prex">通讯地址：</span>{{franchiseeDetail.address}}</td>
+            </tr>
             <tr>
                <td>
                 <span class="prex" style="margin-right:0">加盟区域：</span>
@@ -170,7 +174,7 @@
       <span class="export" style="cursor:pointer" v-show="activeName=='车辆明细'" @click="export_excel">导出到Excel</span>
       
       <el-tabs v-model="activeName" @tab-click="handleTabClick">        
-        <el-tab-pane class="incomeRecord recodeTable" label="车辆明细" name="车辆明细">
+        <el-tab-pane class="recodeTable" label="车辆明细" name="车辆明细">
           
           <el-table :data="carDetail" style="width: 100%" v-loading="loading2" element-loading-text="拼命加载中">
             <el-table-column prop="code" label="车辆号">
@@ -739,9 +743,9 @@ export default {
     font-size: 12px;
     font-weight: 700;
     cursor: pointer;
-    position: relative;
+    position: absolute;
     left: 1120px;
-    top: 40px;
+    /* top: 25px; */
     z-index: 2000;
 }
 .num {
@@ -816,7 +820,7 @@ div.carUseDetail div.battery ul li img {
 }
 
 div.carUseDetail div.record {
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 0 4px 0 4px;
   background: #fff;
 }

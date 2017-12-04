@@ -102,8 +102,12 @@ export default {
           title: {
             text: ' '
           },
+          scrollbar: {
+            enabled: true
+          },
           xAxis: {
-            categories: this.x_data
+            categories: this.x_data,
+            // max:5
           },
           yAxis: [{
             min: 0,

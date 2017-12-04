@@ -11,7 +11,9 @@
                     <i v-else class="icon iconfont icon-touxiang"></i>
                     <span class="username">{{userName}}</span>
                     <!-- <i class="icon iconfont icon-xinfeng"></i> -->
+                    <el-tooltip class="item" effect="dark" content="退出" placement="bottom">
                     <i class="icon iconfont icon-tuichu" @click="handleLoginOut"></i>
+                    </el-tooltip>
                 </div>
             </el-col>
         </el-row>

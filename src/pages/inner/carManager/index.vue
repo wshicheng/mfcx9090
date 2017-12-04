@@ -18,7 +18,8 @@
                     <el-col>
                       <el-form-item class="filtercar">
                         <span class="labelAlign">关键字</span>
-                        <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号">
+                        <!-- <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号"> -->
+                        <input v-model="terminalNumber"  class="carMan_bar" placeholder="车辆号\终端编号">
                       </el-form-item>
                       <el-form-item class="filtercar" style="width: 400px;color:#555">
                         <span class="labelAlign">运营状态</span>
@@ -106,7 +107,8 @@
                     <el-col>
                       <el-form-item class="filtercar">
                         <span class="labelAlign">关键字</span>
-                        <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号">
+                        <!-- <input v-model="terminalNumber" v-on:input='inputChange' class="carMan_bar" placeholder="车辆号\终端编号"> -->
+                        <input v-model="terminalNumber"  class="carMan_bar" placeholder="车辆号\终端编号">
                       </el-form-item>
                       <el-form-item class="filtercar" style="width: 400px;">
                         <span class="labelAlign">运营状态</span>
@@ -282,13 +284,13 @@ export default {
       } else {
         type = '1'
       }
-      if (this.terminalNumber === '' && this.form.data1 === '' && this.form.data2 === '' &&  this.checkList.length === 0) {
-           this.$message({
-            type: 'warning',
-            message: '查询条件不能为空！'
-          })
-          return
-      } else {
+      // if (this.terminalNumber === '' && this.form.data1 === '' && this.form.data2 === '' &&  this.checkList.length === 0) {
+      //      this.$message({
+      //       type: 'warning',
+      //       message: '查询条件不能为空！'
+      //     })
+      //     return
+      // } else {
          
          var startTime,endTime
         if (this.form.data1 === '' || this.form.data2 === '') {
@@ -383,7 +385,7 @@ export default {
               this.tableData = newData
             }
           })
-      }
+      // }
     },
     // 通过车辆状态查询
     searchThroughCheckList () {

@@ -92,25 +92,31 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="cityList"
           label="加盟区域"
           min-width="100">
+          <template slot-scope="scope">
+            <span v-html="scope.row.joinArea"></span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="joinMoneys"
           label="加盟资金(元)"
           min-width="100">
+          <template slot-scope="scope">
+            <span v-html="scope.row.joinMoney"></span>
+          </template>
         </el-table-column>
         <el-table-column
-          prop="joinDays"
           label="加盟日期"
           min-width="100">
+          <template slot-scope="scope">
+            <span v-html="scope.row.joinDay"></span>
+          </template>
         </el-table-column>
         <el-table-column
           label="认购车辆数"
           min-width="100">
           <template slot-scope="scope">
-              <span>{{scope.row.subscriptionNumStr}}</span>
+              <span v-html="scope.row.subscriptionNumStrs"></span>
              <!-- @click='handleRowHandle(scope.row.subscription_id)'  -->
             <!-- <span><a  class="alliance_table_allocation">分配车辆</a></span> -->
             <router-link style="color:rgb(118, 103, 233); text-decoration: none; cursor: pointer;" target='_blank' v-bind:to="{
@@ -696,6 +702,8 @@ export default {
       }, 1000);
     };
     return {
+      html:"",
+      joinArea:[],
       joinMode:"",
       allcityList:[],
       recodeCityList:'',
@@ -1274,6 +1282,14 @@ export default {
                 that.$store.commit("keepParnterAccount", item);
               });
               this.tableData = that.$store.state.users.keepParnterAccount;
+              // 一个td内显示内容过多时进行换行处理
+              for(var i = 0;i < this.tableData.length; i ++){
+                this.tableData[i].joinArea = this.tableData[i].cityList.replace(/\//g,"/<br>")
+                this.tableData[i].joinMoney = this.tableData[i].joinMoneys.replace(/\//g,"/<br>")
+                this.tableData[i].joinDay = this.tableData[i].joinDays.replace(/\//g,"/<br>")
+                this.tableData[i].subscriptionNumStrs = this.tableData[i].subscriptionNumStr.replace(/\//g,"/<br>")
+              }
+              console.log("loadData",this.tableData)
               if (pageNumber > 1) {
                 that.pageShow = true;
               } else {
@@ -1474,18 +1490,18 @@ export default {
               return
             }
           }
-      if (
-        name.length === 0 &&
-        phone.length === 0 &&
-        startTime.toString().length === 0 &&
-        endTime.toString().length === 0
-      ) {
-        this.$message({
-          type: "warning",
-          message: "查询条件不能为空！"
-        });
-        return 
-      } else {
+      // if (
+      //   name.length === 0 &&
+      //   phone.length === 0 &&
+      //   startTime.toString().length === 0 &&
+      //   endTime.toString().length === 0
+      // ) {
+      //   this.$message({
+      //     type: "warning",
+      //     message: "查询条件不能为空！"
+      //   });
+      //   return 
+      // } else {
         request
           .post(host + "beepartner/admin/cityPartner/findCityPartner")
           .withCredentials()
@@ -1533,7 +1549,7 @@ export default {
               }
             }
           });
-      }
+      // }
     },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`);

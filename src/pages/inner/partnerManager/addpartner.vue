@@ -533,24 +533,25 @@ export default {
       if (!value) {
         return callback(new Error("请输入证件号码"));
       }else{
-        callback();
-      }
-      // setTimeout(() => {
-      //   if (this.ruleForm.conCardType === "护照") {
-      //     if (isPassportNo(value) === false) {
-      //       callback(new Error("请输入正确的护照号"));
-      //     } else {
-      //       callback();
-      //     }
-      //   } else {
-      //     if (isCardNo(value) === false) {
-      //       callback(new Error("请输入正确的身份证号"));
-      //     } else {
-      //       callback();
-      //     }
-      //   }
-      // }, 1000);
+      //   callback();
+      // }
+      setTimeout(() => {
+        if (this.ruleForm.conCardType === "护照") {
+          if (isPassportNo(value) === false) {
+            callback(new Error("请输入正确的护照号"));
+          } else {
+            callback();
+          }
+        } else {
+          if (isCardNo(value) === false) {
+            callback(new Error("请输入正确的身份证号"));
+          } else {
+            callback();
+          }
+        }
+      }, 1000);
     }
+     }
     
      var validateUserId = function (rule, value, callback) {
       if (value == '') {
@@ -610,7 +611,7 @@ export default {
         companyName: "",
         businessLicense: "",
         address: "",
-        userName:"",
+        userName:'',
         cardType: "",
         idCard: "",
         phone: "",
@@ -634,6 +635,7 @@ export default {
         conPhone:"",
         conEmail:""
       },
+
       object:[],
       rules: {
         companyName: [{ required: true, message: "请输入企业名称", trigger: "blur" }],
@@ -687,6 +689,9 @@ export default {
   components: {
     cityList
   },
+  computed:{
+    
+  },
   created() {
     // 初始化调用查询可加盟城市的接口,动态渲染数据
       this.getJoinAreaList();
@@ -703,7 +708,8 @@ export default {
 
       // 结算与加盟信息部分表单非空验证
       this.isEmpty()
-
+      // console.log(this.ruleForm.userName)
+     
     },
   mounted: function() {
     //  this.$refs['ruleForm'].resetFields();
@@ -714,9 +720,14 @@ export default {
   methods:{
     // 中间加盟与结算信息部分的表单验证
     // 因为element-ui的表单验证数据无法嵌套三级结构，需手动书写
+    
     isEmpty(){
+        $(".divisionPercent").on("input","input",function(){
+          $(this).parents(".is-required").find(".error-list").remove()
+          $(this).parents(".is-required").removeClass("is-error")
+        })
       $("#isEmpty").on("blur","input",function(){
-        if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))||$(this).val()==''){
+        if(!(/^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/.test($(this).val()))||$(this).val().trim()==''){
 
           $(this).parents(".is-required").addClass("is-error")
 
@@ -784,6 +795,8 @@ export default {
               $(this).parents(".el-form-item").append('<div class="error-list" style="font-size: 12px;color:#ff4949;margin-left: 150px;position:absolute;">请选择结算周期</div>')
           }
       })
+
+
 
     
 
@@ -854,7 +867,7 @@ export default {
       }
       this.imageUrl = ""
       this.checked = false
-      
+  
     
     },
     // 改变加盟模式 独家、非独家
@@ -1423,7 +1436,52 @@ export default {
           this.getJoinAreaList();
         },
         deep:true
-      }
+      },
+      "ruleForm.conName":{
+        handler:function(val){
+          if(this.radio=='2'){
+            this.ruleForm.userName =  this.ruleForm.conName
+          }
+             
+        },
+        deep:true
+      },
+      "ruleForm.conCardType":{
+        handler:function(val){
+          if(this.radio=='2'){
+            this.ruleForm.cardType =  this.ruleForm.conCardType
+          }
+             
+        },
+        deep:true
+      },
+       "ruleForm.conIdCard":{
+        handler:function(val){
+          if(this.radio=='2'){
+            this.ruleForm.idCard =  this.ruleForm.conIdCard 
+          }
+            
+        },
+        deep:true
+      },
+       "ruleForm.conPhone":{
+        handler:function(val){
+          if(this.radio=="2"){
+            this.ruleForm.phone =  this.ruleForm.conPhone
+          }
+            
+        },
+        deep:true
+      },
+       "ruleForm.conEmail":{
+        handler:function(val){
+          if(this.radio=='2'){
+            this.ruleForm.email =  this.ruleForm.conEmail 
+          }
+            
+        },
+        deep:true
+      },
     }
   
 };

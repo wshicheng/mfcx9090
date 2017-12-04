@@ -91,7 +91,7 @@
                         <el-input v-model="editAccount.applyUserName" style="border:none;"  auto-complete="off" :readonly="true"></el-input>
                       </el-form-item>
                       <el-form-item label="结算金额:" :label-width="formLabelWidth" style="width: 300px;  margin-top: -10px">
-                        <el-input  style="border:none;" :value="new Number(editAccount.applyMoney).thousand()+'元'"  auto-complete="off" :readonly="true" ></el-input>
+                        <el-input  style="border:none;" :value="new Number(editAccount.applyMoney).thousandFormat()+'元'"  auto-complete="off" :readonly="true" ></el-input>
                       </el-form-item>
                       <el-form-item label="备注:" :label-width="formLabelWidth">
                         <el-input type="textarea" v-model="editAccount.description" style="width: 400px;  margin-top: -10px ;margin-left:10px"></el-input>
@@ -207,6 +207,7 @@ export default {
     },
     handleClick(e) {
       this.loading2 = true
+      this.currentPage = 1
       var elems = siblings(e.target)
       for (var i = 0; i < elems.length; i++) {
         elems[i].setAttribute('class', '')
@@ -530,7 +531,7 @@ div.table table thead tr th span.sort {
   background: #f87e2b;
   border: none;
   color: #fff;
-  margin-left: 90px;
+  margin-left: 210px;
 }
 
 .partner_button:nth-of-type(1):hover {

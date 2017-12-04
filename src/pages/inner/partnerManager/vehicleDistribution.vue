@@ -2,7 +2,7 @@
   <div class="vehicleBikeAlone">
     <div id='distribution_header'>
       <h3>分配车辆
-        <p @click="closeWindow" style="float: right; font-size: 12px; cursor: pointer;line-height:12px">关闭</p>
+        <!-- <p @click="closeWindow" style="float: right; font-size: 12px; cursor: pointer;line-height:12px">关闭</p> -->
       </h3>
       <table class="franchiseeDetail">
         <tbody>
@@ -59,12 +59,22 @@
             <!-- <span>
               <i class='el-icon-search'></i>
             </span> -->
-            <input type="text" v-model="choseBikes" style="margin-left: 20px;" placeholder="需要分配的车辆数量" />
+            <input type="text" v-model="choseBikes" style="margin-left: 20px;margin-right:20px" placeholder="需要分配的车辆数量" />
             <!-- <span>
               <i></i>
             </span> -->
-              <el-radio class="time"  v-model="time" label="1" value="1">24小时有订单</el-radio>
-              <el-radio  class="time" v-model="time" label="2" value="2">48小时有订单</el-radio>
+              <!-- <el-radio class="time"  v-model="time" label="1" value="1">24小时有订单</el-radio>
+              <el-radio  class="time" v-model="time" label="2" value="2">48小时有订单</el-radio> -->
+        
+              <el-select class="time_select" v-model="time" placeholder="请选择时间">
+                <!-- <el-option label="所有时间" value=""></el-option> -->
+                <el-option label="全部" value="0"></el-option>
+                <el-option label="24小时有订单" value="1" class="opt"></el-option>
+                <el-option label="48小时有订单" value="2"></el-option>
+              </el-select>
+
+
+             
             
             <button @click="findBikeByInfo" class="distribution_btn">查询</button>
             <div style="clear:both"></div>
@@ -117,6 +127,24 @@
 </template>
 
 <style>
+.time_select.el-select .el-input .el-input__icon {
+  height: 30px;
+  margin-top:5px;
+}
+.time_select.el-select .el-input {
+  height:38px
+}
+.time_select .el-input__icon + .el-input__inner{
+    height: 30px;
+    margin-left: 0px;
+}
+.time_radio {
+  width:18px;
+  float:left;
+}
+.num_time {
+  float:left
+}
 #bike_state {
   margin-left:5px
 }
@@ -198,6 +226,7 @@ div.allot {
   background: #fff;
   border: 1px solid #e7ecf1;
   border-bottom: none;
+  padding-bottom:20px
 }
 
 #distribution_header>h3 {
@@ -952,20 +981,12 @@ export default {
       }
     }
   },
-  // updated:function(){
-  //   console.log(this.selectCars)
-  //   var dom = $('.el-table__body-wrapper tbody td div.cell')
-  //   for(var i=0;i<dom.length;i++){
-  //     if(this.selectCars.indexOf(dom.eq(i).text())!== -1){
-  //       console.log(dom.eq(i).parent().prev())
-  //       //this.$refs.multipleTable.toggleRowSelection(this.tableData_distribution[i]);
-  //       //dom.eq(i).parent().prev().find('.el-checkbox__input').addClass('is-checked is-focus')
-  //     }
-  //   }
-  // },
+  
   mounted() {
     document.title = '分配车辆'
     // this.loadDate()
+
+
   },
   watch: {
     'tempcar':{
@@ -997,18 +1018,19 @@ export default {
     //     }
     //   }
     // },
-    // 'cityId':{
-    //   handler:function(n,o){
-    //     this.options.map((item)=>{
-    //       if(item.value=== n){
-    //         this.cityName = item.label
-    //       }
-    //     })
-    //      this.loadDate()
-    //      this.getRelationDataByCitId()
-    //   },
-    //   deep:true,
-    // },
+    'cityId':{
+      handler:function(n,o){
+        this.options.map((item)=>{
+          if(item.value=== n){
+            this.cityName = item.label
+          }
+        })
+         this.loadDate()
+         this.getRelationDataByCitId()
+        //  this.findBikeByInfo()
+      },
+      deep:true,
+    },
     'checkList':'findBikeByInfo',
     'time':'findBikeByInfo'
     // currentPage3:{
@@ -1055,6 +1077,9 @@ export default {
     //   },
     //   deep:true
     // }
+  },
+  updated(){
+    
   }
 }
 </script>
