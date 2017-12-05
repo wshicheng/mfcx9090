@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="carUseDetail">
-      <div v-show="notice" class="el-notification" style="top: 16px; z-index: 2000;">
+      <!-- <div v-show="notice" class="el-notification" style="top: 16px; z-index: 2000;">
         <i class="el-notification__icon el-icon-warning"></i>
         <div class="el-notification__group is-with-icon">
           <h2 class="el-notification__title">温馨提示</h2>
           <div class="el-notification__content">实际收益=用户实际支付金额，为本订单扣除了优惠券、赠送余额支付的金额。</div>
         </div>
-      </div>
+      </div> -->
       <div class="detailTitle">
         <h3>车辆详情</h3>
       </div>
@@ -62,10 +62,22 @@
               </ul>
             </el-col> -->
       </el-row>
+      <el-popover
+        slot="reference"
+        ref="popover1"
+        placement="top-end"
+        width="252"
+        title="数据项说明"
+        trigger="hover">
+        <p>实际收益=用户实际支付金额,</p>
+        <p>为本订单扣除了优惠券、赠送余额支付的金额。</p>
+      </el-popover>
+           
       <el-row class="record">
-
+         
         <el-tabs v-model="activeName">
           <el-tab-pane class="incomeRecord recodeTable" label="收益记录" name="first">
+            <i class="icon iconfont icon-wenhao" v-popover:popover1 style='cursor:pointer;margin-left:0px;color:orange;font-size:18px;vertical-align:middle;float:right'></i>
             <el-table :data="tableData" style="width:100%" v-loading="loading2" element-loading-text="拼命加载中">
               <el-table-column prop="placeOrderTimeStr" label="订单结束时间" min-width='90'>
               </el-table-column>
@@ -94,7 +106,8 @@
                   {{ (scope.row.grantAmount).thousandFormat()}}
                 </template>
               </el-table-column>
-              <el-table-column label="实际收益(元)" prop="balanceAmount" :render-header="rendHeader">
+              <!-- <el-table-column label="实际收益(元)" prop="balanceAmount" :render-header="rendHeader"> -->
+              <el-table-column label="实际收益(元)" prop="balanceAmount">
                 <template slot-scope="scope">
                   {{ (scope.row.balanceAmount).thousandFormat()}}
                 </template>
@@ -129,6 +142,7 @@
                 </table>-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" :total="totalItems" v-show="pageShow">
             </el-pagination>
+            
           </el-tab-pane>
           <!-- <el-tab-pane label="换电记录" name="second" class="recodeTable">
                 <table>
@@ -172,6 +186,7 @@
               </el-tab-pane> -->
         </el-tabs>
       </el-row>
+     
     </div>
   </div>
 </template>
@@ -394,6 +409,7 @@ export default {
     // },
     pageUpdate(e) {
       var that = this
+      console.log(this.activeName)
       clearTimeout(this.timer)
       if (e.target.tagName === 'A' || e.target.tagName === 'SPAN') {
         if (e.target.innerHTML === '首页') {
@@ -423,40 +439,40 @@ export default {
         }
       }, 200)
     },
-    mouseLeaveHandler() {
-      $('div.el-notification').animate({ right: '-330px' }, 500, function() {
-        this.notice = false
-      })
-    },
-    mouseEnterHandler() {
-      this.notice = true
-      $('div.el-notification').animate({ right: '1px' }, 500)
-    },
-    rendHeader(h, { column, $index }) {
-      return h('div', {
-        class: {
-          tips: true,
-          cell: true
-        },
-        attrs: {
-          style: 'background:#eee;margin-left:-20px;'
-        }
-      }, [
-          h('span', '实际收益(元)'),
-          h('i', {
-            class: {
-              'icon iconfont icon-wenhao': true
-            },
-            attrs: {
-              style: 'cursor:pointer;margin-left:10px;color:orange;font-size:18px;vertical-align:middle'
-            },
-            on: {
-              mouseenter: this.mouseEnterHandler,
-              mouseleave: this.mouseLeaveHandler
-            }
-          })
-        ])
-    },
+    // mouseLeaveHandler() {
+    //   $('div.el-notification').animate({ right: '-330px' }, 500, function() {
+    //     this.notice = false
+    //   })
+    // },
+    // mouseEnterHandler() {
+    //   this.notice = true
+    //   $('div.el-notification').animate({ right: '1px' }, 500)
+    // },
+    // rendHeader(h, { column, $index }) {
+    //   return h('div', {
+    //     class: {
+    //       tips: true,
+    //       cell: true
+    //     },
+    //     attrs: {
+    //       style: 'background:#eee;margin-left:-20px;'
+    //     }
+    //   }, [
+    //       h('span', '实际收益(元)'),
+    //       h('i', {
+    //         class: {
+    //           'icon iconfont icon-wenhao': true
+    //         },
+    //         attrs: {
+    //           style: 'cursor:pointer;margin-left:10px;color:orange;font-size:18px;vertical-align:middle'
+    //         },
+    //         on: {
+    //           mouseenter: this.mouseEnterHandler,
+    //           mouseleave: this.mouseLeaveHandler
+    //         }
+    //       })
+    //     ])
+    // },
   },
   watch: {
     currentPage3: {

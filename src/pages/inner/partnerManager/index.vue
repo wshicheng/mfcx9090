@@ -24,11 +24,13 @@
         <div id="partner_header"  style="background-color:#faebd7;font-size:14px;margin-left:13px;margin-right:-20px">
           <label>
             <span style="color:#555;margin-right:-15px;margin-left:15px">关键字</span>
-              <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1">
+              <!-- <input type="text" v-on:input='inputChange' ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1"> -->
+              <input type="text" ref="val1" placeholder="企业名称\个人姓名" v-model="name" class="partner_my_input1">
           </label>
           <label>
             <span style="color:#555;margin-left:12px;">联系方式</span>
-              <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
+              <!-- <input type="text" v-on:input='inputChange' ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2"> -->
+              <input type="text"  ref="val2"  placeholder="手机号\邮箱" v-model="phone" class="partner_my_input2">
           </label>
         </div>
         <div id="partner_data_select"  style="background-color:#faebd7;font-size:14px">
@@ -1007,6 +1009,13 @@ export default {
                       var pageNumber = Number(JSON.parse(res.text).totalPage);
                       this.totalItems = Number(JSON.parse(res.text).totalItems);
                       this.tableData = result;
+                      // 一个td内显示内容过多时进行换行处理
+                      for(var i = 0;i < this.tableData.length; i ++){
+                        this.tableData[i].joinArea = this.tableData[i].cityList.replace(/\//g,"/<br>")
+                        this.tableData[i].joinMoney = this.tableData[i].joinMoneys.replace(/\//g,"/<br>")
+                        this.tableData[i].joinDay = this.tableData[i].joinDays.replace(/\//g,"/<br>")
+                        this.tableData[i].subscriptionNumStrs = this.tableData[i].subscriptionNumStr.replace(/\//g,"/<br>")
+                      }
                       if (pageNumber > 1) {
                         this.pageShow = true;
                       } else {
@@ -1542,6 +1551,13 @@ export default {
               var pageNumber = Number(JSON.parse(res.text).totalPage);
               this.totalItems = Number(JSON.parse(res.text).totalItems);
               this.tableData = result;
+              // 一个td内显示内容过多时进行换行处理
+              for(var i = 0;i < this.tableData.length; i ++){
+                this.tableData[i].joinArea = this.tableData[i].cityList.replace(/\//g,"/<br>")
+                this.tableData[i].joinMoney = this.tableData[i].joinMoneys.replace(/\//g,"/<br>")
+                this.tableData[i].joinDay = this.tableData[i].joinDays.replace(/\//g,"/<br>")
+                this.tableData[i].subscriptionNumStrs = this.tableData[i].subscriptionNumStr.replace(/\//g,"/<br>")
+              }
               if (pageNumber > 1) {
                 this.pageShow = true;
               } else {
@@ -1596,6 +1612,13 @@ export default {
             var pageNumber = Number(JSON.parse(res.text).totalPage);
             this.totalItems = Number(JSON.parse(res.text).totalItems);
             this.tableData = result;
+            // 一个td内显示内容过多时进行换行处理
+              for(var i = 0;i < this.tableData.length; i ++){
+                this.tableData[i].joinArea = this.tableData[i].cityList.replace(/\//g,"/<br>")
+                this.tableData[i].joinMoney = this.tableData[i].joinMoneys.replace(/\//g,"/<br>")
+                this.tableData[i].joinDay = this.tableData[i].joinDays.replace(/\//g,"/<br>")
+                this.tableData[i].subscriptionNumStrs = this.tableData[i].subscriptionNumStr.replace(/\//g,"/<br>")
+              }
             if (pageNumber > 1) {
               this.pageShow = true;
             } else {
@@ -1930,12 +1953,13 @@ export default {
         this.$router.push("/login");
       }
     },
-    inputChange() {
-      if (this.$refs.val1.value === "" && this.$refs.val2.value === "") {
-        this.loadData();
-        this.isSearch = false;
-      }
-    }
+    // 关键字和联系方式改变实时查询信息
+    // inputChange() {
+    //   if (this.$refs.val1.value === "" && this.$refs.val2.value === "") {
+    //     this.loadData();
+    //     this.isSearch = false;
+    //   }
+    // }
   },
   watch: {
     '$route':'loadData',

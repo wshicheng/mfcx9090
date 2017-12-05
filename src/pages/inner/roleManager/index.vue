@@ -4,7 +4,8 @@
       <label>
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item label="角色名称">
-            <el-input v-model="roleName" v-on:blur="initRole" placeholder="请输入角色名称"></el-input>
+            <!-- <el-input v-model="roleName" v-on:blur="initRole" placeholder="请输入角色名称"></el-input> -->
+            <el-input v-model="roleName"  placeholder="请输入角色名称"></el-input>
           </el-form-item>
         </el-form>
       </label>
@@ -348,46 +349,47 @@ export default {
         }
       })
     },
-    initRole() {
+    // 无需失去焦点自动查询，以点击查询为主
+    // initRole() {
 
-      this.isSearch = false
+    //   this.isSearch = false
 
-      this.isQuery = false
-      this.currentPage3 = 1
-      if (this.roleName.trim().length === 0 && this.isQuery === false) {
-        var that = this
-        request
-          .post(host + 'beepartner/admin/Role/findAdminRole')
-          .withCredentials()
-          .set({
-            'content-type': 'application/x-www-form-urlencoded'
-          })
-          .end((err, res) => {
-            if (err) {
-              console.log(err)
-            } else {
-              this.checkLogin(res)
-              this.loading = false
-              var result = JSON.parse(res.text).data
-              var totalPage = Number(JSON.parse(res.text).totalPage)
-              var newArr = result.map((item)=>{
-                var arr = item.adminUserList.map((item)=>{
-                  return item.userName
-                })
-              return Object.assign({},item,{adminUserList: arr})
-              })
-              if (totalPage > 1) {
-                this.pageShow = true
-              } else {
-                this.pageShow = false
-              }
-              this.totalItems = Number(JSON.parse(res.text).totalItems)
-              this.tableData = newArr
-              this.initData = this.tableData
-            }
-          })
-      }
-    },
+    //   this.isQuery = false
+    //   this.currentPage3 = 1
+    //   if (this.roleName.trim().length === 0 && this.isQuery === false) {
+    //     var that = this
+    //     request
+    //       .post(host + 'beepartner/admin/Role/findAdminRole')
+    //       .withCredentials()
+    //       .set({
+    //         'content-type': 'application/x-www-form-urlencoded'
+    //       })
+    //       .end((err, res) => {
+    //         if (err) {
+    //           console.log(err)
+    //         } else {
+    //           this.checkLogin(res)
+    //           this.loading = false
+    //           var result = JSON.parse(res.text).data
+    //           var totalPage = Number(JSON.parse(res.text).totalPage)
+    //           var newArr = result.map((item)=>{
+    //             var arr = item.adminUserList.map((item)=>{
+    //               return item.userName
+    //             })
+    //           return Object.assign({},item,{adminUserList: arr})
+    //           })
+    //           if (totalPage > 1) {
+    //             this.pageShow = true
+    //           } else {
+    //             this.pageShow = false
+    //           }
+    //           this.totalItems = Number(JSON.parse(res.text).totalItems)
+    //           this.tableData = newArr
+    //           this.initData = this.tableData
+    //         }
+    //       })
+    //   }
+    // },
     closeAddRole () {
       this.$refs.ruleForm.resetFields()
       this.dialogFormVisible = false

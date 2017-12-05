@@ -7,11 +7,13 @@
         <div class="am_search">
           <label>
             <span>关键字</span>
-            <input type="text" placeholder="账号\姓名" v-on:blur="initQuery" v-model="accountOrUsername" class="account_my_input">
+            <!-- <input type="text" placeholder="账号\姓名" v-on:blur="initQuery" v-model="accountOrUsername" class="account_my_input"> -->
+            <input type="text" placeholder="账号\姓名"  v-model="accountOrUsername" class="account_my_input">
           </label>
           <label>
             <span>联系方式</span>
-            <input type="text" placeholder="手机号\邮箱" v-on:blur="initQuery" v-model="telOrMail" class="account_my_input">
+            <!-- <input type="text" placeholder="手机号\邮箱" v-on:blur="initQuery" v-model="telOrMail" class="account_my_input"> -->
+            <input type="text" placeholder="手机号\邮箱"  v-model="telOrMail" class="account_my_input">
           </label>
           <el-button id="accountSearchBtn" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
         </div>
@@ -98,11 +100,13 @@
           <div class="am_search">
             <label>
               <span style="margin-right:13px;margin-left:15px">关键字</span>
-              <input type="text" v-model="accountOrUsername" placeholder="账号\姓名" @blur="initQuery" class="account_my_input">
+              <!-- <input type="text" v-model="accountOrUsername" placeholder="账号\姓名" @blur="initQueryinitQuery" class="account_my_input"> -->
+              <input type="text" v-model="accountOrUsername" placeholder="账号\姓名"  class="account_my_input">
             </label>
             <label>
               <span>联系方式</span>
-              <input type="text" v-model="telOrMail" placeholder="手机号\邮箱" @blur="initQuery" class="account_my_input">
+              <!-- <input type="text" v-model="telOrMail" placeholder="手机号\邮箱" @blur="initQuery" class="account_my_input"> -->
+              <input type="text" v-model="telOrMail" placeholder="手机号\邮箱"  class="account_my_input">
             </label>
             <el-button id="accountSearchBtn2" @click="queryAccountInfo" class="timeSelect_button">查询</el-button>
           </div>
@@ -422,6 +426,7 @@ export default {
         queryNumber: this.telOrMail,
         cityId: $('.citys span.active').attr('name')
       }
+      console.log(obj)
       // if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0) {
       //   this.$message({
       //     type: 'error',
@@ -432,7 +437,8 @@ export default {
       var that = this
       if (this.activeName === '平台') {
         that.loading = true
-        if (this.accountOrUsername.trim().length > 0 || this.telOrMail.trim().length > 0) {
+        // 不需判断查询条件是否为空
+        // if (this.accountOrUsername.trim().length > 0 || this.telOrMail.trim().length > 0) {
           request.post(host + 'beepartner/admin/User/findAdminUser')
             .withCredentials()
             .set({
@@ -459,34 +465,34 @@ export default {
                 that.platTableData = that.handleData(newArr)
               }
             })
-        } else {
-          request.post(host + 'franchisee/account/getAllAdminUser')
-            .send(obj)
-            .withCredentials()
-            .set({
-              'content-type': 'application/x-www-form-urlencoded'
-            })
-            .end(function(error, res) {
-              if (error) {
-                console.log(error)
-                that.loading = false
-              } else {
-                that.checkLogin(res)
-                that.loading = false
-                var newArr = JSON.parse(res.text).list
-                that.totalPage = JSON.parse(res.text).totalPage
-                if (that.totalPage > 1) {
-                  that.emptyText = ''
-                  that.pageShow = true
-                } else {
-                  that.emptyText = '暂无数据'
-                  that.pageShow = false
-                }
-                that.totalItems = JSON.parse(res.text).totalItems
-                that.platTableData = that.handleData(newArr)
-              }
-            })
-        }
+        // } else {
+        //   request.post(host + 'franchisee/account/getAllAdminUser')
+        //     .send(obj)
+        //     .withCredentials()
+        //     .set({
+        //       'content-type': 'application/x-www-form-urlencoded'
+        //     })
+        //     .end(function(error, res) {
+        //       if (error) {
+        //         console.log(error)
+        //         that.loading = false
+        //       } else {
+        //         that.checkLogin(res)
+        //         that.loading = false
+        //         var newArr = JSON.parse(res.text).list
+        //         that.totalPage = JSON.parse(res.text).totalPage
+        //         if (that.totalPage > 1) {
+        //           that.emptyText = ''
+        //           that.pageShow = true
+        //         } else {
+        //           that.emptyText = '暂无数据'
+        //           that.pageShow = false
+        //         }
+        //         that.totalItems = JSON.parse(res.text).totalItems
+        //         that.platTableData = that.handleData(newArr)
+        //       }
+        //     })
+        // }
       } else {
         that.loading = true
         getAllAccount({ cityId: this.cityId, queryName: this.accountOrUsername, queryNumber: this.telOrMail }, function(error, res) {
@@ -594,75 +600,75 @@ export default {
           })
       }
     },
-    initQuery() {
-      this.isSearch = false
-      var that = this
-      this.isQuery = false
-      this.currentPage = 1
-      if (this.activeName === '平台') {
-        if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0 && this.isQuery === false) {
-          getAllAdminUser({ franchiseeId: '123456', userId: 'admin' }, function(error, res) {
-            if (error) {
-              console.log(error)
-              setTimeout(function() {
-                that.loading = false
-                that.loadingText = '服务器链接超时'
-              }, 5000)
-              setTimeout(function() {
-                that.emptyText = '暂无数据'
-              }, 6000)
-            } else {
-              that.checkLogin(res)
-              that.loading = false
-              that.totalPage = Number(JSON.parse(res.text).totalPage)
-              var arr = JSON.parse(res.text).data
-              if (that.totalPage > 1) {
-                that.emptyText = ' '
-                that.pageShow = true
-              } else {
-                that.emptyText = '暂无数据'
-                that.pageShow = false
-              }
-              that.totalItems = Number(JSON.parse(res.text).totalItems)
-              that.$store.state.users.accountMangerData = that.handleData(arr)
-              that.initData = that.$store.state.users.accountMangerData
-              that.platTableData = that.$store.state.users.accountMangerData
-            }
-          })
-        }
-      } else {
-        if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0 && this.isQuery === false) {
-          getAllAccount({ franchiseeId: '123456', userId: 'admin', cityId: this.cityId, type: 1 }, function(error, res) {
-            if (error) {
-              console.log(error)
-              setTimeout(function() {
-                that.loading = false
-                that.loadingText = '服务器链接超时'
-              }, 5000)
-              setTimeout(function() {
-                that.emptyText = '暂无数据'
-              }, 6000)
-            } else {
-              that.checkLogin(res)
-              that.loading = false
-              that.totalPage = Number(JSON.parse(res.text).totalPage)
-              var arr = JSON.parse(res.text).data
-              if (that.totalPage > 1) {
-                that.emptyText = ' '
-                that.pageShow = true
-              } else {
-                that.emptyText = '暂无数据'
-                that.pageShow = false
-              }
-              that.totalItems = Number(JSON.parse(res.text).totalItems)
-              that.$store.state.accountMangerData = that.handleData(arr)
-              that.initData = that.$store.state.accountMangerData
-              that.joinTableData = that.$store.state.accountMangerData
-            }
-          })
-        }
-      }
-    },
+    // initQuery() {
+    //   this.isSearch = false
+    //   var that = this
+    //   this.isQuery = false
+    //   this.currentPage = 1
+    //   if (this.activeName === '平台') {
+    //     if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0 && this.isQuery === false) {
+    //       getAllAdminUser({ franchiseeId: '123456', userId: 'admin' }, function(error, res) {
+    //         if (error) {
+    //           console.log(error)
+    //           setTimeout(function() {
+    //             that.loading = false
+    //             that.loadingText = '服务器链接超时'
+    //           }, 5000)
+    //           setTimeout(function() {
+    //             that.emptyText = '暂无数据'
+    //           }, 6000)
+    //         } else {
+    //           that.checkLogin(res)
+    //           that.loading = false
+    //           that.totalPage = Number(JSON.parse(res.text).totalPage)
+    //           var arr = JSON.parse(res.text).data
+    //           if (that.totalPage > 1) {
+    //             that.emptyText = ' '
+    //             that.pageShow = true
+    //           } else {
+    //             that.emptyText = '暂无数据'
+    //             that.pageShow = false
+    //           }
+    //           that.totalItems = Number(JSON.parse(res.text).totalItems)
+    //           that.$store.state.users.accountMangerData = that.handleData(arr)
+    //           that.initData = that.$store.state.users.accountMangerData
+    //           that.platTableData = that.$store.state.users.accountMangerData
+    //         }
+    //       })
+    //     }
+    //   } else {
+    //     if (this.accountOrUsername.trim().length === 0 && this.telOrMail.trim().length === 0 && this.isQuery === false) {
+    //       getAllAccount({ franchiseeId: '123456', userId: 'admin', cityId: this.cityId, type: 1 }, function(error, res) {
+    //         if (error) {
+    //           console.log(error)
+    //           setTimeout(function() {
+    //             that.loading = false
+    //             that.loadingText = '服务器链接超时'
+    //           }, 5000)
+    //           setTimeout(function() {
+    //             that.emptyText = '暂无数据'
+    //           }, 6000)
+    //         } else {
+    //           that.checkLogin(res)
+    //           that.loading = false
+    //           that.totalPage = Number(JSON.parse(res.text).totalPage)
+    //           var arr = JSON.parse(res.text).data
+    //           if (that.totalPage > 1) {
+    //             that.emptyText = ' '
+    //             that.pageShow = true
+    //           } else {
+    //             that.emptyText = '暂无数据'
+    //             that.pageShow = false
+    //           }
+    //           that.totalItems = Number(JSON.parse(res.text).totalItems)
+    //           that.$store.state.accountMangerData = that.handleData(arr)
+    //           that.initData = that.$store.state.accountMangerData
+    //           that.joinTableData = that.$store.state.accountMangerData
+    //         }
+    //       })
+    //     }
+    //   }
+    // },
     queryInfo() {
       var name = this.name.trim()
       var phone = this.phone.trim()

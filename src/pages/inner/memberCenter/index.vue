@@ -13,7 +13,7 @@
 						:on-success="handleAvatarSuccess"
 						:before-upload="beforeAvatarUpload"
 						style="margin-top:2px">
-						<img v-if="imageUrl" :src="imageUrl" class="avatar">
+						<img v-if="imageUrl" :src="imageUrl" class="avatar" title="点击更换头像，使用jpg,png,jpeg格式。">
 					  <i v-else  class="icon iconfont icon-touxiang" style="font-size: 180px;line-height: 196px; color: #fff; margin-left: 7px;"></i>
 						<!-- <h3>点击上传营业执照</h3> -->
 					</el-upload>

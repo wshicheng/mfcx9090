@@ -71,7 +71,7 @@
       <div id="isEmpty">
       <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
         <div class="menuIcon">
-          <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
+          <i style="cursor:pointer;" @click="addMutiCity(index)" class="iconfont icon-jia"></i>
           <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index)" class="iconfont icon-jian"></i>
         </div>
         <el-form-item label="加盟模式" 
@@ -907,7 +907,8 @@ export default {
     
     },    
     // 添加多个加盟区域
-    addMutiCity(){
+    addMutiCity(index){
+     
        request
         .post(host + "beepartner/admin/city/findAreaAlreadyOpen")
         .withCredentials()

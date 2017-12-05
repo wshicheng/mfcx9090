@@ -53,7 +53,7 @@
               <div id='isEmpty'>
                 <div class="mutiFormSelect" v-bind:key="list.id" v-for="(list,index) of ruleForm.multiForm">
                   <div class="menuIcon">
-                    <i style="cursor:pointer;" @click="addMutiCity" class="iconfont icon-jia"></i>
+                    <i style="cursor:pointer;" @click="addMutiCity(index)" class="iconfont icon-jia"></i>
                     <i v-show="ruleForm.multiForm.length>1" style="cursor:pointer;" @click="removeMutiCity(index,list)" class="iconfont icon-jian"></i>
                   </div>
                   <el-form-item label="加盟模式" 
@@ -881,6 +881,7 @@ export default {
     },
     // 改变加盟模式
     checkJoinMode(val,index){
+
       // 清空中间部分验证不通过的信息
      setTimeout(function(){
           if($("#isEmpty .is-required.is-error")){
@@ -896,10 +897,19 @@ export default {
             $("#isEmpty div.el-form-item.is-error").removeClass("is-error")
           }
         },200)
-        // 清空中间部分的值
-          $('#cityId'+ index).find("input").val(" ")
-          $('#subscriptionNum'+ index).find("input").val(" ")
-          $('#subscriptionMoney'+ index).find("input").val(" ")
+ 
+            // 清空中间部分的值
+          this.ruleForm.multiForm[index].subscriptionNum = ""
+          this.ruleForm.multiForm[index].subscriptionMoney = ""
+          this.ruleForm.multiForm[index].cityId = ""
+          this.ruleForm.multiForm[index].cityItem = ""
+          this.ruleForm.multiForm[index].manageFee = ""
+          this.ruleForm.multiForm[index].licenseFeeRate = ""
+          this.ruleForm.multiForm[index].dayList = []
+          this.ruleForm.multiForm[index].settleDays = ""
+          this.ruleForm.multiForm[index].divisionPercent = ""
+          this.ruleForm.multiForm[index].wType = ""
+          this.ruleForm.multiForm[index].circleDays = ""
         // 查询加盟地区
         this.joinMode = val
         request.post(host + 'beepartner/admin/city/findAreaAlreadyOpen')
@@ -955,6 +965,7 @@ export default {
       this.ruleForm.cityName = data.join();
     },
     addMutiCity(){
+    
        request
         .post(host + "beepartner/admin/city/checkNotUsedCityNum")
         .withCredentials()
@@ -1019,7 +1030,7 @@ export default {
           }
         })
       }
-              //  this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
+          // this.ruleForm.multiForm.push(Object.assign({},this.newFormObject,{id:this.initNum++}))
             }
           }
         });

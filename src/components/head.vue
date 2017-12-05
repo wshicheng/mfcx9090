@@ -7,9 +7,9 @@
                 </h2>
                 <h3>加盟商管理平台<span>平台端</span></h3>
                 <div class="admin">
-                    <img class="headImg" v-if="imageUrl" :src="imageUrl">
-                    <i v-else class="icon iconfont icon-touxiang"></i>
-                    <span class="username">{{userName}}</span>
+                    <img class="headImg" v-if="imageUrl" :src="imageUrl" @click="$router.push({path:'/index/memberCenter'})">
+                    <i v-else class="icon iconfont icon-touxiang" @click="$router.push({path:'/index/memberCenter'})"></i>
+                    <span class="username" @click="$router.push({path:'/index/memberCenter'})">{{userName}}</span>
                     <!-- <i class="icon iconfont icon-xinfeng"></i> -->
                     <el-tooltip class="item" effect="dark" content="退出" placement="bottom">
                     <i class="icon iconfont icon-tuichu" @click="handleLoginOut"></i>
@@ -92,6 +92,7 @@ img.headImg {
     margin-right: 10px;
     margin-top: 17px;
     display: inline-block;
+    cursor:pointer;
 }
 header {
     height: 65px;
@@ -146,6 +147,7 @@ div.admin span.username {
     font-size: 14px;
     margin-right: 25px;
     display:inline-block;
+    cursor:pointer;
 }
 
 div.admin i.iconfont {
