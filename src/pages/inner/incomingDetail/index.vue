@@ -223,7 +223,7 @@
 </style>
 
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import moment from 'moment'
 // require('../../../assets/lib/js/exportExcel.js')

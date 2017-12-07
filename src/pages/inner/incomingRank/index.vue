@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import { siblings } from '../../../../utils/index.js'
 import moment from 'moment'
 import { host } from '../../../config/index.js'

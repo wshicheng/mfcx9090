@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
   export default {
     props: ['isShow', 'formItems'],
     data: function () {

@@ -191,7 +191,7 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import moment from 'moment'
 import request from 'superagent'
 import { host } from '../../../config/index'
@@ -587,7 +587,7 @@ div.carUseDetail div.battery ul li span.capacity {
 }
 
 div.carUseDetail div.record {
-  margin-top: 50px;
+  margin-top: 25px;
   padding: 10px;
 }
 

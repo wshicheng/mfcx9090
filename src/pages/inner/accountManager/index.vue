@@ -209,7 +209,7 @@
 </template>
 
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import {mapActions} from 'vuex'
 import { siblings, checkPositiveNumber } from '../../../../utils/index.js'
@@ -233,7 +233,7 @@ export default {
         callback('用户名格式：必须英文字母开头 不可以为汉字')
       } else {
         request
-          .post(host + 'beepartner/franchisee/User/checkIsExistsUserName')
+          .post(host + 'beepartner/admin/User/checkIsExistsUserName')
           .withCredentials()
           .set({
             'content-type': 'application/x-www-form-urlencoded'
@@ -1638,7 +1638,7 @@ div.account>h1 button:hover {
   border: 1px solid #ddd;
   display: inline-block;
   text-indent: 8px;
-  font-size:inherit
+  font-size:14px
 }
 
 .am_search label {

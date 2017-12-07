@@ -39,7 +39,7 @@
                         <el-date-picker v-model='form.data1' type="date" placeholder="选择日期"></el-date-picker>
                       <span class="division">至</span>
                         <el-date-picker v-model='form.data2' type="date" placeholder="选择日期"></el-date-picker>
-                        <button class="my_btn" @click="searchByTimeline">查询</button>
+                        <input type="button" class="my_btn"  value="查询" @click="searchByTimeline">
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -190,7 +190,7 @@
 import request from 'superagent'
 import moment from 'moment'
 import {siblings} from '../../../../utils/index.js'
-import $ from 'jquery'
+// import $ from 'jquery'
 // import Vue from 'vue'
 import { host } from '../../../config/index.js'
 export default {
@@ -293,39 +293,49 @@ export default {
       // } else {
          
          var startTime,endTime
-        if (this.form.data1 === '' || this.form.data2 === '') {
-          startTime = ''
-          endTime = ''
-        } else {
-          startTime = moment(this.form.data1).format('YYYY-MM-DD')
-          endTime = moment(this.form.data2).format('YYYY-MM-DD')
-        }
+        // if (this.form.data1 === '' || this.form.data2 === '') {
+        //   startTime = ''
+        //   endTime = ''
+        // } else {
+        //   startTime = moment(this.form.data1).format('YYYY-MM-DD')
+        //   endTime = moment(this.form.data2).format('YYYY-MM-DD')
+        // }
+        startTime = this.form.data1 == ''?"":moment(this.form.data1).format('YYYY-MM-DD')
+        endTime = this.form.data2 === ''?"":moment(this.form.data2).format('YYYY-MM-DD')
         var _startTime = new Date(this.form.data1).getTime()
         var _endTime = new Date(this.form.data2).getTime()
         _endTime = isNaN(_endTime) ? 0 : _endTime
         _startTime = isNaN(_startTime) ? 0 : _startTime
-
-        if (_endTime > 1 && _startTime <= 1) {
-            this.$message({
-              type: 'warning',
-              message: '开始日期不能为空'
-            })
-            return
-          } else if (_endTime < 0) {
-            this.$message({
-              type: 'warning',
-              message: '结束日期不能为空'
-            })
-            return
-          } else {
-            if(_endTime<_startTime){
+        if(_startTime!="" &&_endTime!=""&&_endTime<_startTime){
               this.$message({
                 type: 'warning',
                 message: '开始日期不能大于结束日期'
               })
               return
-            }
-          }
+        }
+        
+
+        // if (_endTime > 1 && _startTime <= 1) {
+        //     this.$message({
+        //       type: 'warning',
+        //       message: '开始日期不能为空'
+        //     })
+        //     return
+        //   } else if (_endTime < 0) {
+        //     this.$message({
+        //       type: 'warning',
+        //       message: '结束日期不能为空'
+        //     })
+        //     return
+        //   } else {
+        //     if(_endTime<_startTime){
+        //       this.$message({
+        //         type: 'warning',
+        //         message: '开始日期不能大于结束日期'
+        //       })
+        //       return
+        //     }
+        //   }
         // var startTime, endTime
         // if (this.form.data1 === '' || this.form.data2 === '') {
         //   startTime = null
@@ -399,39 +409,48 @@ export default {
         type = '1'
       }
        var startTime,endTime
-        if (this.form.data1 === '' || this.form.data2 === '') {
-          startTime = ''
-          endTime = ''
-        } else {
-          startTime = moment(this.form.data1).format('YYYY-MM-DD')
-          endTime = moment(this.form.data2).format('YYYY-MM-DD')
-        }
+        // if (this.form.data1 === '' || this.form.data2 === '') {
+        //   startTime = ''
+        //   endTime = ''
+        // } else {
+        //   startTime = moment(this.form.data1).format('YYYY-MM-DD')
+        //   endTime = moment(this.form.data2).format('YYYY-MM-DD')
+        // }
+         startTime = this.form.data1 == ''?"":moment(this.form.data1).format('YYYY-MM-DD')
+        endTime = this.form.data2 === ''?"":moment(this.form.data2).format('YYYY-MM-DD')
         var _startTime = new Date(this.form.data1).getTime()
         var _endTime = new Date(this.form.data2).getTime()
         _endTime = isNaN(_endTime) ? 0 : _endTime
         _startTime = isNaN(_startTime) ? 0 : _startTime
-
-        if (_endTime > 1 && _startTime <= 1) {
-            this.$message({
-              type: 'warning',
-              message: '开始日期不能为空'
-            })
-            return
-          } else if (_endTime < 0) {
-            this.$message({
-              type: 'warning',
-              message: '结束日期不能为空'
-            })
-            return
-          } else {
-            if(_endTime<_startTime){
+        if(_startTime!="" &&_endTime!=""&&_endTime<_startTime){
               this.$message({
                 type: 'warning',
                 message: '开始日期不能大于结束日期'
               })
               return
-            }
-          }
+        }
+
+        // if (_endTime > 1 && _startTime <= 1) {
+        //     this.$message({
+        //       type: 'warning',
+        //       message: '开始日期不能为空'
+        //     })
+        //     return
+        //   } else if (_endTime < 0) {
+        //     this.$message({
+        //       type: 'warning',
+        //       message: '结束日期不能为空'
+        //     })
+        //     return
+        //   } else {
+        //     if(_endTime<_startTime){
+        //       this.$message({
+        //         type: 'warning',
+        //         message: '开始日期不能大于结束日期'
+        //       })
+        //       return
+        //     }
+        //   }
       // var startTime, endTime
       // if (this.form.data1 === '' && this.form.data2 === '') {
       //   startTime = null

@@ -637,7 +637,7 @@ div#editpartner_form {
 </style>
 
 <script>
-import $ from "jquery";
+// import $ from "jquery";
 import request from "superagent";
 import moment from "moment";
 import { host } from "../../../config/index";
@@ -930,35 +930,44 @@ export default {
                 this.phone = ''
                 this.startTime = ''
                 this.endTime = ''
-              }else{
+              }
+              // else{
 
                 var _startTime = new Date(this.startTime).getTime()
                   var _endTime = new Date(this.endTime).getTime()
                   _endTime = isNaN(_endTime) ? 0 : _endTime
                   _startTime = isNaN(_startTime) ? 0 : _startTime
 
-                  if (_endTime > 1 && _startTime <= 1) {
-                      this.$message({
-                        type: 'warning',
-                        message: '开始日期不能为空'
-                      })
-                      return
-                 } 
-                if (_endTime < 0) {
-                  this.$message({
-                    type: 'warning',
-                    message: '结束日期不能为空'
-                  })
-                } else {
-                  if(_endTime<_startTime){
-                    this.$message({
-                      type: 'warning',
-                      message: '开始日期不能大于结束日期'
-                    })
-                    return
-                  }
-                }
-              }
+              if(_startTime!="" &&_endTime!=""&&_endTime<_startTime){
+                this.$message({
+                  type: 'warning',
+                  message: '开始日期不能大于结束日期'
+                })
+                return
+             }
+
+                //   if (_endTime > 1 && _startTime <= 1) {
+                //       this.$message({
+                //         type: 'warning',
+                //         message: '开始日期不能为空'
+                //       })
+                //       return
+                //  } 
+                // if (_endTime < 0) {
+                //   this.$message({
+                //     type: 'warning',
+                //     message: '结束日期不能为空'
+                //   })
+                // } else {
+                //   if(_endTime<_startTime){
+                //     this.$message({
+                //       type: 'warning',
+                //       message: '开始日期不能大于结束日期'
+                //     })
+                //     return
+                //   }
+                // }
+              // }
 
 
                var name = this.name.trim();
@@ -1464,41 +1473,48 @@ export default {
       var phone = this.phone.trim();
       // var startTime = this.startTime;
       // var endTime = this.endTime;
-      var startTime,endTime
-      if (this.startTime === '' || this.endTime === '') {
-        startTime = ''
-        endTime = ''
-      } else {
-        startTime = moment(this.startTime).format('YYYY-MM-DD')
-        endTime = moment(this.endTime).format('YYYY-MM-DD')
-      }
+      // var startTime,endTime
+      // if (this.startTime === '' || this.endTime === '') {
+      //   startTime = ''
+      //   endTime = ''
+      // } else {
+        // startTime = moment(this.startTime).format('YYYY-MM-DD')
+        // endTime = moment(this.endTime).format('YYYY-MM-DD')
+      // }
        var _startTime = new Date(this.startTime).getTime()
         var _endTime = new Date(this.endTime).getTime()
         _endTime = isNaN(_endTime) ? 0 : _endTime
         _startTime = isNaN(_startTime) ? 0 : _startTime
-
-         if (_endTime > 1 && _startTime <= 1) {
-            this.$message({
-              type: 'warning',
-              message: '开始日期不能为空'
-            })
-            return
-          } 
-        if (_endTime < 0) {
-            this.$message({
-              type: 'warning',
-              message: '结束日期不能为空'
-            })
-            return
-          } else {
-            if(_endTime<_startTime){
+         if(_startTime!="" &&_endTime!=""&&_endTime<_startTime){
               this.$message({
                 type: 'warning',
                 message: '开始日期不能大于结束日期'
               })
               return
-            }
-          }
+        }
+
+        //  if (_endTime > 1 && _startTime <= 1) {
+        //     this.$message({
+        //       type: 'warning',
+        //       message: '开始日期不能为空'
+        //     })
+        //     return
+        //   } 
+        // if (_endTime < 0) {
+        //     this.$message({
+        //       type: 'warning',
+        //       message: '结束日期不能为空'
+        //     })
+        //     return
+        //   } else {
+            // if(_endTime<_startTime){
+            //   this.$message({
+            //     type: 'warning',
+            //     message: '开始日期不能大于结束日期'
+            //   })
+            //   return
+            // }
+        //   }
       // if (
       //   name.length === 0 &&
       //   phone.length === 0 &&

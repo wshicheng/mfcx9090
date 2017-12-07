@@ -58,23 +58,23 @@
         </el-table-column>
       </el-table>
 
-      <el-dialog id="err_form" class="edit_role" v-loading="loading2" title="修改角色" :visible.sync="dialogEditVisible" :modal-append-to-body="false" :modal="true">
-        <el-form v-model="editForm">
-          <el-form-item label="角色名称" class="rolename" :label-width="formLabelWidth">
+      <el-dialog id="err_form" class="edit_role" v-loading="loading2" title="修改角色" :visible.sync="dialogEditVisible" :modal-append-to-body="false" :modal="true" :show-message="true">
+        <el-form :model="editForm" :rules="rules1" ref="editForm">
+          <el-form-item label="角色名称" class="rolename" prop="roleName" :label-width="formLabelWidth" >
             <el-input v-model="editForm.roleName" placeholder="请输入角色名称"></el-input>
           </el-form-item>
-          <el-form-item label="备注" :label-width="formLabelWidth">
+          <el-form-item label="备注" prop="description" :label-width="formLabelWidth">
             <el-input type="textarea" v-model="editForm.description"></el-input>
           </el-form-item>
-          <el-form-item label="权限列表" :label-width="formLabelWidth">
+          <el-form-item label="权限列表"  prop='rolePowerList' :label-width="formLabelWidth">
             <el-tree ref="tree"  :data="editForm.rolePowerList" show-checkbox node-key="id" :props="defaultProps2" :default-checked-keys="fathCode">
             </el-tree>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer editfooter">
   
-          <el-button class="eidtRoleBtn" @click="handleEditRole">确定</el-button>
-          <el-button class="eidtRoleBtn" @click="dialogEditVisible = false">取消</el-button>
+          <el-button class="eidtRoleBtn" type="primary" @click="handleEditRole">确定</el-button>
+          <el-button class="eidtRoleBtn" @click="closeEditRole">取消</el-button>
         </div>
       </el-dialog>
       <el-pagination style="margin-left: 0px;" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="currentPage3" :page-size="10" layout="prev, pager, next, jumper" v-show="pageShow" :total="totalItems">
@@ -88,13 +88,20 @@
 </template>
 
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 export default {
   data() {
     var validateRoleName = (rule, value, callback) => {
       if (value === '') {
+        callback(new Error('请输入角色名'));
+      } else {
+        callback();
+      }
+    }
+     var validateRoleName1 = (rule, value, callback) => {
+      if (this.editForm.roleName === '') {
         callback(new Error('请输入角色名'));
       } else {
         callback();
@@ -292,6 +299,11 @@ export default {
           { validator: validateRoleName, trigger: 'blur', required: true }
         ]
       },
+       rules1: {
+        roleName: [
+          { validator: validateRoleName1, trigger: 'blur', required: true }
+        ]
+      },
       flag: false,
       isSearch: false
     }
@@ -394,6 +406,10 @@ export default {
       this.$refs.ruleForm.resetFields()
       this.dialogFormVisible = false
     },
+    closeEditRole(){
+      // this.$refs.editForm.resetFields()
+      this.dialogEditVisible = false
+    },
     queryRole() {
 
       this.isSearch = true
@@ -463,8 +479,10 @@ export default {
       this.childrenCode = []
     },
     handleEditRole() {
-      var that = this
+       var that = this
       var authList = this.getCheckedKeys().join('-')
+       this.$refs.editForm.validate((valid) => {
+        if (valid) {    
       request
         .post(host + 'beepartner/admin/Role/updateRole')
         .withCredentials()
@@ -506,6 +524,10 @@ export default {
             }
           }
         })
+        }else{
+          return false
+        }
+       })
     },
     handleDeleteRole(scope) {
       var that = this
@@ -865,8 +887,8 @@ div#addaccount_form .el-form-item__label {
 }
 
 span.el-tag {
-  margin-left: 10px;
-  padding: 0 10px;
+  /* margin-left: 10px; */
+  padding: 0 10px 0 0;
 }
 
 i.el-icon-edit,

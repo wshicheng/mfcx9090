@@ -105,7 +105,7 @@ div.gmap{
     .amap-logo img{display:none;}
 </style>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import AMap from 'AMap'
 var map, auto, placeSearch, heatmap, driving, citysearch
 // 输入提示

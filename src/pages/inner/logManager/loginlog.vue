@@ -145,7 +145,7 @@
     div.el-pagination{margin-top:20px;margin-bottom:10px;margin-left:0;padding-left:0;}
 </style>
 <script>
-  import $ from 'jquery'
+  // import $ from 'jquery'
   import moment from 'moment'
   import request from 'superagent'
   import {siblings, checkPositiveNumber} from '../../../../utils/index.js'

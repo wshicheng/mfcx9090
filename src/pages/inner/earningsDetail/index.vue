@@ -342,7 +342,7 @@
 </style>
 
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import moment from 'moment'
 import { siblings } from '../../../../utils/index.js'
@@ -557,6 +557,13 @@ export default {
       }
     },
     export_excel () {
+       if(this.tableData.length==0){
+         this.$message({
+          type: 'warning',
+          message:"当前无数据!"
+        })
+        return
+       }
       this.$confirm('确认导出吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

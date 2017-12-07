@@ -52,7 +52,7 @@
 </template>
     
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 // import Vue from 'vue'
 
 import { host } from '../../../config/index.js'

@@ -262,7 +262,7 @@
   }
 </style>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import { host } from '../../../config/index.js'
 import request from 'superagent'
 import moment from 'moment'

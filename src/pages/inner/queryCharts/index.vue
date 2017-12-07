@@ -126,7 +126,7 @@ div.queryCharts div.watchButton i {
 }
 </style>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import highChartRect from '../../../components/highChartRect..vue'
 export default {
   data: function () {

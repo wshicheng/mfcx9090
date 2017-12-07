@@ -174,7 +174,7 @@
 </style>
       
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import { checkUserName, checkMobile, isEmail } from '../../../../utils/index.js'
 import { host } from '../../../config/index'
@@ -187,7 +187,7 @@ export default {
                 callback('用户名格式：必须英文字母或数字的组合')
             } else {
                 request
-                .post(host + 'beepartner/franchisee/User/checkIsExistsUserName')
+                .post(host + 'beepartner/admin/User/checkIsExistsUserName')
                 .withCredentials()
                 .set({
                     'content-type': 'application/x-www-form-urlencoded'

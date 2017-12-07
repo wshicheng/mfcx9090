@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
   import moment from 'moment'
   import request from 'superagent'
   var Highcharts = require('highcharts')

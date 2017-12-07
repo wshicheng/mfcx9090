@@ -66,9 +66,9 @@
               <!-- <el-radio class="time"  v-model="time" label="1" value="1">24小时有订单</el-radio>
               <el-radio  class="time" v-model="time" label="2" value="2">48小时有订单</el-radio> -->
         
-              <el-select class="time_select" v-model="time" placeholder="请选择时间">
+              <el-select class="time_select" v-model="time">
                 <!-- <el-option label="所有时间" value=""></el-option> -->
-                <el-option label="全部" value="0"></el-option>
+                <el-option label="全部" value=""></el-option>
                 <el-option label="24小时有订单" value="1" class="opt"></el-option>
                 <el-option label="48小时有订单" value="2"></el-option>
               </el-select>
@@ -492,7 +492,7 @@ table.franchiseeDetail tr td span {
 </style>
 
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 import moment from 'moment'

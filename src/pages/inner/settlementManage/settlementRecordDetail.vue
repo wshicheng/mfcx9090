@@ -535,7 +535,7 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import moment from 'moment'
 import { host } from '../../../config/index'
@@ -573,7 +573,7 @@ import {thousandFormat} from '../../../util/util.js'
         this.cityId = this.$route.query.cityId
         this.cityPartnerId = this.$route.query.id
        request
-      .post(host + 'beepartner/franchisee/withDraw/getWithDrawRecordDetail')
+      .post(host + 'beepartner/admin/withDraw/getWithDrawRecordDetail')
       .withCredentials()
       .set({
         'content-type': 'application/x-www-form-urlencoded'
@@ -640,7 +640,7 @@ import {thousandFormat} from '../../../util/util.js'
         // 发起结算请求
         setTimeout(function(){
              request
-        .post(host + 'beepartner/franchisee/withDraw/applyWithDrawMoney')
+        .post(host + 'beepartner/admin/withDraw/applyWithDrawMoney')
         .withCredentials()
         .set({
           'content-type': 'application/x-www-form-urlencoded'

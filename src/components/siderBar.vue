@@ -109,7 +109,7 @@ div.el-submenu__title li i.el-icon-menu {
 }*/
 </style>
 <script>
-  import $ from 'jquery'
+  // import $ from 'jquery'
   export default {
       data () {
         return {

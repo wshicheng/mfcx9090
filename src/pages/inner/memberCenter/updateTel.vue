@@ -133,7 +133,7 @@
       
 <script>
 import {checkMobile, IsEmpty} from '../../../../utils/index.js'
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import {host} from '../../../config/index'
 export default {

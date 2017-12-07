@@ -467,7 +467,7 @@ div.menuIcon i.icon-jian{right:-36px;}
 </style>
           
 <script>
-import $ from "jquery";
+// import $ from "jquery";
 import request from "superagent";
 import moment from "moment";
 import { host } from "../../../config/index";

@@ -7,7 +7,7 @@
  
 </style>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
   export default {
     methods: {
       generalCanvas () {

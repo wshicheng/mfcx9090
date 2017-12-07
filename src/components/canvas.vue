@@ -7,7 +7,7 @@
    div#chart{width:100%;height:100%;}
 </style>
 <script>
-  import $ from 'jquery'
+  // import $ from 'jquery'
   export default {
     methods: {
       paintCanvas () {

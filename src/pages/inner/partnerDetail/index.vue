@@ -10,19 +10,19 @@
         <table>
           <tbody>
             <tr>
-              <td>
+              <td class="top">
                 <span class="prex">加盟商编号：</span>{{franchiseeDetail.cityPartnerId}}</td>
-              <td>
-                <span class="prex">企业名称：</span>{{franchiseeDetail.companyName}}</td>
+              <td class="top">
+                <span class="prex">企业名称：</span><span>{{franchiseeDetail.companyName}}</span></td>
             </tr>
             <tr>
-              <td>
+              <td class="top">
                 <span class="prex">营业执注册号：</span>{{franchiseeDetail.businessLicense}}</td>
-              <td>
+              <td class="top">
                 <span class="prex">通讯地址：</span>{{franchiseeDetail.address}}</td>
             </tr>
             <tr>
-               <td>
+               <td style="width:350px">
                 <span class="prex" style="margin-right:0">加盟区域：</span>
                     <el-select v-model="cityId" placeholder="请选择">
                 <el-option
@@ -119,8 +119,8 @@
                 <span class="prex">邮箱：</span>{{franchiseeDetail.conEmail}}</td>
             </tr>
              <tr>
-              <td>
-                <span class="prex">通讯地址：</span>{{franchiseeDetail.address}}</td>
+              <td class="top">
+                <span class="prex">通讯地址：</span><span style="width:300px;float:left">{{franchiseeDetail.address}}</span></td>
             </tr>
             <tr>
                <td>
@@ -280,7 +280,7 @@
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import request from 'superagent'
 import { host } from '../../../config/index'
 import moment from 'moment'
@@ -322,6 +322,13 @@ export default {
     export_excel () {
        var id = this.$route.params.id.split('&')[0]
        var cityPartnerId = this.$route.params.id.split('&')[1]
+       if(this.carDetail.length==0){
+         this.$message({
+          type: 'warning',
+          message:"当前无数据!"
+        })
+        return
+       }
       this.$confirm('确认导出吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -737,6 +744,7 @@ export default {
 }
 </script>
 <style scoped>
+
 .export {
      margin-top: 20px;
     color: #ff9900;
@@ -791,6 +799,11 @@ div.carUseDetail table tr td span.prex {
   color: #bdb6b6;
   font-size: 14px;
   margin-right: 8px;
+}
+div.carUseDetail table tr td.top span.prex {
+  height: 25px;
+  line-height:25px;
+  float: left;
 }
 
 div.carUseDetail div.detailTitle h3 {

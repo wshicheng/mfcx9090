@@ -125,7 +125,7 @@
 <script>
 import request from 'superagent'
 import moment from 'moment'
-import $ from 'jquery'
+// import $ from 'jquery'
 import { siblings } from '../../../../utils/index.js'
 import { toThousand,thousandFormat } from '../../../util/util.js'
 import { host } from '../../../config/index.js'

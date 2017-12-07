@@ -143,7 +143,7 @@
     background: rgba(52,52,67, 0.8);}
 </style>
 <script>
-  import $ from 'jquery'
+  // import $ from 'jquery'
   import request from 'superagent'
 
   import moment from 'moment'

@@ -96,6 +96,7 @@ module.exports = {
             }
         ]
     },
+
     plugins: [
         new CleanWebpackPlugin(['build']),
         new HtmlWebpackPlugin({

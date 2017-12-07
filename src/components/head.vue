@@ -20,7 +20,7 @@
     </header>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import { host } from '../config/index'
 import request from 'superagent'
 export default {
