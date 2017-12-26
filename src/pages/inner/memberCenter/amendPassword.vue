@@ -137,6 +137,13 @@ export default {
         callback()
       }
     }
+     var validateOldPass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入原始密码'))
+      } else {
+        callback()
+      }
+    }
     var validateCheckPass = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
@@ -155,13 +162,14 @@ export default {
       },
       rules: {
         pass: [
-          { validator: validatePass, trigger: 'blur' },
+          { validator: validatePass, trigger: 'blur',required:true },
           { min: 6, max: 20, message: '密码长度应该在6-20位之间', trigger: 'change' },
           { min: 6, max: 20, message: '密码长度应该在6-20位之间', trigger: 'blur' }
         ],
         checkPass: [
-          { validator: validateCheckPass, trigger: 'blur' }
-        ]
+          { validator: validateCheckPass, trigger: 'blur',required:true  }
+        ],
+        oldPassword:[{validator:validateOldPass, trigger: 'blur',required:true} ]
       }
     }
   },
@@ -170,12 +178,12 @@ export default {
       var that = this
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.$confirm('确认修改吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '信息有误',
-            type: 'warning'
-          })
-        .then(() => {
+        //   this.$confirm('确认修改吗?', '提示', {
+        //     confirmButtonText: '确定',
+        //     cancelButtonText: '信息有误',
+        //     type: 'warning'
+        //   })
+        // .then(() => {
           that.loading = true
           setTimeout(() => {
             request.post(host + 'beepartner/admin/Own/updateAdminUser')
@@ -211,12 +219,12 @@ export default {
                 }
               })
           }, 1000)
-        }).catch(() => {
-          // this.$message({
-          //   type: 'info',
-          //   message: '修改已取消！'
-          // })
-        })
+        // }).catch(() => {
+        //   // this.$message({
+        //   //   type: 'info',
+        //   //   message: '修改已取消！'
+        //   // })
+        // })
         } else {
           console.log('error submit!!')
           return false

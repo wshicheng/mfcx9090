@@ -546,7 +546,7 @@ export default {
       row:'',
       recodeCityList:'',
       initNum:0,
-      newFormObject:{cityId:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",dayList:[],manageFee:"",divisionPercent:"",joinMode:""}, 
+      newFormObject:{cityId:'',cityItem:'',joinTime:new Date(),subscriptionNum:'',subscriptionMoney:'',licenseFeeRate:'',wType:'',firstDealDate:new Date(),circleDays:'',settleDays:"",dayList:[],manageFee:"",divisionPercent:"",joinMode:""}, 
       isHaveSettleOrders: false,
       _cityList: [],
       areaShow: true,

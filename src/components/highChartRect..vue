@@ -149,7 +149,7 @@ export default {
               grouping: false,
               shadow: false,
               borderWidth: 0,
-              maxPoinitWidth: 30
+              // maxPoinitWidth: 60
             }
           },
           series: [{
@@ -158,12 +158,14 @@ export default {
             data: this.orderNumber,
             pointPadding: 0.3,
             pointPlacement: -0.2,
-            maxPointWidth: 20
+            pointWidth:20
+            
           }, {
             name: '实际收益',
             color: '#50B432',
             data: this.consumeMoney,
-            maxPointWidth: 20,
+            pointWidth:20,
+          
             tooltip: {
               valuePrefix: '￥',
               valueSuffix: ' 元',

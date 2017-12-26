@@ -5,7 +5,7 @@
         <img src="../assets/img/2.png" style="margin-top:100px"/>
         <p>暂无数据</p>
       </div>
-      <div v-loading="loading" id="container2" style="height:400px" v-show="!noData"></div>
+      <div v-loading="loading" id="container2" style="height:500px" v-show="!noData"></div>
   </div>
 </template>
 <script>
@@ -76,6 +76,11 @@
           title: {
             text: ' '                 // 指定图表标题
           },
+          //   scrollbar: {
+
+          //      enabled: true
+
+          // },
           xAxis: {
             categories: this.cityList,
             crosshair: true
@@ -101,7 +106,6 @@
                 formatter: function() { 
                     return   Highcharts.numberFormat(this.y, 2, ".", ",");
                 },
-                mixPoinitWidth: 30
               }
             }
           },
@@ -125,7 +129,7 @@
               color: '#74f7af',
               data:this.chartData ,
               colorByPoint:true,
-              maxPointWidth: 20
+              pointWidth: 20
             }
           ]
 

@@ -103,6 +103,11 @@ module.exports = {
             title: 'Production',
             template: './src/template/index.html'
         }),
+        new webpack.DefinePlugin({
+            'process.env': {
+              NODE_ENV: '"production"'
+            }
+          }),
         new webpack.optimize.CommonsChunkPlugin({
            //  name: ['vendor','manifest'] // Specify the common bundle's name.
            name:['vue','vuex','iview','jquery','highcharts','moment','manifest','superagent','element-ui']

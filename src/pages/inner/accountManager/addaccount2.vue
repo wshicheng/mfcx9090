@@ -287,7 +287,7 @@ export default {
                     { min: 6, max: 20, message: '密码长度应该在6-20位之间', trigger: 'change' }
                 ],
                 alliance: [
-                    { message: '请选择加盟商', trigger: 'blur' }
+                    { message: '请选择加盟商', trigger: 'blur',required:true }
                 ],
                 roleName: [
                     { required: true, message: '请选择所属于的角色', trigger: 'change' }

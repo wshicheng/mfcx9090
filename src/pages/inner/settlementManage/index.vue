@@ -98,8 +98,9 @@
                       </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
+                      <!-- v-loading.fullscreen.lock="fullscreenLoading"  -->
                       <el-button class="partner_button" type="primary" 
-                      v-loading.fullscreen.lock="fullscreenLoading" 
+                      
                       @click="editConfim(scope.row, scope.$index)">确定结算</el-button>
                       <el-button class="partner_button" @click="dialogVisible = false">取消</el-button>
                     </div>
@@ -363,13 +364,14 @@ export default {
         this.editAccount.applyUserName = row.applyUserName
         this.editAccount.applyMoney = row.applyMoney
         this.editAccount.id = row.id
+        this.editAccount.wType = row.wType
         this.companyName = this.editAccount.joinTarget=='1'?this.editAccount.companyName:this.editAccount.conName
         // this.editAccount.withdrawalCode = row.allianceId
       }
 
     },
     editConfim (row, index) {
-      this.fullscreenLoading = true
+      // this.fullscreenLoading = true
       request
         .post(host + 'beepartner/admin/withDraw/confirmWithDraw')
         .withCredentials()
@@ -382,7 +384,7 @@ export default {
           'description': this.editAccount.description,
           'cityPartnerId': this.editAccount.cityPartnerId,
           'id': this.editAccount.id,
-          'wType': row.wType
+          'wType': this.editAccount.wType
         })
         .end((error, res) => {
           if (error) {
@@ -397,6 +399,7 @@ export default {
                 type: 'success',
                 message: '加盟商将收到你的结算信息'
               })
+               this.dialogVisible = false
         // 结算成功更新状态
         request
         .post(host + 'beepartner/admin/withDraw/findWithDraw')
@@ -439,10 +442,10 @@ export default {
             }
           }
           var that = this
-          setTimeout(function () {
-            that.fullscreenLoading = false
-            that.dialogVisible = false
-          }, 1000)
+          // setTimeout(function () {
+          //   that.fullscreenLoading = false
+          //   that.dialogVisible = false
+          // }, 1000)
         })
     },
     checkLogin (res) {
